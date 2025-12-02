@@ -1,19 +1,37 @@
-Title:
+# DevNest
 
-    DevNest - A Developer Productivity Hub
+DevNest is a lightweight social platform built for developers to share their
+daily journey, progress, and experiences.  
+The MVP focuses on clean posting, simple profiles, and a fast backend.
 
-Description:
+## 🚀 MVP Features
+- User Authentication (Signup, Login)
+- Create Text‑based Posts
+- View Global Feed (Posts from all users)
+- View User Profile + User’s Posts
+- Like Posts
+- Edit/Delete Own Posts
 
-    DevNest is a production-ready backend project designed to practice and master real-world backend concepts including authentication, authorization, pagination, background jobs, file uploads, logging, rate-limiting, environment configuration, and clean project architecture.
+## ⚙️ Tech Stack
+### Backend
+- Node.js
+- Express.js
+- PostgreSQL / Prisma ORM
+- JWT Authentication
+- Zod for validation
 
-Tech Stack:
+### Deployment
+- Backend → Render/Fly.io
+- Database → Supabase / NeonDB
 
-    Node.js
-    Express.js
-    TypeScript
-    ts-node-dev
-    ESLint + Prettier
-    Prisma + PostgreSQL
-    Redis + BullMQ
-    Cloud Storage
+## 📁 Documentation
+- [MVP Specification](docs/mvp.md)
+- [System Architecture](docs/architecture.md)
+- [API Reference](docs/api.md)
+- [Database Schema](docs/database.md)
+- [Project Structure](docs/project-structure.md)
+- [Contribution Guide](docs/contribution.md)
 
+## 🧑‍💻 Authors
+- Johnvessly Alti — @johnvesslyalti
+- Vijay Shankar — @vijayshankarmb
