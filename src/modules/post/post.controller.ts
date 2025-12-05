@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { postService } from "./post.service";
-import { AuthRequest } from "../../middlewares/auth";
+import { AuthRequest } from "../../types/express";
 
 export const postController = {
     async create(req: AuthRequest, res: Response) {
