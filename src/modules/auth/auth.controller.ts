@@ -18,5 +18,14 @@ export const authController = {
         } catch (e: any) {
             res.status(400).json({ message: e.message })
         }
+    },
+
+    async delete(req: Request<{}, {}, LoginInput>, res: Response) {
+        try {
+            await authService.deleteUser(req.body)
+            res.json({ message: "User Deleted Successfully" })
+        } catch (e: any) {
+            res.status(400).json({ message: e.message })
+        }
     }
 }

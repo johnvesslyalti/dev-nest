@@ -2,8 +2,7 @@ import { commentRepository } from "./comment.repository";
 import { commentInput } from "./comment.schema";
 
 export const commentService = {
-    create: (data: commentInput) => {
-        const { userId, postId, content } = data;
+    create: (userId: string, postId: string, content: string) => {
         return commentRepository.create(userId, postId, content);
     },
 

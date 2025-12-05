@@ -1,9 +1,16 @@
 import { Request, Response } from "express";
 import { postService } from "./post.service";
+import { AuthRequest } from "../../middlewares/auth";
 
 export const postController = {
-    async create(req: Request, res: Response) {
-        const { authorId, content } = req.body;
+    async create(req: AuthRequest, res: Response) {
+        const { content } = req.body;
+
+        const authorId = req.user?.id;
+
+        if (!authorId) {
+            return res.status(401).json({ message: "User not authentication" })
+        }
 
         const post = await postService.create(authorId, content);
 

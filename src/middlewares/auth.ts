@@ -8,6 +8,13 @@ export interface AuthRequest extends Request {
 }
 
 export const auth = {
+
+    generateToken(userId: string) {
+        return jwt.sign({ id: userId }, JWT_SECRET, {
+            expiresIn: "7d",
+        });
+    },
+
     verifyToken(req: AuthRequest, res: Response, next: NextFunction) {
         const header = req.headers.authorization;
 

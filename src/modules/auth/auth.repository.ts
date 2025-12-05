@@ -1,5 +1,5 @@
 import { prisma } from "../../utils/prisma"
-import { RegisterInput } from "./auth.schema"
+import { LoginInput, RegisterInput } from "./auth.schema"
 
 export const authRepository = {
     findByEmail(email: string) {
@@ -18,6 +18,12 @@ export const authRepository = {
                 email: data.email,
                 password: data.password,
             }
+        })
+    },
+
+    deleteUser(data: LoginInput) {
+        return prisma.user.delete({
+            where: { email: data.email }
         })
     }
 }
