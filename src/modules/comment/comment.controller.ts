@@ -5,7 +5,14 @@ import { commentService } from "./comment.service";
 export const commentController = {
     async create(req: Request<{}, {}, commentInput>, res: Response) {
 
-        const comment = await commentService.create(req.body);
+        const userId = req.user?.id
+        if (!userId) {
+            return res.status(401).json({ message: "User not allowed" })
+        }
+
+        const { postId, content } = req.body;
+
+        const comment = await commentService.create(userId, postId, content)
 
         res.json({ message: "comment added", comment })
     },
