@@ -4,10 +4,11 @@ import { validate } from "../../middlewares/validate";
 import { authController } from "./auth.controller";
 import { auth } from "../../middlewares/auth";
 
-const router = Router()
+const router = Router();
 
-router.post("/register", validate(registerSchema), authController.register)
-router.post("/login", validate(loginSchema), authController.login)
-router.delete("/", auth.verifyToken, authController.delete)
+router.post("/register", validate(registerSchema), authController.register);
+router.post("/login", validate(loginSchema), authController.login);
+router.post("/refresh", authController.refresh);
+router.post("/logout", auth.verifyAccessToken, authController.logout);
 
 export default router;

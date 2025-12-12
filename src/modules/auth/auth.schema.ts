@@ -1,3 +1,4 @@
+//src/modules/auth/auth.schema.ts
 import z from "zod";
 
 export const registerSchema = z.object({

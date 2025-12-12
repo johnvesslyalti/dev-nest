@@ -1,7 +1,8 @@
 import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
 
-const JWT_SECRET = process.env.JWT_SECRET || "supersecret";
+const ACCESS_SECRET = process.env.ACCESS_SECRET || "access_secret_key";
+const REFRESH_SECRET = process.env.REFRESH_SECRET || "refresh_secret_key";
 
 export interface AuthRequest extends Request {
     user?: { id: string };
@@ -9,27 +10,34 @@ export interface AuthRequest extends Request {
 
 export const auth = {
 
-    generateToken(userId: string) {
-        return jwt.sign({ id: userId }, JWT_SECRET, {
-            expiresIn: "7d",
-        });
+    generateAccessToken(userId: string) {
+        return jwt.sign({ id: userId }, ACCESS_SECRET, { expiresIn: "15m" });
     },
 
-    verifyToken(req: AuthRequest, res: Response, next: NextFunction) {
-        const header = req.headers.authorization;
+    generateRefreshToken(userId: string) {
+        return jwt.sign({ id: userId }, REFRESH_SECRET, { expiresIn: "7d" });
+    },
 
-        if (!header) {
-            return res.status(401).json({ message: "Unauthorized" });
-        }
+    verifyAccessToken(req: AuthRequest, res: Response, next: NextFunction) {
+        const header = req.headers.authorization;
+        if (!header) return res.status(401).json({ message: "Unauthorized" });
 
         const token = header.split(" ")[1];
 
         try {
-            const decoded = jwt.verify(token, JWT_SECRET) as { id: string };
+            const decoded = jwt.verify(token, ACCESS_SECRET) as { id: string };
             req.user = { id: decoded.id };
             next();
-        } catch (err) {
-            return res.status(401).json({ message: "Invalid token" });
+        } catch {
+            return res.status(401).json({ message: "Access token expired or invalid" });
+        }
+    },
+
+    verifyRefreshToken(token: string) {
+        try {
+            return jwt.verify(token, REFRESH_SECRET) as { id: string };
+        } catch {
+            return null;
         }
     }
 };

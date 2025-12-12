@@ -17,6 +17,8 @@ model User {
   skills    String[]
   avatarUrl String?
 
+  refreshToken String?
+
   posts    Post[]
   comments Comment[]
   likes    Like[]

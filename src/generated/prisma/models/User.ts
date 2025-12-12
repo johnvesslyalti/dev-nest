@@ -32,6 +32,7 @@ export type UserMinAggregateOutputType = {
   password: string | null
   bio: string | null
   avatarUrl: string | null
+  refreshToken: string | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -44,6 +45,7 @@ export type UserMaxAggregateOutputType = {
   password: string | null
   bio: string | null
   avatarUrl: string | null
+  refreshToken: string | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -57,6 +59,7 @@ export type UserCountAggregateOutputType = {
   bio: number
   skills: number
   avatarUrl: number
+  refreshToken: number
   createdAt: number
   updatedAt: number
   _all: number
@@ -71,6 +74,7 @@ export type UserMinAggregateInputType = {
   password?: true
   bio?: true
   avatarUrl?: true
+  refreshToken?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -83,6 +87,7 @@ export type UserMaxAggregateInputType = {
   password?: true
   bio?: true
   avatarUrl?: true
+  refreshToken?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -96,6 +101,7 @@ export type UserCountAggregateInputType = {
   bio?: true
   skills?: true
   avatarUrl?: true
+  refreshToken?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -182,6 +188,7 @@ export type UserGroupByOutputType = {
   bio: string | null
   skills: string[]
   avatarUrl: string | null
+  refreshToken: string | null
   createdAt: Date
   updatedAt: Date
   _count: UserCountAggregateOutputType | null
@@ -216,6 +223,7 @@ export type UserWhereInput = {
   bio?: Prisma.StringNullableFilter<"User"> | string | null
   skills?: Prisma.StringNullableListFilter<"User">
   avatarUrl?: Prisma.StringNullableFilter<"User"> | string | null
+  refreshToken?: Prisma.StringNullableFilter<"User"> | string | null
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
   posts?: Prisma.PostListRelationFilter
@@ -232,6 +240,7 @@ export type UserOrderByWithRelationInput = {
   bio?: Prisma.SortOrderInput | Prisma.SortOrder
   skills?: Prisma.SortOrder
   avatarUrl?: Prisma.SortOrderInput | Prisma.SortOrder
+  refreshToken?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   posts?: Prisma.PostOrderByRelationAggregateInput
@@ -251,6 +260,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   bio?: Prisma.StringNullableFilter<"User"> | string | null
   skills?: Prisma.StringNullableListFilter<"User">
   avatarUrl?: Prisma.StringNullableFilter<"User"> | string | null
+  refreshToken?: Prisma.StringNullableFilter<"User"> | string | null
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
   posts?: Prisma.PostListRelationFilter
@@ -267,6 +277,7 @@ export type UserOrderByWithAggregationInput = {
   bio?: Prisma.SortOrderInput | Prisma.SortOrder
   skills?: Prisma.SortOrder
   avatarUrl?: Prisma.SortOrderInput | Prisma.SortOrder
+  refreshToken?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.UserCountOrderByAggregateInput
@@ -286,6 +297,7 @@ export type UserScalarWhereWithAggregatesInput = {
   bio?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   skills?: Prisma.StringNullableListFilter<"User">
   avatarUrl?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
+  refreshToken?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
 }
@@ -299,6 +311,7 @@ export type UserCreateInput = {
   bio?: string | null
   skills?: Prisma.UserCreateskillsInput | string[]
   avatarUrl?: string | null
+  refreshToken?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   posts?: Prisma.PostCreateNestedManyWithoutAuthorInput
@@ -315,6 +328,7 @@ export type UserUncheckedCreateInput = {
   bio?: string | null
   skills?: Prisma.UserCreateskillsInput | string[]
   avatarUrl?: string | null
+  refreshToken?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   posts?: Prisma.PostUncheckedCreateNestedManyWithoutAuthorInput
@@ -331,6 +345,7 @@ export type UserUpdateInput = {
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   skills?: Prisma.UserUpdateskillsInput | string[]
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  refreshToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   posts?: Prisma.PostUpdateManyWithoutAuthorNestedInput
@@ -347,6 +362,7 @@ export type UserUncheckedUpdateInput = {
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   skills?: Prisma.UserUpdateskillsInput | string[]
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  refreshToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   posts?: Prisma.PostUncheckedUpdateManyWithoutAuthorNestedInput
@@ -363,6 +379,7 @@ export type UserCreateManyInput = {
   bio?: string | null
   skills?: Prisma.UserCreateskillsInput | string[]
   avatarUrl?: string | null
+  refreshToken?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -376,6 +393,7 @@ export type UserUpdateManyMutationInput = {
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   skills?: Prisma.UserUpdateskillsInput | string[]
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  refreshToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -389,6 +407,7 @@ export type UserUncheckedUpdateManyInput = {
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   skills?: Prisma.UserUpdateskillsInput | string[]
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  refreshToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -410,6 +429,7 @@ export type UserCountOrderByAggregateInput = {
   bio?: Prisma.SortOrder
   skills?: Prisma.SortOrder
   avatarUrl?: Prisma.SortOrder
+  refreshToken?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -422,6 +442,7 @@ export type UserMaxOrderByAggregateInput = {
   password?: Prisma.SortOrder
   bio?: Prisma.SortOrder
   avatarUrl?: Prisma.SortOrder
+  refreshToken?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -434,6 +455,7 @@ export type UserMinOrderByAggregateInput = {
   password?: Prisma.SortOrder
   bio?: Prisma.SortOrder
   avatarUrl?: Prisma.SortOrder
+  refreshToken?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -515,6 +537,7 @@ export type UserCreateWithoutPostsInput = {
   bio?: string | null
   skills?: Prisma.UserCreateskillsInput | string[]
   avatarUrl?: string | null
+  refreshToken?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   comments?: Prisma.CommentCreateNestedManyWithoutUserInput
@@ -530,6 +553,7 @@ export type UserUncheckedCreateWithoutPostsInput = {
   bio?: string | null
   skills?: Prisma.UserCreateskillsInput | string[]
   avatarUrl?: string | null
+  refreshToken?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   comments?: Prisma.CommentUncheckedCreateNestedManyWithoutUserInput
@@ -561,6 +585,7 @@ export type UserUpdateWithoutPostsInput = {
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   skills?: Prisma.UserUpdateskillsInput | string[]
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  refreshToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   comments?: Prisma.CommentUpdateManyWithoutUserNestedInput
@@ -576,6 +601,7 @@ export type UserUncheckedUpdateWithoutPostsInput = {
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   skills?: Prisma.UserUpdateskillsInput | string[]
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  refreshToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   comments?: Prisma.CommentUncheckedUpdateManyWithoutUserNestedInput
@@ -591,6 +617,7 @@ export type UserCreateWithoutCommentsInput = {
   bio?: string | null
   skills?: Prisma.UserCreateskillsInput | string[]
   avatarUrl?: string | null
+  refreshToken?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   posts?: Prisma.PostCreateNestedManyWithoutAuthorInput
@@ -606,6 +633,7 @@ export type UserUncheckedCreateWithoutCommentsInput = {
   bio?: string | null
   skills?: Prisma.UserCreateskillsInput | string[]
   avatarUrl?: string | null
+  refreshToken?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   posts?: Prisma.PostUncheckedCreateNestedManyWithoutAuthorInput
@@ -637,6 +665,7 @@ export type UserUpdateWithoutCommentsInput = {
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   skills?: Prisma.UserUpdateskillsInput | string[]
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  refreshToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   posts?: Prisma.PostUpdateManyWithoutAuthorNestedInput
@@ -652,6 +681,7 @@ export type UserUncheckedUpdateWithoutCommentsInput = {
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   skills?: Prisma.UserUpdateskillsInput | string[]
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  refreshToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   posts?: Prisma.PostUncheckedUpdateManyWithoutAuthorNestedInput
@@ -667,6 +697,7 @@ export type UserCreateWithoutLikesInput = {
   bio?: string | null
   skills?: Prisma.UserCreateskillsInput | string[]
   avatarUrl?: string | null
+  refreshToken?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   posts?: Prisma.PostCreateNestedManyWithoutAuthorInput
@@ -682,6 +713,7 @@ export type UserUncheckedCreateWithoutLikesInput = {
   bio?: string | null
   skills?: Prisma.UserCreateskillsInput | string[]
   avatarUrl?: string | null
+  refreshToken?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   posts?: Prisma.PostUncheckedCreateNestedManyWithoutAuthorInput
@@ -713,6 +745,7 @@ export type UserUpdateWithoutLikesInput = {
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   skills?: Prisma.UserUpdateskillsInput | string[]
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  refreshToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   posts?: Prisma.PostUpdateManyWithoutAuthorNestedInput
@@ -728,6 +761,7 @@ export type UserUncheckedUpdateWithoutLikesInput = {
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   skills?: Prisma.UserUpdateskillsInput | string[]
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  refreshToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   posts?: Prisma.PostUncheckedUpdateManyWithoutAuthorNestedInput
@@ -792,6 +826,7 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   bio?: boolean
   skills?: boolean
   avatarUrl?: boolean
+  refreshToken?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   posts?: boolean | Prisma.User$postsArgs<ExtArgs>
@@ -809,6 +844,7 @@ export type UserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   bio?: boolean
   skills?: boolean
   avatarUrl?: boolean
+  refreshToken?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }, ExtArgs["result"]["user"]>
@@ -822,6 +858,7 @@ export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   bio?: boolean
   skills?: boolean
   avatarUrl?: boolean
+  refreshToken?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }, ExtArgs["result"]["user"]>
@@ -835,11 +872,12 @@ export type UserSelectScalar = {
   bio?: boolean
   skills?: boolean
   avatarUrl?: boolean
+  refreshToken?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "username" | "email" | "password" | "bio" | "skills" | "avatarUrl" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
+export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "username" | "email" | "password" | "bio" | "skills" | "avatarUrl" | "refreshToken" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   posts?: boolean | Prisma.User$postsArgs<ExtArgs>
   comments?: boolean | Prisma.User$commentsArgs<ExtArgs>
@@ -865,6 +903,7 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     bio: string | null
     skills: string[]
     avatarUrl: string | null
+    refreshToken: string | null
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["user"]>
@@ -1301,6 +1340,7 @@ export interface UserFieldRefs {
   readonly bio: Prisma.FieldRef<"User", 'String'>
   readonly skills: Prisma.FieldRef<"User", 'String[]'>
   readonly avatarUrl: Prisma.FieldRef<"User", 'String'>
+  readonly refreshToken: Prisma.FieldRef<"User", 'String'>
   readonly createdAt: Prisma.FieldRef<"User", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"User", 'DateTime'>
 }
