@@ -1,7 +1,7 @@
-import { homeRepo } from "./home.repo"
+import { postRepo } from "../post/post.repository"
 
 export const homeService = {
-    findPosts() {
-        homeRepo.findAllPosts()
+    getFeed() {
+        return postRepo.findPublicFeed();
     }
 }

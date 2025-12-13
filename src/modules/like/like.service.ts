@@ -1,4 +1,4 @@
-import { likeRepo } from "./like.repo";
+import { likeRepo } from "./like.repository";
 
 export const likeService = {
     like: (userId: string, postId: string) => likeRepo.like(userId, postId),
