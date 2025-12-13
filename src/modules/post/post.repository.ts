@@ -22,5 +22,31 @@ export const postRepo = {
             where: { id },
             include: { author: true }
         })
+    },
+
+    findPublicFeed() {
+        return prisma.post.findMany({
+            orderBy: { createdAt: "desc" },
+            take: 20,
+            select: {
+                id: true,
+                content: true,
+                createdAt: true,
+
+                author: {
+                    select: {
+                        id: true,
+                        username: true,
+                        avatarUrl: true,
+                    }
+                },
+                _count: {
+                    select: {
+                        likes: true,
+                        comments: true
+                    }
+                }
+            }
+        })
     }
 }
