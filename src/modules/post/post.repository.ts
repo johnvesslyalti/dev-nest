@@ -24,8 +24,9 @@ export const postRepo = {
                         id: true,
                         name: true,
                         username: true,
-                        avatarUrl: true
-                    }
+                        avatarUrl: true,
+                        _count: { select: { followers: true, following: true } }
+                    },
                 },
                 _count: { select: { likes: true, comments: true } }
             },
