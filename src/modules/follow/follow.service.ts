@@ -1,3 +1,4 @@
+import { constants } from "node:vm";
 import { followRepo } from "./follow.repository";
 
 export const followService = {
@@ -21,4 +22,16 @@ export const followService = {
     unfollow: async (followerId: string, followingId: string) => {
         return followRepo.delete(followerId, followingId)
     },
+
+    getFollowers: async (userId: string) => {
+        const followers = await followRepo.getFollowers(userId);
+        
+        return followers.map(f => f.follower)
+    },
+
+    getFollowing: async (userId: string) => {
+        const following = await followRepo.getFollowing(userId);
+
+        return following.map(f => f.following)
+    }
 };

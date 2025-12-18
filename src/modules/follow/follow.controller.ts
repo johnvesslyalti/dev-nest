@@ -45,5 +45,27 @@ export const followController = {
         await followService.unfollow(followerId, followingId);
 
         res.status(200).json({ message: "User unfollowed" });
+    },
+
+    followers: async (req: AuthRequest, res: Response) => {
+        const userId = req.params.userId;
+
+        const followers = await followService.getFollowing(userId);
+
+        res.status(200).json({
+            count: followers.length,
+            data: followers
+        })
+    },
+
+    following: async (req: AuthRequest, res: Response) => {
+        const userId = req.params.userId;
+
+        const following = await followService.getFollowing(userId);
+
+        res.status(200).json({
+            count: following.length,
+            data: following
+        })
     }
 };

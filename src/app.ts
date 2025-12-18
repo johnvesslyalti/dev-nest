@@ -16,7 +16,7 @@ app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/posts", postRoutes);
 app.use("/api/v1/likes", auth.verifyAccessToken, likeRoutes);
 app.use("/api/v1/comments", auth.verifyAccessToken, commentRoutes);
-app.use("/api/v1/follow", auth.verifyAccessToken, followRoutes)
+app.use("/api/v1/follow", followRoutes)
 app.use("/api/v1/feed", auth.verifyAccessToken, feedRoutes);
 app.use("/api/v1/profile", profileRoutes);
 app.use("/api/v1/home", homeRoutes);
