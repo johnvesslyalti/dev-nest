@@ -34,7 +34,7 @@ export const authService = {
             maxAge: 7 * 24 * 60 * 60 * 1000,
         });
 
-        return { name: user.name, email: user.email, accessToken };
+        return { id: user.id, name: user.name, email: user.email, accessToken };
     },
 
     async login(data: LoginInput, res: Response) {
@@ -58,7 +58,7 @@ export const authService = {
             maxAge: 7 * 24 * 60 * 60 * 1000,
         });
 
-        return { name: user.name, email: user.email, accessToken };
+        return { id: user.id, name: user.name, email: user.email, accessToken };
     },
 
     async refresh(req: any) {

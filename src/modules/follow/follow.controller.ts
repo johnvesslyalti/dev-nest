@@ -32,7 +32,7 @@ export const followController = {
 
     unfollow: async (req: AuthRequest, res: Response) => {
         const followerId = req.user?.id;
-        const { userId: followingId } = req.body;
+        const { userId: followingId } = req.params;
 
         if (!followerId) {
             return res.status(401).json({ message: "Unauthorized" });
@@ -50,7 +50,7 @@ export const followController = {
     followers: async (req: AuthRequest, res: Response) => {
         const userId = req.params.userId;
 
-        const followers = await followService.getFollowing(userId);
+        const followers = await followService.getFollowers(userId);
 
         res.status(200).json({
             count: followers.length,
