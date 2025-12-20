@@ -8,19 +8,19 @@ export const profileController = {
             const { username } = req.params;
 
             if (!username) {
-                return res.status(400).json({ message: "Username is required" });
+                return res.status(400).json({ message: "Username is required" })
             }
 
-            const user = await profileService.findUserByName(username);
+            const user = await profileService.getUserProfile(username);
 
             if (!user) {
-                return res.status(404).json({ message: "User not found" });
+                return res.status(404).json({ message: "user not found" });
             }
 
             return res.status(200).json(user);
         } catch (error) {
             console.error(error);
-            return res.status(500).json({ message: "Internal server error" });
+            return res.status(500).json({ message: "Internal server error" })
         }
     },
 
@@ -38,15 +38,19 @@ export const profileController = {
             }
 
             if (bio.length > 160) {
-                return res.status(400).json({ message: "Bio too long" });
+                return res.status(400).json({ message: "Bio too long" })
             }
 
-            const updatedUser = await profileService.updateUserBio(userId, bio.trim());
+            const updatedUser = await profileService.updateUserBio(
+                userId,
+                bio.trim()
+            );
 
             return res.status(200).json(updatedUser);
+
         } catch (error) {
             console.error(error);
-            return res.status(500).json({ message: "Internal server error" });
+            return res.status(500).json({ message: "Internal server error" })
         }
     }
-};
+}
