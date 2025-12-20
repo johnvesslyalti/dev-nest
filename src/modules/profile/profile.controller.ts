@@ -1,6 +1,5 @@
 import { Request, Response } from "express";
 import { profileService } from "./profile.service";
-import { AuthRequest } from "../../types/express";
 
 export const profileController = {
     findUserByName: async (req: Request, res: Response) => {
@@ -24,12 +23,12 @@ export const profileController = {
         }
     },
 
-    updateUserBio: async (req: AuthRequest, res: Response) => {
+    updateUserBio: async (req: Request, res: Response) => {
         try {
-            const userId = req.user?.id;
+            const { username } = req.params;
             const { bio } = req.body;
 
-            if (!userId) {
+            if (!username) {
                 return res.status(401).json({ message: "Unauthorized" });
             }
 
@@ -42,7 +41,7 @@ export const profileController = {
             }
 
             const updatedUser = await profileService.updateUserBio(
-                userId,
+                username,
                 bio.trim()
             );
 

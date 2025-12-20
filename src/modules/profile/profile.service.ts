@@ -25,15 +25,16 @@ export const profileService = {
         return profile;
     },
 
-    updateUserBio: async (userId: string, bio: string) => {
+    updateUserBio: async (username: string, bio: string) => {
         const user = await prisma.user.findUnique({
-            where: { id: userId },
-            select: { username: true },
+            where: {
+                username: username
+            }
         });
 
         if (!user) return null;
 
-        const updatedProfile = await profileRepo.updateBio(userId, bio);
+        const updatedProfile = await profileRepo.updateBio(username, bio);
 
         await redis.del(cacheKeys.profileByUserId(user.username));
 
