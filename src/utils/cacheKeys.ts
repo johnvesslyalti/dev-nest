@@ -12,5 +12,8 @@ export const cacheKeys = {
         `following:${userId}`,
 
     posts: (page: number, limit: number) =>
-        `posts:page:${page}:limit:${limit}`
+        `posts:page:${page}:limit:${limit}`,
+
+    feed: (userId: string, limit: number, cursor?: string) =>
+        `feed:home:user:${userId}:limit:${limit}:cursor:${cursor || "first"}`
 }
