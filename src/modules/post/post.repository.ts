@@ -36,7 +36,16 @@ export const postRepo = {
     findOne: (id: string) => {
         return prisma.post.findUnique({
             where: { id },
-            include: { author: true }
+            include: {
+                author: {
+                    select: {
+                        id: true,
+                        name: true,
+                        username: true,
+                        avatarUrl: true
+                    }
+                }
+            }
         })
     },
 

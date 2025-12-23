@@ -6,6 +6,6 @@ const router = Router()
 
 router.post("/", auth.verifyAccessToken, postController.create)
 router.get("/user/:username", postController.findByUserName)
-router.get("/", postController.findOne)
+router.get("/:id", postController.findOne)
 
 export default router;
