@@ -28,6 +28,11 @@ export type User = Prisma.UserModel
  */
 export type Follow = Prisma.FollowModel
 /**
+ * Model BlockedUser
+ * 
+ */
+export type BlockedUser = Prisma.BlockedUserModel
+/**
  * Model Post
  * 
  */

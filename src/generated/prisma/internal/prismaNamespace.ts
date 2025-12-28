@@ -386,6 +386,7 @@ type FieldRefInputType<Model, FieldType> = Model extends never ? never : FieldRe
 export const ModelName = {
   User: 'User',
   Follow: 'Follow',
+  BlockedUser: 'BlockedUser',
   Post: 'Post',
   Comment: 'Comment',
   Like: 'Like'
@@ -404,7 +405,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "follow" | "post" | "comment" | "like"
+    modelProps: "user" | "follow" | "blockedUser" | "post" | "comment" | "like"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -553,6 +554,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.FollowCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.FollowCountAggregateOutputType> | number
+        }
+      }
+    }
+    BlockedUser: {
+      payload: Prisma.$BlockedUserPayload<ExtArgs>
+      fields: Prisma.BlockedUserFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.BlockedUserFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BlockedUserPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.BlockedUserFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BlockedUserPayload>
+        }
+        findFirst: {
+          args: Prisma.BlockedUserFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BlockedUserPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.BlockedUserFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BlockedUserPayload>
+        }
+        findMany: {
+          args: Prisma.BlockedUserFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BlockedUserPayload>[]
+        }
+        create: {
+          args: Prisma.BlockedUserCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BlockedUserPayload>
+        }
+        createMany: {
+          args: Prisma.BlockedUserCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.BlockedUserCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BlockedUserPayload>[]
+        }
+        delete: {
+          args: Prisma.BlockedUserDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BlockedUserPayload>
+        }
+        update: {
+          args: Prisma.BlockedUserUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BlockedUserPayload>
+        }
+        deleteMany: {
+          args: Prisma.BlockedUserDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.BlockedUserUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.BlockedUserUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BlockedUserPayload>[]
+        }
+        upsert: {
+          args: Prisma.BlockedUserUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BlockedUserPayload>
+        }
+        aggregate: {
+          args: Prisma.BlockedUserAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateBlockedUser>
+        }
+        groupBy: {
+          args: Prisma.BlockedUserGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.BlockedUserGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.BlockedUserCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.BlockedUserCountAggregateOutputType> | number
         }
       }
     }
@@ -844,6 +919,16 @@ export const FollowScalarFieldEnum = {
 export type FollowScalarFieldEnum = (typeof FollowScalarFieldEnum)[keyof typeof FollowScalarFieldEnum]
 
 
+export const BlockedUserScalarFieldEnum = {
+  id: 'id',
+  blockerId: 'blockerId',
+  blockedId: 'blockedId',
+  createdAt: 'createdAt'
+} as const
+
+export type BlockedUserScalarFieldEnum = (typeof BlockedUserScalarFieldEnum)[keyof typeof BlockedUserScalarFieldEnum]
+
+
 export const PostScalarFieldEnum = {
   id: 'id',
   content: 'content',
@@ -1045,6 +1130,7 @@ export type PrismaClientOptions = ({
 export type GlobalOmitConfig = {
   user?: Prisma.UserOmit
   follow?: Prisma.FollowOmit
+  blockedUser?: Prisma.BlockedUserOmit
   post?: Prisma.PostOmit
   comment?: Prisma.CommentOmit
   like?: Prisma.LikeOmit

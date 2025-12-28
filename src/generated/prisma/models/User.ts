@@ -231,6 +231,8 @@ export type UserWhereInput = {
   likes?: Prisma.LikeListRelationFilter
   followers?: Prisma.FollowListRelationFilter
   following?: Prisma.FollowListRelationFilter
+  blockedUsers?: Prisma.BlockedUserListRelationFilter
+  blockedBy?: Prisma.BlockedUserListRelationFilter
 }
 
 export type UserOrderByWithRelationInput = {
@@ -250,6 +252,8 @@ export type UserOrderByWithRelationInput = {
   likes?: Prisma.LikeOrderByRelationAggregateInput
   followers?: Prisma.FollowOrderByRelationAggregateInput
   following?: Prisma.FollowOrderByRelationAggregateInput
+  blockedUsers?: Prisma.BlockedUserOrderByRelationAggregateInput
+  blockedBy?: Prisma.BlockedUserOrderByRelationAggregateInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -272,6 +276,8 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   likes?: Prisma.LikeListRelationFilter
   followers?: Prisma.FollowListRelationFilter
   following?: Prisma.FollowListRelationFilter
+  blockedUsers?: Prisma.BlockedUserListRelationFilter
+  blockedBy?: Prisma.BlockedUserListRelationFilter
 }, "id" | "username" | "email">
 
 export type UserOrderByWithAggregationInput = {
@@ -325,6 +331,8 @@ export type UserCreateInput = {
   likes?: Prisma.LikeCreateNestedManyWithoutUserInput
   followers?: Prisma.FollowCreateNestedManyWithoutFollowingInput
   following?: Prisma.FollowCreateNestedManyWithoutFollowerInput
+  blockedUsers?: Prisma.BlockedUserCreateNestedManyWithoutBlockedInput
+  blockedBy?: Prisma.BlockedUserCreateNestedManyWithoutBlockerInput
 }
 
 export type UserUncheckedCreateInput = {
@@ -344,6 +352,8 @@ export type UserUncheckedCreateInput = {
   likes?: Prisma.LikeUncheckedCreateNestedManyWithoutUserInput
   followers?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowingInput
   following?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowerInput
+  blockedUsers?: Prisma.BlockedUserUncheckedCreateNestedManyWithoutBlockedInput
+  blockedBy?: Prisma.BlockedUserUncheckedCreateNestedManyWithoutBlockerInput
 }
 
 export type UserUpdateInput = {
@@ -363,6 +373,8 @@ export type UserUpdateInput = {
   likes?: Prisma.LikeUpdateManyWithoutUserNestedInput
   followers?: Prisma.FollowUpdateManyWithoutFollowingNestedInput
   following?: Prisma.FollowUpdateManyWithoutFollowerNestedInput
+  blockedUsers?: Prisma.BlockedUserUpdateManyWithoutBlockedNestedInput
+  blockedBy?: Prisma.BlockedUserUpdateManyWithoutBlockerNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
@@ -382,6 +394,8 @@ export type UserUncheckedUpdateInput = {
   likes?: Prisma.LikeUncheckedUpdateManyWithoutUserNestedInput
   followers?: Prisma.FollowUncheckedUpdateManyWithoutFollowingNestedInput
   following?: Prisma.FollowUncheckedUpdateManyWithoutFollowerNestedInput
+  blockedUsers?: Prisma.BlockedUserUncheckedUpdateManyWithoutBlockedNestedInput
+  blockedBy?: Prisma.BlockedUserUncheckedUpdateManyWithoutBlockerNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -528,6 +542,34 @@ export type UserUpdateOneRequiredWithoutFollowersNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutFollowersInput, Prisma.UserUpdateWithoutFollowersInput>, Prisma.UserUncheckedUpdateWithoutFollowersInput>
 }
 
+export type UserCreateNestedOneWithoutBlockedByInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutBlockedByInput, Prisma.UserUncheckedCreateWithoutBlockedByInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutBlockedByInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserCreateNestedOneWithoutBlockedUsersInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutBlockedUsersInput, Prisma.UserUncheckedCreateWithoutBlockedUsersInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutBlockedUsersInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutBlockedByNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutBlockedByInput, Prisma.UserUncheckedCreateWithoutBlockedByInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutBlockedByInput
+  upsert?: Prisma.UserUpsertWithoutBlockedByInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutBlockedByInput, Prisma.UserUpdateWithoutBlockedByInput>, Prisma.UserUncheckedUpdateWithoutBlockedByInput>
+}
+
+export type UserUpdateOneRequiredWithoutBlockedUsersNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutBlockedUsersInput, Prisma.UserUncheckedCreateWithoutBlockedUsersInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutBlockedUsersInput
+  upsert?: Prisma.UserUpsertWithoutBlockedUsersInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutBlockedUsersInput, Prisma.UserUpdateWithoutBlockedUsersInput>, Prisma.UserUncheckedUpdateWithoutBlockedUsersInput>
+}
+
 export type UserCreateNestedOneWithoutPostsInput = {
   create?: Prisma.XOR<Prisma.UserCreateWithoutPostsInput, Prisma.UserUncheckedCreateWithoutPostsInput>
   connectOrCreate?: Prisma.UserCreateOrConnectWithoutPostsInput
@@ -586,6 +628,8 @@ export type UserCreateWithoutFollowingInput = {
   comments?: Prisma.CommentCreateNestedManyWithoutUserInput
   likes?: Prisma.LikeCreateNestedManyWithoutUserInput
   followers?: Prisma.FollowCreateNestedManyWithoutFollowingInput
+  blockedUsers?: Prisma.BlockedUserCreateNestedManyWithoutBlockedInput
+  blockedBy?: Prisma.BlockedUserCreateNestedManyWithoutBlockerInput
 }
 
 export type UserUncheckedCreateWithoutFollowingInput = {
@@ -604,6 +648,8 @@ export type UserUncheckedCreateWithoutFollowingInput = {
   comments?: Prisma.CommentUncheckedCreateNestedManyWithoutUserInput
   likes?: Prisma.LikeUncheckedCreateNestedManyWithoutUserInput
   followers?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowingInput
+  blockedUsers?: Prisma.BlockedUserUncheckedCreateNestedManyWithoutBlockedInput
+  blockedBy?: Prisma.BlockedUserUncheckedCreateNestedManyWithoutBlockerInput
 }
 
 export type UserCreateOrConnectWithoutFollowingInput = {
@@ -627,6 +673,8 @@ export type UserCreateWithoutFollowersInput = {
   comments?: Prisma.CommentCreateNestedManyWithoutUserInput
   likes?: Prisma.LikeCreateNestedManyWithoutUserInput
   following?: Prisma.FollowCreateNestedManyWithoutFollowerInput
+  blockedUsers?: Prisma.BlockedUserCreateNestedManyWithoutBlockedInput
+  blockedBy?: Prisma.BlockedUserCreateNestedManyWithoutBlockerInput
 }
 
 export type UserUncheckedCreateWithoutFollowersInput = {
@@ -645,6 +693,8 @@ export type UserUncheckedCreateWithoutFollowersInput = {
   comments?: Prisma.CommentUncheckedCreateNestedManyWithoutUserInput
   likes?: Prisma.LikeUncheckedCreateNestedManyWithoutUserInput
   following?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowerInput
+  blockedUsers?: Prisma.BlockedUserUncheckedCreateNestedManyWithoutBlockedInput
+  blockedBy?: Prisma.BlockedUserUncheckedCreateNestedManyWithoutBlockerInput
 }
 
 export type UserCreateOrConnectWithoutFollowersInput = {
@@ -679,6 +729,8 @@ export type UserUpdateWithoutFollowingInput = {
   comments?: Prisma.CommentUpdateManyWithoutUserNestedInput
   likes?: Prisma.LikeUpdateManyWithoutUserNestedInput
   followers?: Prisma.FollowUpdateManyWithoutFollowingNestedInput
+  blockedUsers?: Prisma.BlockedUserUpdateManyWithoutBlockedNestedInput
+  blockedBy?: Prisma.BlockedUserUpdateManyWithoutBlockerNestedInput
 }
 
 export type UserUncheckedUpdateWithoutFollowingInput = {
@@ -697,6 +749,8 @@ export type UserUncheckedUpdateWithoutFollowingInput = {
   comments?: Prisma.CommentUncheckedUpdateManyWithoutUserNestedInput
   likes?: Prisma.LikeUncheckedUpdateManyWithoutUserNestedInput
   followers?: Prisma.FollowUncheckedUpdateManyWithoutFollowingNestedInput
+  blockedUsers?: Prisma.BlockedUserUncheckedUpdateManyWithoutBlockedNestedInput
+  blockedBy?: Prisma.BlockedUserUncheckedUpdateManyWithoutBlockerNestedInput
 }
 
 export type UserUpsertWithoutFollowersInput = {
@@ -726,6 +780,8 @@ export type UserUpdateWithoutFollowersInput = {
   comments?: Prisma.CommentUpdateManyWithoutUserNestedInput
   likes?: Prisma.LikeUpdateManyWithoutUserNestedInput
   following?: Prisma.FollowUpdateManyWithoutFollowerNestedInput
+  blockedUsers?: Prisma.BlockedUserUpdateManyWithoutBlockedNestedInput
+  blockedBy?: Prisma.BlockedUserUpdateManyWithoutBlockerNestedInput
 }
 
 export type UserUncheckedUpdateWithoutFollowersInput = {
@@ -744,6 +800,200 @@ export type UserUncheckedUpdateWithoutFollowersInput = {
   comments?: Prisma.CommentUncheckedUpdateManyWithoutUserNestedInput
   likes?: Prisma.LikeUncheckedUpdateManyWithoutUserNestedInput
   following?: Prisma.FollowUncheckedUpdateManyWithoutFollowerNestedInput
+  blockedUsers?: Prisma.BlockedUserUncheckedUpdateManyWithoutBlockedNestedInput
+  blockedBy?: Prisma.BlockedUserUncheckedUpdateManyWithoutBlockerNestedInput
+}
+
+export type UserCreateWithoutBlockedByInput = {
+  id?: string
+  name?: string | null
+  username: string
+  email: string
+  password: string
+  bio?: string | null
+  skills?: Prisma.UserCreateskillsInput | string[]
+  avatarUrl?: string | null
+  refreshToken?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  posts?: Prisma.PostCreateNestedManyWithoutAuthorInput
+  comments?: Prisma.CommentCreateNestedManyWithoutUserInput
+  likes?: Prisma.LikeCreateNestedManyWithoutUserInput
+  followers?: Prisma.FollowCreateNestedManyWithoutFollowingInput
+  following?: Prisma.FollowCreateNestedManyWithoutFollowerInput
+  blockedUsers?: Prisma.BlockedUserCreateNestedManyWithoutBlockedInput
+}
+
+export type UserUncheckedCreateWithoutBlockedByInput = {
+  id?: string
+  name?: string | null
+  username: string
+  email: string
+  password: string
+  bio?: string | null
+  skills?: Prisma.UserCreateskillsInput | string[]
+  avatarUrl?: string | null
+  refreshToken?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  posts?: Prisma.PostUncheckedCreateNestedManyWithoutAuthorInput
+  comments?: Prisma.CommentUncheckedCreateNestedManyWithoutUserInput
+  likes?: Prisma.LikeUncheckedCreateNestedManyWithoutUserInput
+  followers?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowingInput
+  following?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowerInput
+  blockedUsers?: Prisma.BlockedUserUncheckedCreateNestedManyWithoutBlockedInput
+}
+
+export type UserCreateOrConnectWithoutBlockedByInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutBlockedByInput, Prisma.UserUncheckedCreateWithoutBlockedByInput>
+}
+
+export type UserCreateWithoutBlockedUsersInput = {
+  id?: string
+  name?: string | null
+  username: string
+  email: string
+  password: string
+  bio?: string | null
+  skills?: Prisma.UserCreateskillsInput | string[]
+  avatarUrl?: string | null
+  refreshToken?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  posts?: Prisma.PostCreateNestedManyWithoutAuthorInput
+  comments?: Prisma.CommentCreateNestedManyWithoutUserInput
+  likes?: Prisma.LikeCreateNestedManyWithoutUserInput
+  followers?: Prisma.FollowCreateNestedManyWithoutFollowingInput
+  following?: Prisma.FollowCreateNestedManyWithoutFollowerInput
+  blockedBy?: Prisma.BlockedUserCreateNestedManyWithoutBlockerInput
+}
+
+export type UserUncheckedCreateWithoutBlockedUsersInput = {
+  id?: string
+  name?: string | null
+  username: string
+  email: string
+  password: string
+  bio?: string | null
+  skills?: Prisma.UserCreateskillsInput | string[]
+  avatarUrl?: string | null
+  refreshToken?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  posts?: Prisma.PostUncheckedCreateNestedManyWithoutAuthorInput
+  comments?: Prisma.CommentUncheckedCreateNestedManyWithoutUserInput
+  likes?: Prisma.LikeUncheckedCreateNestedManyWithoutUserInput
+  followers?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowingInput
+  following?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowerInput
+  blockedBy?: Prisma.BlockedUserUncheckedCreateNestedManyWithoutBlockerInput
+}
+
+export type UserCreateOrConnectWithoutBlockedUsersInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutBlockedUsersInput, Prisma.UserUncheckedCreateWithoutBlockedUsersInput>
+}
+
+export type UserUpsertWithoutBlockedByInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutBlockedByInput, Prisma.UserUncheckedUpdateWithoutBlockedByInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutBlockedByInput, Prisma.UserUncheckedCreateWithoutBlockedByInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutBlockedByInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutBlockedByInput, Prisma.UserUncheckedUpdateWithoutBlockedByInput>
+}
+
+export type UserUpdateWithoutBlockedByInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  username?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  skills?: Prisma.UserUpdateskillsInput | string[]
+  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  refreshToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  posts?: Prisma.PostUpdateManyWithoutAuthorNestedInput
+  comments?: Prisma.CommentUpdateManyWithoutUserNestedInput
+  likes?: Prisma.LikeUpdateManyWithoutUserNestedInput
+  followers?: Prisma.FollowUpdateManyWithoutFollowingNestedInput
+  following?: Prisma.FollowUpdateManyWithoutFollowerNestedInput
+  blockedUsers?: Prisma.BlockedUserUpdateManyWithoutBlockedNestedInput
+}
+
+export type UserUncheckedUpdateWithoutBlockedByInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  username?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  skills?: Prisma.UserUpdateskillsInput | string[]
+  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  refreshToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  posts?: Prisma.PostUncheckedUpdateManyWithoutAuthorNestedInput
+  comments?: Prisma.CommentUncheckedUpdateManyWithoutUserNestedInput
+  likes?: Prisma.LikeUncheckedUpdateManyWithoutUserNestedInput
+  followers?: Prisma.FollowUncheckedUpdateManyWithoutFollowingNestedInput
+  following?: Prisma.FollowUncheckedUpdateManyWithoutFollowerNestedInput
+  blockedUsers?: Prisma.BlockedUserUncheckedUpdateManyWithoutBlockedNestedInput
+}
+
+export type UserUpsertWithoutBlockedUsersInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutBlockedUsersInput, Prisma.UserUncheckedUpdateWithoutBlockedUsersInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutBlockedUsersInput, Prisma.UserUncheckedCreateWithoutBlockedUsersInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutBlockedUsersInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutBlockedUsersInput, Prisma.UserUncheckedUpdateWithoutBlockedUsersInput>
+}
+
+export type UserUpdateWithoutBlockedUsersInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  username?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  skills?: Prisma.UserUpdateskillsInput | string[]
+  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  refreshToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  posts?: Prisma.PostUpdateManyWithoutAuthorNestedInput
+  comments?: Prisma.CommentUpdateManyWithoutUserNestedInput
+  likes?: Prisma.LikeUpdateManyWithoutUserNestedInput
+  followers?: Prisma.FollowUpdateManyWithoutFollowingNestedInput
+  following?: Prisma.FollowUpdateManyWithoutFollowerNestedInput
+  blockedBy?: Prisma.BlockedUserUpdateManyWithoutBlockerNestedInput
+}
+
+export type UserUncheckedUpdateWithoutBlockedUsersInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  username?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  skills?: Prisma.UserUpdateskillsInput | string[]
+  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  refreshToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  posts?: Prisma.PostUncheckedUpdateManyWithoutAuthorNestedInput
+  comments?: Prisma.CommentUncheckedUpdateManyWithoutUserNestedInput
+  likes?: Prisma.LikeUncheckedUpdateManyWithoutUserNestedInput
+  followers?: Prisma.FollowUncheckedUpdateManyWithoutFollowingNestedInput
+  following?: Prisma.FollowUncheckedUpdateManyWithoutFollowerNestedInput
+  blockedBy?: Prisma.BlockedUserUncheckedUpdateManyWithoutBlockerNestedInput
 }
 
 export type UserCreateWithoutPostsInput = {
@@ -762,6 +1012,8 @@ export type UserCreateWithoutPostsInput = {
   likes?: Prisma.LikeCreateNestedManyWithoutUserInput
   followers?: Prisma.FollowCreateNestedManyWithoutFollowingInput
   following?: Prisma.FollowCreateNestedManyWithoutFollowerInput
+  blockedUsers?: Prisma.BlockedUserCreateNestedManyWithoutBlockedInput
+  blockedBy?: Prisma.BlockedUserCreateNestedManyWithoutBlockerInput
 }
 
 export type UserUncheckedCreateWithoutPostsInput = {
@@ -780,6 +1032,8 @@ export type UserUncheckedCreateWithoutPostsInput = {
   likes?: Prisma.LikeUncheckedCreateNestedManyWithoutUserInput
   followers?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowingInput
   following?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowerInput
+  blockedUsers?: Prisma.BlockedUserUncheckedCreateNestedManyWithoutBlockedInput
+  blockedBy?: Prisma.BlockedUserUncheckedCreateNestedManyWithoutBlockerInput
 }
 
 export type UserCreateOrConnectWithoutPostsInput = {
@@ -814,6 +1068,8 @@ export type UserUpdateWithoutPostsInput = {
   likes?: Prisma.LikeUpdateManyWithoutUserNestedInput
   followers?: Prisma.FollowUpdateManyWithoutFollowingNestedInput
   following?: Prisma.FollowUpdateManyWithoutFollowerNestedInput
+  blockedUsers?: Prisma.BlockedUserUpdateManyWithoutBlockedNestedInput
+  blockedBy?: Prisma.BlockedUserUpdateManyWithoutBlockerNestedInput
 }
 
 export type UserUncheckedUpdateWithoutPostsInput = {
@@ -832,6 +1088,8 @@ export type UserUncheckedUpdateWithoutPostsInput = {
   likes?: Prisma.LikeUncheckedUpdateManyWithoutUserNestedInput
   followers?: Prisma.FollowUncheckedUpdateManyWithoutFollowingNestedInput
   following?: Prisma.FollowUncheckedUpdateManyWithoutFollowerNestedInput
+  blockedUsers?: Prisma.BlockedUserUncheckedUpdateManyWithoutBlockedNestedInput
+  blockedBy?: Prisma.BlockedUserUncheckedUpdateManyWithoutBlockerNestedInput
 }
 
 export type UserCreateWithoutCommentsInput = {
@@ -850,6 +1108,8 @@ export type UserCreateWithoutCommentsInput = {
   likes?: Prisma.LikeCreateNestedManyWithoutUserInput
   followers?: Prisma.FollowCreateNestedManyWithoutFollowingInput
   following?: Prisma.FollowCreateNestedManyWithoutFollowerInput
+  blockedUsers?: Prisma.BlockedUserCreateNestedManyWithoutBlockedInput
+  blockedBy?: Prisma.BlockedUserCreateNestedManyWithoutBlockerInput
 }
 
 export type UserUncheckedCreateWithoutCommentsInput = {
@@ -868,6 +1128,8 @@ export type UserUncheckedCreateWithoutCommentsInput = {
   likes?: Prisma.LikeUncheckedCreateNestedManyWithoutUserInput
   followers?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowingInput
   following?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowerInput
+  blockedUsers?: Prisma.BlockedUserUncheckedCreateNestedManyWithoutBlockedInput
+  blockedBy?: Prisma.BlockedUserUncheckedCreateNestedManyWithoutBlockerInput
 }
 
 export type UserCreateOrConnectWithoutCommentsInput = {
@@ -902,6 +1164,8 @@ export type UserUpdateWithoutCommentsInput = {
   likes?: Prisma.LikeUpdateManyWithoutUserNestedInput
   followers?: Prisma.FollowUpdateManyWithoutFollowingNestedInput
   following?: Prisma.FollowUpdateManyWithoutFollowerNestedInput
+  blockedUsers?: Prisma.BlockedUserUpdateManyWithoutBlockedNestedInput
+  blockedBy?: Prisma.BlockedUserUpdateManyWithoutBlockerNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCommentsInput = {
@@ -920,6 +1184,8 @@ export type UserUncheckedUpdateWithoutCommentsInput = {
   likes?: Prisma.LikeUncheckedUpdateManyWithoutUserNestedInput
   followers?: Prisma.FollowUncheckedUpdateManyWithoutFollowingNestedInput
   following?: Prisma.FollowUncheckedUpdateManyWithoutFollowerNestedInput
+  blockedUsers?: Prisma.BlockedUserUncheckedUpdateManyWithoutBlockedNestedInput
+  blockedBy?: Prisma.BlockedUserUncheckedUpdateManyWithoutBlockerNestedInput
 }
 
 export type UserCreateWithoutLikesInput = {
@@ -938,6 +1204,8 @@ export type UserCreateWithoutLikesInput = {
   comments?: Prisma.CommentCreateNestedManyWithoutUserInput
   followers?: Prisma.FollowCreateNestedManyWithoutFollowingInput
   following?: Prisma.FollowCreateNestedManyWithoutFollowerInput
+  blockedUsers?: Prisma.BlockedUserCreateNestedManyWithoutBlockedInput
+  blockedBy?: Prisma.BlockedUserCreateNestedManyWithoutBlockerInput
 }
 
 export type UserUncheckedCreateWithoutLikesInput = {
@@ -956,6 +1224,8 @@ export type UserUncheckedCreateWithoutLikesInput = {
   comments?: Prisma.CommentUncheckedCreateNestedManyWithoutUserInput
   followers?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowingInput
   following?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowerInput
+  blockedUsers?: Prisma.BlockedUserUncheckedCreateNestedManyWithoutBlockedInput
+  blockedBy?: Prisma.BlockedUserUncheckedCreateNestedManyWithoutBlockerInput
 }
 
 export type UserCreateOrConnectWithoutLikesInput = {
@@ -990,6 +1260,8 @@ export type UserUpdateWithoutLikesInput = {
   comments?: Prisma.CommentUpdateManyWithoutUserNestedInput
   followers?: Prisma.FollowUpdateManyWithoutFollowingNestedInput
   following?: Prisma.FollowUpdateManyWithoutFollowerNestedInput
+  blockedUsers?: Prisma.BlockedUserUpdateManyWithoutBlockedNestedInput
+  blockedBy?: Prisma.BlockedUserUpdateManyWithoutBlockerNestedInput
 }
 
 export type UserUncheckedUpdateWithoutLikesInput = {
@@ -1008,6 +1280,8 @@ export type UserUncheckedUpdateWithoutLikesInput = {
   comments?: Prisma.CommentUncheckedUpdateManyWithoutUserNestedInput
   followers?: Prisma.FollowUncheckedUpdateManyWithoutFollowingNestedInput
   following?: Prisma.FollowUncheckedUpdateManyWithoutFollowerNestedInput
+  blockedUsers?: Prisma.BlockedUserUncheckedUpdateManyWithoutBlockedNestedInput
+  blockedBy?: Prisma.BlockedUserUncheckedUpdateManyWithoutBlockerNestedInput
 }
 
 
@@ -1021,6 +1295,8 @@ export type UserCountOutputType = {
   likes: number
   followers: number
   following: number
+  blockedUsers: number
+  blockedBy: number
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1029,6 +1305,8 @@ export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.I
   likes?: boolean | UserCountOutputTypeCountLikesArgs
   followers?: boolean | UserCountOutputTypeCountFollowersArgs
   following?: boolean | UserCountOutputTypeCountFollowingArgs
+  blockedUsers?: boolean | UserCountOutputTypeCountBlockedUsersArgs
+  blockedBy?: boolean | UserCountOutputTypeCountBlockedByArgs
 }
 
 /**
@@ -1076,6 +1354,20 @@ export type UserCountOutputTypeCountFollowingArgs<ExtArgs extends runtime.Types.
   where?: Prisma.FollowWhereInput
 }
 
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountBlockedUsersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.BlockedUserWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountBlockedByArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.BlockedUserWhereInput
+}
+
 
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -1094,6 +1386,8 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   likes?: boolean | Prisma.User$likesArgs<ExtArgs>
   followers?: boolean | Prisma.User$followersArgs<ExtArgs>
   following?: boolean | Prisma.User$followingArgs<ExtArgs>
+  blockedUsers?: boolean | Prisma.User$blockedUsersArgs<ExtArgs>
+  blockedBy?: boolean | Prisma.User$blockedByArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -1146,6 +1440,8 @@ export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   likes?: boolean | Prisma.User$likesArgs<ExtArgs>
   followers?: boolean | Prisma.User$followersArgs<ExtArgs>
   following?: boolean | Prisma.User$followingArgs<ExtArgs>
+  blockedUsers?: boolean | Prisma.User$blockedUsersArgs<ExtArgs>
+  blockedBy?: boolean | Prisma.User$blockedByArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -1159,6 +1455,8 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     likes: Prisma.$LikePayload<ExtArgs>[]
     followers: Prisma.$FollowPayload<ExtArgs>[]
     following: Prisma.$FollowPayload<ExtArgs>[]
+    blockedUsers: Prisma.$BlockedUserPayload<ExtArgs>[]
+    blockedBy: Prisma.$BlockedUserPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1571,6 +1869,8 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   likes<T extends Prisma.User$likesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$likesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$LikePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   followers<T extends Prisma.User$followersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$followersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$FollowPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   following<T extends Prisma.User$followingArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$followingArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$FollowPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  blockedUsers<T extends Prisma.User$blockedUsersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$blockedUsersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$BlockedUserPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  blockedBy<T extends Prisma.User$blockedByArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$blockedByArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$BlockedUserPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2116,6 +2416,54 @@ export type User$followingArgs<ExtArgs extends runtime.Types.Extensions.Internal
   take?: number
   skip?: number
   distinct?: Prisma.FollowScalarFieldEnum | Prisma.FollowScalarFieldEnum[]
+}
+
+/**
+ * User.blockedUsers
+ */
+export type User$blockedUsersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the BlockedUser
+   */
+  select?: Prisma.BlockedUserSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the BlockedUser
+   */
+  omit?: Prisma.BlockedUserOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.BlockedUserInclude<ExtArgs> | null
+  where?: Prisma.BlockedUserWhereInput
+  orderBy?: Prisma.BlockedUserOrderByWithRelationInput | Prisma.BlockedUserOrderByWithRelationInput[]
+  cursor?: Prisma.BlockedUserWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.BlockedUserScalarFieldEnum | Prisma.BlockedUserScalarFieldEnum[]
+}
+
+/**
+ * User.blockedBy
+ */
+export type User$blockedByArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the BlockedUser
+   */
+  select?: Prisma.BlockedUserSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the BlockedUser
+   */
+  omit?: Prisma.BlockedUserOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.BlockedUserInclude<ExtArgs> | null
+  where?: Prisma.BlockedUserWhereInput
+  orderBy?: Prisma.BlockedUserOrderByWithRelationInput | Prisma.BlockedUserOrderByWithRelationInput[]
+  cursor?: Prisma.BlockedUserWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.BlockedUserScalarFieldEnum | Prisma.BlockedUserScalarFieldEnum[]
 }
 
 /**
