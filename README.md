@@ -1,9 +1,8 @@
 # 🚀 DevNest
 
-**DevNest** is a scalable backend platform inspired by **X (Twitter)**, built with **Node.js, TypeScript, Express, Prisma, and PostgreSQL**.
-It follows a **clean, layered architecture** designed for real-world production systems.
+**DevNest** is a scalable backend platform inspired by **X (Twitter)**, built with **Node.js, TypeScript, Express, Prisma, PostgreSQL, and Redis**.
 
-The project focuses on **social platform features** such as authentication, posts, follows, blocks, likes, comments, and feeds — implemented with strong separation of concerns.
+It follows a **clean, layered architecture** and focuses on building **production-ready social platform features** with performance, scalability, and maintainability in mind.
 
 ---
 
@@ -18,9 +17,9 @@ Routes → Controller → Service → Repository → Database
 ### Why this architecture?
 
 * ✅ Clear separation of concerns
-* ✅ Easy to test and maintain
-* ✅ Scales well as features grow
-* ✅ Business logic is isolated from HTTP & DB layers
+* ✅ Easy to test and refactor
+* ✅ Business logic isolated from HTTP & DB layers
+* ✅ Scales cleanly as features grow
 
 ---
 
@@ -31,6 +30,7 @@ Routes → Controller → Service → Repository → Database
 * **Express.js**
 * **Prisma ORM**
 * **PostgreSQL**
+* **Redis** (Caching Layer)
 * **JWT Authentication (Access & Refresh Tokens)**
 
 ---
@@ -51,13 +51,14 @@ src/
 ├── middlewares/
 ├── lib/
 │   ├── prisma.ts
+│   ├── redis.ts
 │   └── logger.ts
 ├── types/
 ├── app.ts
 └── server.ts
 ```
 
-Each module contains:
+Each module follows:
 
 ```txt
 module/
@@ -73,9 +74,41 @@ module/
 ## 🔐 Authentication
 
 * JWT-based authentication
-* Refresh token support
+* Access & refresh token flow
 * Secure route protection via middleware
-* Authenticated user is attached to `req.user`
+* Authenticated user attached to `req.user`
+
+---
+
+## ⚡ Redis Caching Strategy
+
+Redis is used as a **shared caching layer across modules** to improve performance and reduce database load.
+
+### Where Redis is used
+
+* User profile reads
+* Feed responses
+* Posts & interactions
+* Follow / block checks
+* Frequently accessed relational data
+
+### Cache Pattern Used
+
+* **Read-through caching**
+* Cache invalidation on write/update/delete
+* Fallback to database on cache miss
+
+### Example Flow
+
+```
+Request → Redis → Database (if cache miss) → Redis update → Response
+```
+
+### Benefits
+
+* 🚀 Faster response times
+* 📉 Reduced database queries
+* 📈 Better scalability under load
 
 ---
 
@@ -86,36 +119,43 @@ module/
 * Register & login
 * Profile management
 * Follow / unfollow users
+* Cached profile reads
 
 ### 📝 Posts
 
 * Create posts
-* View user posts
-* Like & comment on posts
+* Fetch posts efficiently
+* Cached post lists
 
 ### ❤️ Likes
 
 * Like / unlike posts
 * Prevent duplicate likes
+* Cache-aware invalidation
 
 ### 💬 Comments
 
 * Comment on posts
 * Delete own comments
 
-### 🚫 Blocking (X-like behavior)
+### 🚫 Blocking (X-like Behavior)
 
 * Block users
 * Unblock users
 * View blocked users list
 * Blocking removes follow relationships
-* Blocked users cannot interact (follow, like, comment, view feed)
+* Blocked users cannot:
+
+  * follow
+  * like
+  * comment
+  * view feed content
 
 ### 📰 Feed
 
-* User feed based on follow relationships
-* Excludes blocked users
-* Ordered by latest posts
+* Feed based on follow relationships
+* Block-aware feed filtering
+* Redis-cached feed responses
 
 ---
 
@@ -132,10 +172,10 @@ Key models:
 
 Designed with:
 
-* Proper relations
 * Unique constraints
 * Indexes for performance
-* Cascade deletes for data integrity
+* Cascade deletes
+* Proper relational modeling
 
 ---
 
@@ -160,6 +200,7 @@ Create a `.env` file:
 
 ```env
 DATABASE_URL=postgresql://user:password@localhost:5432/devnest
+REDIS_URL=redis://localhost:6379
 JWT_SECRET=your_jwt_secret
 REFRESH_TOKEN_SECRET=your_refresh_secret
 ```
@@ -171,7 +212,13 @@ npx prisma generate
 npx prisma migrate dev
 ```
 
-### 5️⃣ Start the server
+### 5️⃣ Start Redis
+
+```bash
+redis-server
+```
+
+### 6️⃣ Start the server
 
 ```bash
 npm run dev
@@ -183,21 +230,22 @@ npm run dev
 
 * ❌ No Prisma calls in controllers
 * ❌ No HTTP logic in services
-* ✅ Repositories handle all DB access
+* ❌ No business logic in repositories
+* ✅ Repositories handle DB access
 * ✅ Services enforce business rules
-* ✅ Controllers handle request/response only
+* ✅ Redis caching handled consistently per module
 
 ---
 
 ## 🚧 Future Enhancements
 
-* Real-time notifications
-* WebSocket-based feed updates
+* WebSocket-based notifications
+* Real-time feed updates
 * Retweets / reposts
 * Hashtags & trending topics
 * Direct messaging
-* Rate limiting & moderation tools
-* API documentation (Swagger)
+* Rate limiting
+* API documentation (Swagger / OpenAPI)
 
 ---
 
@@ -212,7 +260,7 @@ Building scalable systems with clean architecture.
 ## ⭐ Contributing
 
 Pull requests are welcome.
-For major changes, please open an issue first to discuss what you would like to change.
+Please open an issue before making major changes.
 
 ---
 
