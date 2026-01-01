@@ -3,7 +3,7 @@ import { commentController } from "./comment.controller";
 
 const router = Router()
 
-router.post("/", commentController.create);
-router.get("/", commentController.findByPost)
+router.post("/:id", commentController.create);
+router.get("/:id", commentController.findByPost)
 
 export default router
