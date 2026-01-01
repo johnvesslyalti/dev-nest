@@ -8,6 +8,7 @@ import homeRoutes from "./modules/home/home.routes"
 import followRoutes from "./modules/follow/follow.routes"
 import profileRoutes from "./modules/profile/profile.routes"
 import feedRoutes from "./modules/feed/feed.routes"
+import blockRoutes from "./modules/block/block.routes"
 
 const app = express()
 app.use(express.json())
@@ -16,7 +17,8 @@ app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/posts", postRoutes);
 app.use("/api/v1/likes", likeRoutes);
 app.use("/api/v1/comments", auth.verifyAccessToken, commentRoutes);
-app.use("/api/v1/follow", followRoutes)
+app.use("/api/v1/follow", followRoutes);
+app.use("/api/v1/block", blockRoutes)
 app.use("/api/v1/feed", auth.verifyAccessToken, feedRoutes);
 app.use("/api/v1/profile", profileRoutes);
 app.use("/api/v1/home", homeRoutes);
