@@ -3,8 +3,8 @@ import { likeInput } from "./like.schema";
 import { likeService } from "./like.service";
 
 export const likeController = {
-    async like(req: Request<{}, {}, likeInput>, res: Response) {
-        const { postId } = req.body;
+    async like(req: Request<{ postId: string }, {}, likeInput>, res: Response) {
+        const { postId } = req.params;
 
         const userId = req.user?.id;
         if (!userId) {
@@ -16,7 +16,7 @@ export const likeController = {
     },
 
     async unlike(req: Request, res: Response) {
-        const { postId } = req.body;
+        const { postId } = req.params;
 
         const userId = req.user?.id;
         if (!userId) {
