@@ -7,7 +7,7 @@ export const commentRepository = {
         });
     },
 
-    findByPost: (postId: string, page: number, limit: number) => {
+    findByPost: async (postId: string, page: number, limit: number) => {
         return prisma.comment.findMany({
             where: { postId },
             orderBy: { createdAt: "desc" },

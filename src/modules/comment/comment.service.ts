@@ -20,24 +20,31 @@ export const commentService = {
     },
 
     findByPost: async (postId: string, page = 1, limit = 10) => {
-        const cacheKey = cacheKeys.commentsByPost(postId, page, limit);
+        const cacheKey = cacheKeys.commentsByPost(postId, page, limit)
 
         const cached = await redis.get(cacheKey);
+        let comments: any[] = [];
+
         if (cached) {
-            return JSON.parse(cached)
+            try {
+                comments = JSON.parse(cached);
+                if (!Array.isArray(comments)) {
+                    comments = [];
+                }
+            } catch {
+                comments = [];
+            }
+        } else {
+            comments = await commentRepository.findByPost(postId, page, limit)
+
+            await redis.set(
+                cacheKey,
+                JSON.stringify(comments),
+                "EX",
+                COMMENTS_TTL
+            )
         }
 
-        const comments = await commentRepository.findByPost(
-            postId,
-            page,
-            limit
-        );
-
-        await redis.set(
-            cacheKey,
-            JSON.stringify(comments),
-            "EX",
-            COMMENTS_TTL
-        )
+        return comments
     }
 }
