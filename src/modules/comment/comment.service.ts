@@ -1,50 +1,46 @@
 import { cacheKeys } from "../../utils/cacheKeys";
 import { redis } from "../../utils/redis";
-import { commentRepository } from "./comment.repository"
+import { commentRepository } from "./comment.repository";
 
-const COMMENTS_TTL = 45;
+const COMMENTS_TTL = 60;
 
 export const commentService = {
     create: async (userId: string, postId: string, content: string) => {
         const comment = await commentRepository.create(userId, postId, content);
 
-        await redis.del(
-            cacheKeys.commentsByPost(postId, 1, 10)
-        );
+        // Invalidate ALL cached pages for this post
+        const pattern = `comments:${postId}:*`;
+        const keys = await redis.keys(pattern);
+        if (keys.length) {
+            await redis.del(keys);
+        }
 
-        await redis.incr(
-            cacheKeys.commentCount(postId)
-        );
+        // Soft cache count
+        await redis.del(cacheKeys.commentCount(postId));
 
-        return comment
+        return comment;
     },
 
     findByPost: async (postId: string, page = 1, limit = 10) => {
-        const cacheKey = cacheKeys.commentsByPost(postId, page, limit)
+        const cacheKey = cacheKeys.commentsByPost(postId, page, limit);
 
         const cached = await redis.get(cacheKey);
-        let comments: any[] = [];
-
         if (cached) {
             try {
-                comments = JSON.parse(cached);
-                if (!Array.isArray(comments)) {
-                    comments = [];
-                }
-            } catch {
-                comments = [];
-            }
-        } else {
-            comments = await commentRepository.findByPost(postId, page, limit)
-
-            await redis.set(
-                cacheKey,
-                JSON.stringify(comments),
-                "EX",
-                COMMENTS_TTL
-            )
+                const parsed = JSON.parse(cached);
+                if (Array.isArray(parsed)) return parsed;
+            } catch { }
         }
 
-        return comments
-    }
-}
+        const comments = await commentRepository.findByPost(postId, page, limit);
+
+        await redis.set(
+            cacheKey,
+            JSON.stringify(comments),
+            "EX",
+            COMMENTS_TTL
+        );
+
+        return comments;
+    },
+};
