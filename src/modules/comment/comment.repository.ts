@@ -3,11 +3,11 @@ import { prisma } from "../../utils/prisma";
 export const commentRepository = {
     create: (userId: string, postId: string, content: string) => {
         return prisma.comment.create({
-            data: { userId, postId, content }
+            data: { userId, postId, content },
         });
     },
 
-    findByPost: async (postId: string, page: number, limit: number) => {
+    findByPost: (postId: string, page: number, limit: number) => {
         return prisma.comment.findMany({
             where: { postId },
             orderBy: { createdAt: "desc" },
@@ -21,10 +21,10 @@ export const commentRepository = {
                     select: {
                         id: true,
                         username: true,
-                        avatarUrl: true
-                    }
-                }
-            }
-        })
-    }
-}
+                        avatarUrl: true,
+                    },
+                },
+            },
+        });
+    },
+};
