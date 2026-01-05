@@ -1,8 +1,7 @@
 import z from "zod";
 
 export const likeSchema = z.object({
-    userId: z.string(),
-    postId: z.string()
-})
+    postId: z.string().min(1, "Post ID is required"),
+});
 
 export type likeInput = z.infer<typeof likeSchema>

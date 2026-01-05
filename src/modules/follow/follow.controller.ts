@@ -6,7 +6,7 @@ export const followController = {
     follow: async (req: AuthRequest, res: Response) => {
         try {
             const followerId = req.user?.id;
-            const { userId: followingId } = req.body;
+            const { userId: followingId } = req.params;
 
             if (!followerId) {
                 return res.status(401).json({ message: "Unauthorized" });
