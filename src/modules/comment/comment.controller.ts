@@ -14,7 +14,7 @@ export const commentController = {
             }
 
             const { postId } = req.params;
-            const { content } = commentSchema.parse(req.body);
+            const { content } = req.body;
 
             const comment = await commentService.create(
                 userId,
@@ -26,9 +26,9 @@ export const commentController = {
                 message: "Comment added",
                 comment,
             });
-        } catch (err) {
-            return res.status(400).json({
-                message: "Invalid request",
+        } catch (err: any) {
+            return res.status(500).json({
+                message: err.message,
             });
         }
     },

@@ -5,8 +5,8 @@ import { blockController } from "./block.controller";
 
 const router = Router()
 
-router.post("/:userId", auth.verifyRefreshToken, blockController.blockUser)
-router.delete("/:userId", auth.verifyRefreshToken, blockController.unblockUser);
-router.get("/", auth.verifyRefreshToken, blockController.getBlockedUsers)
+router.post("/:userId", auth.verifyAccessToken, blockController.blockUser)
+router.delete("/:userId", auth.verifyAccessToken, blockController.unblockUser);
+router.get("/", auth.verifyAccessToken, blockController.getBlockedUsers)
 
 export default router;

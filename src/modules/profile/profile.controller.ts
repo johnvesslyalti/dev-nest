@@ -32,14 +32,6 @@ export const profileController = {
                 return res.status(401).json({ message: "Unauthorized" });
             }
 
-            if (!bio || typeof bio !== "string") {
-                return res.status(400).json({ message: "Bio is required" });
-            }
-
-            if (bio.length > 160) {
-                return res.status(400).json({ message: "Bio too long" })
-            }
-
             const updatedUser = await profileService.updateUserBio(
                 username,
                 bio.trim()

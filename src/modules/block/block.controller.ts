@@ -24,8 +24,8 @@ export const blockController = {
             await blockService.blockUser(blockerId, blockedId);
 
             res.status(201).json({ message: "User blocked successfully" });
-        } catch (error) {
-            next(error);
+        } catch (error: any) {
+            res.status(500).json({ message: error.message });
         }
     },
 
@@ -45,8 +45,8 @@ export const blockController = {
             await blockService.unblockUser(blockerId, blockedId);
 
             res.status(200).json({ message: "User unblocked successfully" });
-        } catch (error) {
-            next(error);
+        } catch (error: any) {
+            res.status(500).json({ message: error.message });
         }
     },
 
@@ -64,8 +64,8 @@ export const blockController = {
             const blockedUsers = await blockService.getBlockedUsers(userId);
 
             res.status(200).json(blockedUsers);
-        } catch (error) {
-            next(error);
+        } catch (error: any) {
+            res.status(500).json({ message: error.message });
         }
     }
 };

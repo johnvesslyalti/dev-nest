@@ -4,31 +4,39 @@ import { AuthRequest } from "../../types/express";
 
 export const postController = {
     async create(req: AuthRequest, res: Response) {
-        const { content } = req.body;
+        try {
+            const { content } = req.body;
+            const authorId = req.user?.id;
 
-        const authorId = req.user?.id;
+            if (!authorId) {
+                return res.status(401).json({ message: "User not authentication" })
+            }
 
-        if (!authorId) {
-            return res.status(401).json({ message: "User not authentication" })
+            const post = await postService.create(authorId, content);
+
+            res.json({ message: "Post created", post })
+        } catch (e: any) {
+            res.status(500).json({ message: e.message });
         }
-
-        const post = await postService.create(authorId, content);
-
-        res.json({ message: "Post created", post })
     },
 
     async findByUserName(req: Request, res: Response) {
-
-        const { username } = req.params;
-
-        const posts = await postService.findByUserName(username);
-
-        return res.json(posts);
+        try {
+            const { username } = req.params;
+            const posts = await postService.findByUserName(username);
+            return res.json(posts);
+        } catch (e: any) {
+            res.status(500).json({ message: e.message });
+        }
     },
 
     async findOne(req: Request, res: Response) {
-        const { id } = req.params;
-        const post = await postService.findOne(id);
-        res.json(post);
+        try {
+            const { id } = req.params;
+            const post = await postService.findOne(id);
+            res.json(post);
+        } catch (e: any) {
+            res.status(500).json({ message: e.message });
+        }
     }
 }

@@ -31,41 +31,51 @@ export const followController = {
     },
 
     unfollow: async (req: AuthRequest, res: Response) => {
-        const followerId = req.user?.id;
-        const { userId: followingId } = req.params;
+        try {
+            const followerId = req.user?.id;
+            const { userId: followingId } = req.params;
 
-        if (!followerId) {
-            return res.status(401).json({ message: "Unauthorized" });
+            if (!followerId) {
+                return res.status(401).json({ message: "Unauthorized" });
+            }
+
+            if (!followingId) {
+                return res.status(400).json({ message: "userId is required" });
+            }
+
+            await followService.unfollow(followerId, followingId);
+
+            res.status(200).json({ message: "User unfollowed" });
+        } catch (e: any) {
+            res.status(500).json({ message: e.message });
         }
-
-        if (!followingId) {
-            return res.status(400).json({ message: "userId is required" });
-        }
-
-        await followService.unfollow(followerId, followingId);
-
-        res.status(200).json({ message: "User unfollowed" });
     },
 
     followers: async (req: AuthRequest, res: Response) => {
-        const userId = req.params.userId;
+        try {
+            const userId = req.params.userId;
+            const followers = await followService.getFollowers(userId);
 
-        const followers = await followService.getFollowers(userId);
-
-        res.status(200).json({
-            count: followers.length,
-            data: followers
-        })
+            res.status(200).json({
+                count: followers.length,
+                data: followers
+            })
+        } catch (e: any) {
+            res.status(500).json({ message: e.message });
+        }
     },
 
     following: async (req: AuthRequest, res: Response) => {
-        const userId = req.params.userId;
+        try {
+            const userId = req.params.userId;
+            const following = await followService.getFollowing(userId);
 
-        const following = await followService.getFollowing(userId);
-
-        res.status(200).json({
-            count: following.length,
-            data: following
-        })
+            res.status(200).json({
+                count: following.length,
+                data: following
+            })
+        } catch (e: any) {
+            res.status(500).json({ message: e.message });
+        }
     }
 };

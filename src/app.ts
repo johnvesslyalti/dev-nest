@@ -19,7 +19,7 @@ app.use("/api/v1/likes", likeRoutes);
 app.use("/api/v1", commentRoutes);
 app.use("/api/v1/follow", followRoutes);
 app.use("/api/v1/block", blockRoutes)
-app.use("/api/v1/feed", auth.verifyAccessToken, feedRoutes);
+app.use("/api/v1/feed", feedRoutes);
 app.use("/api/v1/profile", profileRoutes);
 app.use("/api/v1/home", homeRoutes);
 
