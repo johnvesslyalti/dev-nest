@@ -1,7 +1,7 @@
 import { prisma } from "../../utils/prisma"
 
-export const feedRepo = {
-    getFeed: (userId: string, limit: number, cursor?: string) => {
+export const homeRepo = {
+    getHomeFeed: (userId: string, limit: number, cursor?: string) => {
         return prisma.post.findMany({
             where: {
                 OR: [
