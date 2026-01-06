@@ -10,7 +10,7 @@ export const postService = {
     // Best-effort invalidation (do NOT depend on relations)
     await Promise.all([
       redis.del(cacheKeys.posts(1, 20)),                 // public feed
-      redis.del(cacheKeys.feed(authorId, 20)),           // home feed
+      redis.del(cacheKeys.home(authorId, 20)),           // home feed
     ]);
 
     return post;
