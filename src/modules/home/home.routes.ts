@@ -1,8 +1,14 @@
 import { Router } from "express";
 import { homeController } from "./home.controller";
 
-const router = Router();
+import { auth } from "../../middlewares/auth";
 
-router.get("/", homeController.getFeed);
+const router = Router()
 
-export default router
+router.get(
+    "/",
+    auth.verifyAccessToken,
+    homeController.getHomeFeed
+)
+
+export default router;

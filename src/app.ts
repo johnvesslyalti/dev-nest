@@ -7,7 +7,6 @@ import commentRoutes from "./modules/comment/comment.routes"
 import homeRoutes from "./modules/home/home.routes"
 import followRoutes from "./modules/follow/follow.routes"
 import profileRoutes from "./modules/profile/profile.routes"
-import feedRoutes from "./modules/feed/feed.routes"
 import blockRoutes from "./modules/block/block.routes"
 
 const app = express()
@@ -19,7 +18,7 @@ app.use("/api/v1/likes", likeRoutes);
 app.use("/api/v1", commentRoutes);
 app.use("/api/v1/follow", followRoutes);
 app.use("/api/v1/block", blockRoutes)
-app.use("/api/v1/feed", feedRoutes);
+
 app.use("/api/v1/profile", profileRoutes);
 app.use("/api/v1/home", homeRoutes);
 

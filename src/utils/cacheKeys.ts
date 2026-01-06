@@ -27,7 +27,7 @@ export const cacheKeys = {
     `posts:page:${page}:limit:${limit}`,
 
   // Home feed (personalized)
-  feed: (userId: string, limit: number, cursor?: string) =>
+  home: (userId: string, limit: number, cursor?: string) =>
     `feed:home:user:${userId}:limit:${limit}:cursor:${cursor || "first"}`,
 
   // -------------------- Likes --------------------
