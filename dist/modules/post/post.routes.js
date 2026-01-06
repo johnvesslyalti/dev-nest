@@ -1,0 +1,10 @@
+import { auth } from "../../middlewares/auth";
+import { postController } from "./post.controller";
+import { Router } from "express";
+import { validate } from "../../middlewares/validate";
+import { createPostSchema } from "./post.schema";
+const router = Router();
+router.post("/", auth.verifyAccessToken, validate(createPostSchema), postController.create);
+router.get("/user/:username", postController.findByUserName);
+router.get("/:id", postController.findOne);
+export default router;
