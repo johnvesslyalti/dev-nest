@@ -25,9 +25,9 @@ export const profileRepo = {
         })
     },
 
-    updateBio: (username: string, bio: string) => {
+    updateBio: (userId: string, bio: string) => {
         return prisma.user.update({
-            where: { username: username },
+            where: { id: userId },
             data: { bio },
             select: {
                 id: true,

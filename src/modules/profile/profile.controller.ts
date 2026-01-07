@@ -25,15 +25,15 @@ export const profileController = {
 
     updateUserBio: async (req: Request, res: Response) => {
         try {
-            const { username } = req.params;
+            const { userId } = req.params;
             const { bio } = req.body;
 
-            if (!username) {
+            if (!userId) {
                 return res.status(401).json({ message: "Unauthorized" });
             }
 
             const updatedUser = await profileService.updateUserBio(
-                username,
+                userId,
                 bio.trim()
             );
 

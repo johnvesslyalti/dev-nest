@@ -9,7 +9,7 @@ const router = Router();
 
 router.get("/:userId", profileController.getUserProfile);
 router.patch(
-    "/:username",
+    "/:userId",
     auth.verifyAccessToken,
     validate(updateProfileSchema),
     profileController.updateUserBio
