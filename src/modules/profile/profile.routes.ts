@@ -7,7 +7,7 @@ import { updateProfileSchema } from "./profile.schema";
 
 const router = Router();
 
-router.get("/:username", profileController.findUserByName);
+router.get("/:userId", profileController.getUserProfile);
 router.patch(
     "/:username",
     auth.verifyAccessToken,

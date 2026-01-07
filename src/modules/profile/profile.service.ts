@@ -4,23 +4,35 @@ import { redis } from "../../utils/redis";
 import { profileRepo } from "./profile.repository";
 
 export const profileService = {
-    getUserProfile: async (username: string) => {
-        const cacheKey = cacheKeys.profileByUsername(username);
+    getUserProfile: async (identifier: string) => {
+        const cacheKeyUsername = cacheKeys.profileByUsername(identifier);
+        const cacheKeyUserId = cacheKeys.profileByUserId(identifier);
 
-        const cached = await redis.get(cacheKey);
-        if (cached) {
-            return JSON.parse(cached);
-        }
+        const [cachedByUsername, cachedById] = await Promise.all([
+            redis.get(cacheKeyUsername),
+            redis.get(cacheKeyUserId)
+        ]);
 
-        const profile = await profileRepo.findUserByName(username);
+        if (cachedByUsername) return JSON.parse(cachedByUsername);
+        if (cachedById) return JSON.parse(cachedById);
+
+        const profile = await profileRepo.findUser(identifier);
         if (!profile) return null
 
-        await redis.set(
-            cacheKey,
-            JSON.stringify(profile),
-            "EX",
-            60 * 5
-        );
+        await Promise.all([
+            redis.set(
+                cacheKeys.profileByUsername(profile.username),
+                JSON.stringify(profile),
+                "EX",
+                60 * 5
+            ),
+            redis.set(
+                cacheKeys.profileByUserId(profile.id),
+                JSON.stringify(profile),
+                "EX",
+                60 * 5
+            )
+        ]);
 
         return profile;
     },
@@ -36,7 +48,10 @@ export const profileService = {
 
         const updatedProfile = await profileRepo.updateBio(username, bio);
 
-        await redis.del(cacheKeys.profileByUserId(user.username));
+        await Promise.all([
+            redis.del(cacheKeys.profileByUsername(user.username)),
+            redis.del(cacheKeys.profileByUserId(user.id))
+        ]);
 
         return updatedProfile;
     }

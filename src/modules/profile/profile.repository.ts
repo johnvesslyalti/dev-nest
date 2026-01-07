@@ -1,9 +1,14 @@
 import { prisma } from "../../utils/prisma"
 
 export const profileRepo = {
-    findUserByName: (username: string) => {
-        return prisma.user.findUnique({
-            where: { username: username },
+    findUser: (identifier: string) => {
+        return prisma.user.findFirst({
+            where: {
+                OR: [
+                    { id: identifier },
+                    { username: identifier }
+                ]
+            },
             select: {
                 id: true,
                 name: true,

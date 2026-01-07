@@ -2,15 +2,15 @@ import { Request, Response } from "express";
 import { profileService } from "./profile.service";
 
 export const profileController = {
-    findUserByName: async (req: Request, res: Response) => {
+    getUserProfile: async (req: Request, res: Response) => {
         try {
-            const { username } = req.params;
+            const { userId } = req.params;
 
-            if (!username) {
-                return res.status(400).json({ message: "Username is required" })
+            if (!userId) {
+                return res.status(400).json({ message: "User ID is required" })
             }
 
-            const user = await profileService.getUserProfile(username);
+            const user = await profileService.getUserProfile(userId);
 
             if (!user) {
                 return res.status(404).json({ message: "user not found" });
