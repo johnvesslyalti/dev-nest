@@ -1,15 +1,34 @@
 import { NextFunction, Request, Response } from "express";
 import { redis } from "../utils/redis";
+import { AuthRequest } from "./auth";
 
 interface RateLimitConfig {
-    key: string;
+    key?: string;
+    keyPrefix?: string;
     limit: number;
     windowInSeconds: number;
 }
 
 export const rateLimiter = (config: RateLimitConfig) => {
     return async (req: Request, res: Response, next: NextFunction) => {
-        const { key, limit, windowInSeconds } = config
+        const { key: customKey, keyPrefix, limit, windowInSeconds } = config;
+        
+        let key = customKey;
+
+        if (!key) {
+            if (!keyPrefix) {
+                console.error("RateLimiter: Missing key or keyPrefix");
+                return next();
+            }
+
+            let identifier = (req as AuthRequest).user?.id;
+            
+            if (!identifier) {
+                identifier = req.ip || "unknown_ip";
+            }
+            
+            key = `rate_limit:${keyPrefix}:${identifier}`;
+        }
         
         try {
             const current = await redis.incr(key);
@@ -27,9 +46,10 @@ export const rateLimiter = (config: RateLimitConfig) => {
                 });
             }
 
-            next()
+            next();
         } catch (error) {
-            next()
+            console.error("Rate Limiter Error:", error);
+            next();
         }
-    }
-}
+    };
+};
