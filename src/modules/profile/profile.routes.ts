@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { profileController } from "./profile.controller";
 import { auth } from "../../middlewares/auth";
+import { rateLimiter } from "../../middlewares/rateLimiter";
 
 import { validate } from "../../middlewares/validate";
 import { updateProfileSchema } from "./profile.schema";
@@ -11,6 +12,7 @@ router.get("/:userId", profileController.getUserProfile);
 router.patch(
     "/:userId",
     auth.verifyAccessToken,
+    rateLimiter({ keyPrefix: "profile_update", limit: 10, windowInSeconds: 3600 }),
     validate(updateProfileSchema),
     profileController.updateUserBio
 )
