@@ -1,6 +1,7 @@
 import { postRepo } from "./post.repository";
 import { redis } from "../../utils/redis";
 import { cacheKeys } from "../../utils/cacheKeys";
+import { notificationQueue } from "../../jobs/notification.job";
 
 export const postService = {
   // -------------------- CREATE POST --------------------
@@ -13,6 +14,31 @@ export const postService = {
       redis.del(cacheKeys.home(authorId, 20)),           // home feed
     ]);
 
+    // Trigger notification fanout (placeholder logic for now, assumes follower notification)
+    // For now, we'll just log or maybe trigger a generic "new post" notification if we had logic for it.
+    // Since we don't have a follower list fetch here, we might want to do that in the worker.
+    // For this step, let's assume we notify followers in the worker.
+    // But wait, the worker expects `recipientId`.
+    // So we should find followers here OR make the worker handle fanout.
+    // The current worker creates ONE notification.
+    // So let's just trigger it for a "self" notification for testing, or skip if fanout isn't implemented?
+    // User requested "Post Notification Fanout" in plan.
+    // But the worker I wrote `notification.job.ts` just does `prisma.notification.create`.
+    // So the fanout logic needs to be SOMEWHERE.
+    // Let's put the fanout triggers here (getting followers) OR change the job to "fanout-post".
+    // Let's keep it simple: We iterate followers here and add jobs? No, that blocks API.
+    // Better: Add a "post-created" job, and have a worker that finds followers and adds "create-notification" jobs.
+    // But for this specific task "Notification Model", let's just demonstrate 1 notification.
+    // Or I can update the plan.
+    // Let's add a todo comment or just basic notification to the author confirming post creation? No that's spammy.
+    // Let's just leave it ready for the "fanout" implementation which is a separate complexity.
+    // Re-reading plan: "Post Notification Fanout: (Placeholder) When a post is created, notify followers."
+    // I will add a method to `post.service` to handling generic post creation side effects later.
+    // For now, I will NOT add code that doesn't work.
+    // I will add the import but maybe not the logic yet if I don't have follower fetching handy.
+    // Wait, I can fetch followers efficiently?
+    // Let's leave post service changes for the "Integrate" step more fully.
+    
     return post;
   },
 
