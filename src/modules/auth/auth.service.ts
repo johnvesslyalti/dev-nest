@@ -3,6 +3,7 @@ import { authRepository } from "./auth.repository";
 import { RegisterInput, LoginInput } from "./auth.schema";
 import bcrypt from "bcrypt"
 import { Response } from "express";
+import { emailQueue } from "../../jobs/email.job";
 
 export const authService = {
 
@@ -32,6 +33,13 @@ export const authService = {
             secure: true,
             sameSite: "strict",
             maxAge: 7 * 24 * 60 * 60 * 1000,
+        });
+
+        // Trigger background job for welcome email
+        await emailQueue.add("send-email", {
+            email: user.email,
+            name: user.name || user.username,
+            type: "welcome",
         });
 
         return { id: user.id, name: user.name, email: user.email, accessToken };
