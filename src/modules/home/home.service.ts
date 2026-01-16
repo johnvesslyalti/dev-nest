@@ -36,5 +36,7 @@ export const homeService = {
             "EX",
             FEED_TTL
         )
+
+        return response;
     }
 }
