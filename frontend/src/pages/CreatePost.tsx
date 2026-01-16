@@ -33,7 +33,7 @@ export const CreatePost = () => {
       <h1 className="text-2xl font-bold mb-6">Create Post</h1>
       <form onSubmit={handleSubmit} className="space-y-4">
         <textarea
-          className="w-full h-40 p-4 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none resize-none"
+          className="w-full h-40 p-4 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none resize-none dark:bg-gray-900 dark:border-gray-700 dark:text-white"
           placeholder="What's on your mind?"
           value={content}
           onChange={(e) => setContent(e.target.value)}
