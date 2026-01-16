@@ -30,7 +30,7 @@ export const authService = {
 
         res.cookie("refreshToken", refreshToken, {
             httpOnly: true,
-            secure: true,
+            secure: process.env.NODE_ENV === "production",
             sameSite: "strict",
             maxAge: 7 * 24 * 60 * 60 * 1000,
         });
@@ -42,7 +42,7 @@ export const authService = {
             type: "welcome",
         });
 
-        return { id: user.id, name: user.name, email: user.email, accessToken };
+        return { id: user.id, name: user.name, username: user.username, email: user.email, accessToken };
     },
 
     async login(data: LoginInput, res: Response) {
@@ -61,12 +61,12 @@ export const authService = {
 
         res.cookie("refreshToken", refreshToken, {
             httpOnly: true,
-            secure: true,
+            secure: process.env.NODE_ENV === "production",
             sameSite: "strict",
             maxAge: 7 * 24 * 60 * 60 * 1000,
         });
 
-        return { id: user.id, name: user.name, email: user.email, accessToken };
+        return { id: user.id, name: user.name, username: user.username, email: user.email, accessToken };
     },
 
     async refresh(req: any) {

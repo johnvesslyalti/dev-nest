@@ -51,9 +51,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   const login = async (data: any) => {
     const response = await authApi.login(data);
-    const { accessToken, user } = response.data.data; // Adjust based on API
+    const { accessToken, message, ...userData } = response.data;
     localStorage.setItem('token', accessToken);
-    setUser(user);
+    setUser(userData as User);
     navigate('/');
   };
 

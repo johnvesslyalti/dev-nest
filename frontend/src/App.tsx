@@ -4,6 +4,7 @@ import { Login } from './pages/Login';
 import { Register } from './pages/Register';
 import { Home } from './pages/Home';
 import { Profile } from './pages/Profile';
+import { CreatePost } from './pages/CreatePost';
 import { useAuth } from './context/AuthContext';
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
@@ -32,6 +33,11 @@ function App() {
         <Route path="profile/:username" element={
           <ProtectedRoute>
             <Profile />
+          </ProtectedRoute>
+        } />
+        <Route path="create-post" element={
+          <ProtectedRoute>
+            <CreatePost />
           </ProtectedRoute>
         } />
       </Route>
