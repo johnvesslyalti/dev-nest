@@ -49,7 +49,7 @@ export const Home = () => {
         return (
             <div className="flex flex-col items-center justify-center py-20 text-center">
                 <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">Welcome to DevNest</h1>
-                <p className="mt-4 text-xl text-gray-600 max-w-2xl">
+                <p className="mt-4 text-xl text-gray-600 dark:text-gray-400 max-w-2xl">
                     The ultimate social platform for developers to share knowledge, connect, and grow together.
                 </p>
                 <div className="mt-8 flex gap-4">
@@ -72,21 +72,21 @@ export const Home = () => {
             ) : (
                 <div className="space-y-4">
                     {posts.map((post) => (
-                        <div key={post.id} className="rounded-lg bg-white p-6 shadow-sm border border-gray-100">
+                        <div key={post.id} className="rounded-lg bg-white p-6 shadow-sm border border-gray-100 dark:bg-gray-900 dark:border-gray-800">
                             <div className="flex items-center gap-3 mb-4">
-                                <div className="h-10 w-10 rounded-full bg-gray-200" />
+                                <div className="h-10 w-10 rounded-full bg-gray-200 dark:bg-gray-700" />
                                 <div>
                                     <Link to={`/profile/${post.author.username}`} className="font-medium hover:underline">
                                         {post.author.name || post.author.username}
                                     </Link>
-                                    <p className="text-xs text-gray-500">
+                                    <p className="text-xs text-gray-500 dark:text-gray-400">
                                         @{post.author.username} • {formatDistanceToNow(new Date(post.createdAt), { addSuffix: true })}
                                     </p>
                                 </div>
                             </div>
-                            <p className="text-gray-800 whitespace-pre-wrap">{post.content}</p>
+                            <p className="text-gray-800 dark:text-gray-200 whitespace-pre-wrap">{post.content}</p>
                             
-                            <div className="mt-4 flex items-center gap-6 text-gray-500">
+                            <div className="mt-4 flex items-center gap-6 text-gray-500 dark:text-gray-400">
                                 <button className="flex items-center gap-2 hover:text-blue-600 transition-colors">
                                     <Heart className="h-5 w-5" />
                                     <span className="text-sm">{post._count?.likes || 0}</span>

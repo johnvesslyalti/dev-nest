@@ -29,7 +29,7 @@ export const Login = () => {
         <h1 className="text-3xl font-bold">Welcome back</h1>
         <p className="text-gray-500">Enter your credentials to access your account</p>
       </div>
-      <form onSubmit={handleSubmit} className="space-y-4 rounded-lg bg-white p-6 shadow-md border border-gray-100">
+      <form onSubmit={handleSubmit} className="space-y-4 rounded-lg bg-white p-6 shadow-md border border-gray-100 dark:bg-gray-900 dark:border-gray-800">
         <Input
           label="Email"
           type="email"

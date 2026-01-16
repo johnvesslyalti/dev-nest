@@ -7,9 +7,10 @@ export const Navbar = () => {
   const { user, logout } = useAuth();
 
   return (
-    <nav className="border-b bg-white shadow-sm">
+    <nav className="border-b bg-white shadow-sm dark:bg-gray-900 dark:border-gray-800">
       <div className="container mx-auto flex h-16 items-center justify-between px-4">
-        <Link to="/" className="text-xl font-bold text-blue-600">
+        <Link to="/" className="flex items-center gap-2 text-xl font-bold text-blue-600">
+          <img src="/logo.png" alt="DevNest Logo" className="h-8 w-8 rounded-full" />
           DevNest
         </Link>
         
