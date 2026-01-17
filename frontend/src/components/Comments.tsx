@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { commentApi } from '../api/modules/comments';
 import { Button } from './Button';
 import { Input } from './Input';
+import { Avatar } from './Avatar';
 import { formatDistanceToNow } from 'date-fns';
 import { Link } from 'react-router-dom';
 
@@ -31,7 +32,6 @@ export const Comments = ({ postId, onCommentAdded }: CommentsProps) => {
         const fetchComments = async () => {
             try {
                 const res = await commentApi.getByPost(postId);
-                // Backend returns array directly for getByPost
                 const data = res.data;
                 setComments(Array.isArray(data) ? data : data.items || []);
             } catch (error) {
@@ -51,7 +51,6 @@ export const Comments = ({ postId, onCommentAdded }: CommentsProps) => {
         setIsSubmitting(true);
         try {
             const res = await commentApi.create(postId, newComment);
-            // Backend returns { message: "...", comment: { ... } }
             setComments([res.data.comment, ...comments]);
             setNewComment('');
             if (onCommentAdded) onCommentAdded();
@@ -65,33 +64,35 @@ export const Comments = ({ postId, onCommentAdded }: CommentsProps) => {
     if (isLoading) return <div className="p-4 text-center text-sm text-gray-500">Loading comments...</div>;
 
     return (
-        <div className="border-t border-gray-100 dark:border-gray-800 bg-gray-50 dark:bg-gray-900/50 p-4 rounded-b-lg">
-            <form onSubmit={handleSubmit} className="flex gap-2 mb-6">
+        <div className="bg-gray-50/50 dark:bg-gray-900/50 -mx-6 -mb-6 p-6 border-t border-gray-100 dark:border-gray-800">
+            <form onSubmit={handleSubmit} className="flex gap-3 mb-6">
                 <Input
                     value={newComment}
                     onChange={(e) => setNewComment(e.target.value)}
                     placeholder="Write a comment..."
                     className="flex-1"
                 />
-                <Button type="submit" disabled={isSubmitting || !newComment.trim()}>
+                <Button type="submit" disabled={isSubmitting || !newComment.trim()} size="md">
                     Post
                 </Button>
             </form>
 
             <div className="space-y-4">
                 {comments.map((comment) => (
-                    <div key={comment.id} className="flex gap-3">
-                        <div className="h-8 w-8 rounded-full bg-gray-200 dark:bg-gray-700 flex-shrink-0" />
-                        <div className="flex-1">
-                            <div className="flex items-center gap-2">
-                                <Link to={`/profile/${comment.author.username}`} className="text-sm font-medium hover:underline">
+                    <div key={comment.id} className="flex gap-3 group">
+                        <Link to={`/profile/${comment.author.username}`}>
+                             <Avatar src={comment.author.avatarUrl} alt={comment.author.name} size="sm" />
+                        </Link>
+                        <div className="flex-1 bg-white dark:bg-gray-800 p-3 rounded-lg shadow-sm border border-gray-100 dark:border-gray-700">
+                            <div className="flex items-center gap-2 mb-1">
+                                <Link to={`/profile/${comment.author.username}`} className="text-sm font-semibold hover:underline text-gray-900 dark:text-gray-100">
                                     {comment.author.name || comment.author.username}
                                 </Link>
                                 <span className="text-xs text-gray-500">
                                     {formatDistanceToNow(new Date(comment.createdAt), { addSuffix: true })}
                                 </span>
                             </div>
-                            <p className="text-sm text-gray-800 dark:text-gray-200 mt-1">{comment.content}</p>
+                            <p className="text-sm text-gray-700 dark:text-gray-300">{comment.content}</p>
                         </div>
                     </div>
                 ))}
