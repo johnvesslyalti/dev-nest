@@ -7,4 +7,5 @@ export const userApi = {
   unfollow: (id: string) => client.delete(`/follow/${id}`),
   getFollowers: (id: string) => client.get(`/follow/${id}/followers`),
   getFollowing: (id: string) => client.get(`/follow/${id}/following`),
+  search: (query: string) => client.get('/profile/search', { params: { q: query } }),
 };

@@ -8,6 +8,7 @@ import { updateProfileSchema } from "./profile.schema";
 
 const router = Router();
 
+router.get("/search", profileController.searchUsers);
 router.get("/:userId", profileController.getUserProfile);
 router.patch(
     "/:userId",

@@ -4,6 +4,11 @@ import { redis } from "../../utils/redis";
 import { profileRepo } from "./profile.repository";
 
 export const profileService = {
+    searchUsers: async (query: string) => {
+        if (!query || query.length < 2) return [];
+        return profileRepo.searchUsers(query);
+    },
+
     getUserProfile: async (identifier: string) => {
         const cacheKeyUsername = cacheKeys.profileByUsername(identifier);
         const cacheKeyUserId = cacheKeys.profileByUserId(identifier);

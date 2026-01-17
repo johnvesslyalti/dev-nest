@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { Button } from './Button';
 import { LogOut, User, Home, PlusSquare } from 'lucide-react';
+import { UserSearch } from './UserSearch';
 
 export const Navbar = () => {
   const { user, logout } = useAuth();
@@ -9,13 +10,17 @@ export const Navbar = () => {
   return (
     <nav className="border-b bg-white shadow-sm dark:bg-gray-900 dark:border-gray-800">
       <div className="container mx-auto flex h-16 items-center justify-between px-4">
-        <Link to="/" className="flex items-center gap-2 text-xl font-bold text-blue-600">
+        <Link to="/" className="flex items-center gap-2 text-xl font-bold text-blue-600 shrink-0">
           <img src="/logo.png" alt="DevNest Logo" className="h-8 w-8 rounded-full" />
           DevNest
         </Link>
         
         {user ? (
-          <div className="flex items-center gap-4">
+          <>
+            <div className="hidden md:block flex-1 max-w-md mx-4">
+               <UserSearch />
+            </div>
+            <div className="flex items-center gap-4 shrink-0">
             <Link to="/">
               <Button variant="ghost" size="sm">
                 <Home className="mr-2 h-4 w-4" />
@@ -38,7 +43,8 @@ export const Navbar = () => {
               <LogOut className="mr-2 h-4 w-4" />
               Logout
             </Button>
-          </div>
+            </div>
+          </>
         ) : (
           <div className="flex items-center gap-2">
             <Link to="/login">
