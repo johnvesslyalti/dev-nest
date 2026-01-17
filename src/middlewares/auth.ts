@@ -39,5 +39,21 @@ export const auth = {
         } catch {
             return null;
         }
+    },
+
+    optionalVerifyAccessToken(req: AuthRequest, res: Response, next: NextFunction) {
+        const header = req.headers.authorization;
+        if (!header) return next();
+
+        const token = header.split(" ")[1];
+        if (!token) return next();
+
+        try {
+            const decoded = jwt.verify(token, ACCESS_SECRET) as { id: string };
+            req.user = { id: decoded.id };
+        } catch {
+            // Ignore invalid tokens for optional auth
+        }
+        next();
     }
 };

@@ -13,6 +13,7 @@ interface ProfileData {
   bio?: string;
   avatarUrl?: string;
   createdAt: string;
+  isFollowing?: boolean;
   _count: {
     followers: number;
     following: number;
@@ -48,6 +49,33 @@ export const Profile = () => {
         fetchProfile();
     }, [username]);
 
+    const handleFollow = async () => {
+        if (!profile || !currentUser) return;
+        
+        try {
+            // Optimistic update
+            const isFollowing = profile.isFollowing;
+            setProfile(prev => prev ? {
+                ...prev,
+                isFollowing: !isFollowing,
+                _count: {
+                    ...prev._count,
+                    followers: prev._count.followers + (isFollowing ? -1 : 1)
+                }
+            } : null);
+
+            if (isFollowing) {
+                await userApi.unfollow(profile.id);
+            } else {
+                await userApi.follow(profile.id);
+            }
+        } catch (error) {
+            console.error("Failed to update follow status", error);
+            // Revert optimistic update
+            // Ideally re-fetch or revert state, but for simplicity we log error
+        }
+    };
+
     if (isLoading) return <div>Loading...</div>;
     if (!profile) return <div>User not found</div>;
 
@@ -73,7 +101,12 @@ export const Profile = () => {
                              {isOwnProfile ? (
                                  <Button variant="outline">Edit Profile</Button> 
                              ) : (
-                                 <Button>Follow</Button>
+                                  <Button 
+                                    variant={profile.isFollowing ? "outline" : "primary"}
+                                    onClick={handleFollow}
+                                  >
+                                    {profile.isFollowing ? "Unfollow" : "Follow"}
+                                  </Button>
                              )}
                          </div>
                          <p className="max-w-xl text-gray-700 dark:text-gray-300">{profile.bio || "No bio yet."}</p>
