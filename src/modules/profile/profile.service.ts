@@ -9,37 +9,50 @@ export const profileService = {
         return profileRepo.searchUsers(query);
     },
 
-    getUserProfile: async (identifier: string) => {
-        const cacheKeyUsername = cacheKeys.profileByUsername(identifier);
-        const cacheKeyUserId = cacheKeys.profileByUserId(identifier);
+    getUserProfile: async (identifier: string, currentUserId?: string) => {
+        // Cache logic omitted for brevity as caching with personalization is complex.
+        // For now, we bypass cache if currentUserId is present to ensure accurate follow status.
+        // A better approach would be to cache the base profile and append personalization separately.
+        
+        if (!currentUserId) {
+            const cacheKeyUsername = cacheKeys.profileByUsername(identifier);
+            const cacheKeyUserId = cacheKeys.profileByUserId(identifier);
 
-        const [cachedByUsername, cachedById] = await Promise.all([
-            redis.get(cacheKeyUsername),
-            redis.get(cacheKeyUserId)
-        ]);
+            const [cachedByUsername, cachedById] = await Promise.all([
+                redis.get(cacheKeyUsername),
+                redis.get(cacheKeyUserId)
+            ]);
 
-        if (cachedByUsername) return JSON.parse(cachedByUsername);
-        if (cachedById) return JSON.parse(cachedById);
+            if (cachedByUsername) return JSON.parse(cachedByUsername);
+            if (cachedById) return JSON.parse(cachedById);
+        }
 
-        const profile = await profileRepo.findUser(identifier);
+        const profile = await profileRepo.findUser(identifier, currentUserId);
         if (!profile) return null
 
-        await Promise.all([
-            redis.set(
-                cacheKeys.profileByUsername(profile.username),
-                JSON.stringify(profile),
-                "EX",
-                60 * 5
-            ),
-            redis.set(
-                cacheKeys.profileByUserId(profile.id),
-                JSON.stringify(profile),
-                "EX",
-                60 * 5
-            )
-        ]);
+        // Cache only if generic (no personalized fields like isFollowing which depends on viewer)
+        if (!currentUserId) {
+            await Promise.all([
+                redis.set(
+                    cacheKeys.profileByUsername(profile.username),
+                    JSON.stringify(profile),
+                    "EX",
+                    60 * 5
+                ),
+                redis.set(
+                    cacheKeys.profileByUserId(profile.id),
+                    JSON.stringify(profile),
+                    "EX",
+                    60 * 5
+                )
+            ]);
+        }
 
-        return profile;
+        return {
+            ...profile,
+            isFollowing: currentUserId ? (profile as any).followers.length > 0 : false,
+            followers: undefined
+        };
     },
 
     updateUserBio: async (userId: string, bio: string) => {

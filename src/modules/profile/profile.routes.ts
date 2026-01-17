@@ -9,7 +9,7 @@ import { updateProfileSchema } from "./profile.schema";
 const router = Router();
 
 router.get("/search", profileController.searchUsers);
-router.get("/:userId", profileController.getUserProfile);
+router.get("/:userId", auth.optionalVerifyAccessToken, profileController.getUserProfile);
 router.patch(
     "/:userId",
     auth.verifyAccessToken,

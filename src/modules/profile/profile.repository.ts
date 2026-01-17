@@ -1,7 +1,7 @@
 import { prisma } from "../../utils/prisma"
 
 export const profileRepo = {
-    findUser: (identifier: string) => {
+    findUser: (identifier: string, currentUserId?: string) => {
         return prisma.user.findFirst({
             where: {
                 OR: [
@@ -22,7 +22,13 @@ export const profileRepo = {
                         following: true,
                         posts: true
                     }
-                }
+                },
+                ...(currentUserId ? {
+                    followers: {
+                        where: { followerId: currentUserId },
+                        select: { id: true }
+                    }
+                } : {})
             }
         })
     },

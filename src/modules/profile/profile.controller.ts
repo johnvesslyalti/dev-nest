@@ -24,7 +24,7 @@ export const profileController = {
                 return res.status(400).json({ message: "User ID is required" })
             }
 
-            const user = await profileService.getUserProfile(userId);
+            const user = await profileService.getUserProfile(userId, (req as any).user?.id);
 
             if (!user) {
                 return res.status(404).json({ message: "user not found" });
