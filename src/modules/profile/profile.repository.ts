@@ -15,10 +15,12 @@ export const profileRepo = {
                 username: true,
                 avatarUrl: true,
                 bio: true,
+                createdAt: true,
                 _count: {
                     select: {
                         followers: true,
                         following: true,
+                        posts: true
                     }
                 }
             }
@@ -35,10 +37,12 @@ export const profileRepo = {
                 username: true,
                 avatarUrl: true,
                 bio: true,
+                createdAt: true,
                 _count: {
                     select: {
                         followers: true,
                         following: true,
+                        posts: true
                     }
                 }
             }
