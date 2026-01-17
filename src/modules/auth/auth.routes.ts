@@ -65,4 +65,14 @@ router.post(
   authController.logout
 );
 
+/**
+ * GET ME
+ * No rate limit (fetch profile)
+ */
+router.get(
+  "/me",
+  auth.verifyAccessToken,
+  authController.me
+);
+
 export default router;

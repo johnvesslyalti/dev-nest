@@ -31,6 +31,15 @@ export const authController = {
         }
     },
 
+    async me(req: AuthRequest, res: Response) {
+        try {
+            const result = await authService.me(req.user!.id);
+            res.json(result);
+        } catch (e: any) {
+            res.status(400).json({ message: e.message });
+        }
+    },
+
     async logout(req: AuthRequest, res: Response) {
         try {
             const result = await authService.logout(req.user!.id, res);

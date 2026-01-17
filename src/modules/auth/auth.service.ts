@@ -84,6 +84,21 @@ export const authService = {
         return { accessToken: newAccessToken };
     },
 
+    async me(userId: string) {
+        const user = await authRepository.findById(userId);
+        if (!user) throw new Error("User not found");
+        
+        return { 
+            data: {
+                id: user.id, 
+                name: user.name, 
+                username: user.username, 
+                email: user.email,
+                avatarUrl: user.avatarUrl 
+            }
+        };
+    },
+
     async logout(userId: string, res: Response) {
         await authRepository.clearRefreshToken(userId);
         res.clearCookie("refreshToken");
