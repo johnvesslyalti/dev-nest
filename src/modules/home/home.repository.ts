@@ -33,7 +33,14 @@ export const homeRepo = {
                     select: {
                         id: true,
                         username: true,
+                        name: true,
                         avatarUrl: true
+                    }
+                },
+                _count: {
+                    select: {
+                        likes: true,
+                        comments: true
                     }
                 }
             }
