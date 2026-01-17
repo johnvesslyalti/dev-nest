@@ -5,6 +5,7 @@ import { Button } from '../components/Button';
 import { MessageSquare, Heart, Share2 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { formatDistanceToNow } from 'date-fns';
+import { Comments } from '../components/Comments';
 
 interface Post {
   id: string;
@@ -19,13 +20,14 @@ interface Post {
     likes: number;
     comments: number;
   };
-  isLiked?: boolean; // Requires backend to send this
+  isLiked?: boolean;
 }
 
 export const Home = () => {
     const { user } = useAuth();
     const [posts, setPosts] = useState<Post[]>([]);
     const [isLoading, setIsLoading] = useState(true);
+    const [expandedPostId, setExpandedPostId] = useState<string | null>(null);
 
     useEffect(() => {
         const fetchPosts = async () => {
@@ -105,6 +107,25 @@ export const Home = () => {
         }
     };
 
+    const toggleComments = (postId: string) => {
+        setExpandedPostId(expandedPostId === postId ? null : postId);
+    };
+
+    const handleCommentAdded = (postId: string) => {
+        setPosts(posts.map(post => {
+            if (post.id === postId) {
+                return {
+                    ...post,
+                    _count: {
+                        ...post._count,
+                        comments: post._count.comments + 1
+                    }
+                };
+            }
+            return post;
+        }));
+    };
+
     return (
         <div className="mx-auto max-w-2xl space-y-6">
             <h1 className="text-2xl font-bold">Your Feed</h1>
@@ -135,7 +156,10 @@ export const Home = () => {
                                     <Heart className={`h-5 w-5 ${post.isLiked ? 'fill-current' : ''}`} />
                                     <span className="text-sm">{post._count?.likes || 0}</span>
                                 </button>
-                                <button className="flex items-center gap-2 hover:text-blue-600 transition-colors">
+                                <button 
+                                    onClick={() => toggleComments(post.id)}
+                                    className={`flex items-center gap-2 transition-colors ${expandedPostId === post.id ? 'text-blue-600' : 'hover:text-blue-600'}`}
+                                >
                                     <MessageSquare className="h-5 w-5" />
                                     <span className="text-sm">{post._count?.comments || 0}</span>
                                 </button>
@@ -143,6 +167,13 @@ export const Home = () => {
                                      <Share2 className="h-5 w-5" />
                                 </button>
                             </div>
+
+                            {expandedPostId === post.id && (
+                                <Comments 
+                                    postId={post.id} 
+                                    onCommentAdded={() => handleCommentAdded(post.id)} 
+                                />
+                            )}
                         </div>
                     ))}
                     {posts.length === 0 && (
