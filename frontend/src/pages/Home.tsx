@@ -64,6 +64,47 @@ export const Home = () => {
         );
     }
 
+    const handleLike = async (postId: string, currentIsLiked: boolean) => {
+        // Optimistic update
+        setPosts(posts.map(post => {
+            if (post.id === postId) {
+                return {
+                    ...post,
+                    isLiked: !currentIsLiked,
+                    _count: {
+                        ...post._count,
+                        likes: currentIsLiked ? post._count.likes - 1 : post._count.likes + 1
+                    }
+                };
+            }
+            return post;
+        }));
+
+        try {
+            if (currentIsLiked) {
+                await postApi.unlike(postId);
+            } else {
+                await postApi.like(postId);
+            }
+        } catch (error) {
+            console.error("Failed to toggle like", error);
+            // Revert optimistic update on failure
+            setPosts(posts.map(post => {
+                if (post.id === postId) {
+                    return {
+                        ...post,
+                        isLiked: currentIsLiked,
+                        _count: {
+                            ...post._count,
+                            likes: currentIsLiked ? post._count.likes : post._count.likes
+                        }
+                    };
+                }
+                return post;
+            }));
+        }
+    };
+
     return (
         <div className="mx-auto max-w-2xl space-y-6">
             <h1 className="text-2xl font-bold">Your Feed</h1>
@@ -87,8 +128,11 @@ export const Home = () => {
                             <p className="text-gray-800 dark:text-gray-200 whitespace-pre-wrap">{post.content}</p>
                             
                             <div className="mt-4 flex items-center gap-6 text-gray-500 dark:text-gray-400">
-                                <button className="flex items-center gap-2 hover:text-blue-600 transition-colors">
-                                    <Heart className="h-5 w-5" />
+                                <button 
+                                    onClick={() => handleLike(post.id, post.isLiked || false)}
+                                    className={`flex items-center gap-2 transition-colors ${post.isLiked ? 'text-red-500' : 'hover:text-blue-600'}`}
+                                >
+                                    <Heart className={`h-5 w-5 ${post.isLiked ? 'fill-current' : ''}`} />
                                     <span className="text-sm">{post._count?.likes || 0}</span>
                                 </button>
                                 <button className="flex items-center gap-2 hover:text-blue-600 transition-colors">
