@@ -20,7 +20,7 @@ export const Sidebar = () => {
   ];
 
   return (
-    <div className="fixed top-0 bottom-0 flex flex-col justify-between w-[275px] px-2 py-4 border-r border-border overflow-y-auto">
+    <div className="sticky top-0 h-screen flex flex-col justify-between w-[275px] px-2 py-4 border-r border-border overflow-y-auto">
       <div className="flex flex-col gap-2">
         {/* Logo */}
         <div className="p-3 mb-2 w-fit rounded-full hover:bg-gray-800 transition-colors cursor-pointer">
