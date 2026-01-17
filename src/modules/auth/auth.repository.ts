@@ -10,6 +10,10 @@ export const authRepository = {
         return prisma.user.findUnique({ where: { username } });
     },
 
+    findById(id: string) {
+        return prisma.user.findUnique({ where: { id } });
+    },
+
     createUser(data: RegisterInput & { password: string }) {
         return prisma.user.create({
             data: {
