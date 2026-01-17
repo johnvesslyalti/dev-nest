@@ -18,7 +18,11 @@ export const commentService = {
         // Soft cache count
         await redis.del(cacheKeys.commentCount(postId));
 
-        return comment;
+        return {
+            ...comment,
+            author: comment.user,
+            user: undefined
+        };
     },
 
     findByPost: async (postId: string, page = 1, limit = 10) => {
@@ -33,14 +37,19 @@ export const commentService = {
         }
 
         const comments = await commentRepository.findByPost(postId, page, limit);
+        const mappedComments = comments.map(c => ({
+            ...c,
+            author: c.user,
+            user: undefined
+        }));
 
         await redis.set(
             cacheKey,
-            JSON.stringify(comments),
+            JSON.stringify(mappedComments),
             "EX",
             COMMENTS_TTL
         );
 
-        return comments;
+        return mappedComments;
     },
 };

@@ -4,6 +4,16 @@ export const commentRepository = {
     create: (userId: string, postId: string, content: string) => {
         return prisma.comment.create({
             data: { userId, postId, content },
+            include: {
+                user: {
+                    select: {
+                        id: true,
+                        username: true,
+                        name: true,
+                        avatarUrl: true
+                    }
+                }
+            }
         });
     },
 
@@ -21,6 +31,7 @@ export const commentRepository = {
                     select: {
                         id: true,
                         username: true,
+                        name: true,
                         avatarUrl: true,
                     },
                 },

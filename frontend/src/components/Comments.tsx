@@ -31,7 +31,9 @@ export const Comments = ({ postId, onCommentAdded }: CommentsProps) => {
         const fetchComments = async () => {
             try {
                 const res = await commentApi.getByPost(postId);
-                setComments(res.data.items || []);
+                // Backend returns array directly for getByPost
+                const data = res.data;
+                setComments(Array.isArray(data) ? data : data.items || []);
             } catch (error) {
                 console.error("Failed to fetch comments", error);
             } finally {
@@ -49,7 +51,8 @@ export const Comments = ({ postId, onCommentAdded }: CommentsProps) => {
         setIsSubmitting(true);
         try {
             const res = await commentApi.create(postId, newComment);
-            setComments([res.data, ...comments]);
+            // Backend returns { message: "...", comment: { ... } }
+            setComments([res.data.comment, ...comments]);
             setNewComment('');
             if (onCommentAdded) onCommentAdded();
         } catch (error) {
