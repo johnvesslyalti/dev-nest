@@ -26,7 +26,11 @@ export const homeService = {
                 : null
 
         const response = {
-            items: feed,
+            items: feed.map((post: any) => ({
+                ...post,
+                isLiked: post.likes.length > 0,
+                likes: undefined // Remove raw likes array
+            })),
             nextCursor
         }
 

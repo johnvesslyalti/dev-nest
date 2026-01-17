@@ -42,6 +42,10 @@ export const homeRepo = {
                         likes: true,
                         comments: true
                     }
+                },
+                likes: {
+                    where: { userId: userId },
+                    select: { userId: true }
                 }
             }
         })
