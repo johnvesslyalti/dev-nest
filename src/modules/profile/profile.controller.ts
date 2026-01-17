@@ -2,6 +2,20 @@ import { Request, Response } from "express";
 import { profileService } from "./profile.service";
 
 export const profileController = {
+    searchUsers: async (req: Request, res: Response) => {
+        try {
+            const { q } = req.query;
+            if (!q || typeof q !== 'string') {
+                return res.json([]);
+            }
+            const users = await profileService.searchUsers(q);
+            res.json(users);
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ message: "Search failed" });
+        }
+    },
+
     getUserProfile: async (req: Request, res: Response) => {
         try {
             const { userId } = req.params;

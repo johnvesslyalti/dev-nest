@@ -27,6 +27,24 @@ export const profileRepo = {
         })
     },
 
+    searchUsers: (query: string) => {
+        return prisma.user.findMany({
+            where: {
+                OR: [
+                    { username: { contains: query, mode: "insensitive" } },
+                    { name: { contains: query, mode: "insensitive" } }
+                ]
+            },
+            take: 5,
+            select: {
+                id: true,
+                name: true,
+                username: true,
+                avatarUrl: true
+            }
+        })
+    },
+
     updateBio: (userId: string, bio: string) => {
         return prisma.user.update({
             where: { id: userId },
