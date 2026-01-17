@@ -31,8 +31,8 @@ export const Home = () => {
         const fetchPosts = async () => {
             try {
                 const res = await postApi.getAll();
-                // Assuming res.data.data contains the list
-                setPosts(res.data.data || []); 
+                // Response format is { success: true, items: [...], nextCursor: ... }
+                setPosts(res.data.items || []); 
             } catch (error) {
                 console.error("Failed to fetch posts", error);
             } finally {
