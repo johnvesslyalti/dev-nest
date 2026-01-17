@@ -33,11 +33,11 @@ export const Profile = () => {
             try {
                 // Fetch profile
                 const profileRes = await userApi.getProfile(username);
-                setProfile(profileRes.data.data);
+                setProfile(profileRes.data);
 
                 // Fetch user posts
                 const postsRes = await postApi.getByUser(username);
-                setPosts(postsRes.data.data);
+                setPosts(postsRes.data);
             } catch (error) {
                 console.error("Failed to fetch profile", error);
             } finally {
