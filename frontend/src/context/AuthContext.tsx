@@ -33,13 +33,13 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       return;
     }
     try {
-      // Assuming GET /auth/me or similar exists, otherwise we decode token or rely on stored user
-      // For now, we'll assume we can get user profile or refresh token validates it
+       console.log("Checking auth with token...");
        const response = await authApi.getCurrentUser();
-       setUser(response.data.data); // Adjust based on actual API response structure
+       console.log("Auth check successful", response.data);
+       setUser(response.data.data); 
     } catch (error) {
+      console.error("Auth check failed", error);
       localStorage.removeItem('token');
-      // navigate('/login'); // Optional: redirect on auth failure
     } finally {
       setIsLoading(false);
     }
