@@ -30,7 +30,11 @@ Routes → Controller → Service → Repository → Database
 * **Express.js**
 * **Prisma ORM**
 * **PostgreSQL**
-* **Redis** (Caching Layer)
+* **Redis** (Caching & Queues)
+* **BullMQ** (Background Jobs)
+* **Multer** (File Uploads)
+* **Vite + React** (Frontend)
+* **Tailwind CSS** (Styling)
 * **JWT Authentication (Access & Refresh Tokens)**
 
 ---
@@ -39,23 +43,24 @@ Routes → Controller → Service → Repository → Database
 
 ```txt
 src/
-├── modules/
-│   ├── auth/
-│   ├── user/
-│   ├── post/
-│   ├── follow/
-│   ├── block/
-│   ├── like/
-│   └── comment/
-│
-├── middlewares/
-├── lib/
-│   ├── prisma.ts
-│   ├── redis.ts
-│   └── logger.ts
-├── types/
-├── app.ts
-└── server.ts
+├── modules/          # Feature-based texture (Controller, Service, Routes)
+├── middlewares/      # Auth, Rate Limiting, Validation, Error Handling
+├── jobs/             # Background workers (Email, Notifications)
+├── lib/              # Core utilities (Prisma, Redis, Logger)
+├── types/            # Global type definitions
+├── app.ts            # Express setup
+└── server.ts         # Server entry point
+
+frontend/             # React + Vite application
+├── src/
+│   ├── api/          # Axios client & API modules
+│   ├── components/   # Reusable UI components
+│   ├── context/      # React Context (Auth)
+│   ├── pages/        # Route pages
+│   └── main.tsx      # Frontend entry point
+
+uploads/              # Static file storage (Images)
+
 ```
 
 Each module follows:
@@ -157,6 +162,24 @@ Request → Redis → Database (if cache miss) → Redis update → Response
 * Block-aware feed filtering
 * Redis-cached feed responses
 
+### 📨 Background Jobs & Notifications
+
+* **BullMQ + Redis** based job queue
+* Asynchronous email sending (Welcome emails)
+* Notification generation (Likes, Follows)
+
+### 🛡️ Security & Performance
+
+* **Rate Limiting**: Redis-based sliding window limiter protected endpoints.
+* **JWT Auth**: Secure access/refresh token rotation.
+* **Helmet & CORS**: Enhanced security headers.
+
+### 🖼️ Media Management
+
+* Image uploads via **Multer**
+* Static file serving for user avatars and post images
+
+
 ---
 
 ## 🧱 Database Design (Prisma)
@@ -218,11 +241,24 @@ npx prisma migrate dev
 redis-server
 ```
 
-### 6️⃣ Start the server
+### 6️⃣ Start the Backend
 
 ```bash
 npm run dev
 ```
+
+### 7️⃣ Start the Frontend
+
+Open a new terminal:
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+The app will be available at `http://localhost:5173`.
+
 
 ---
 
@@ -239,13 +275,12 @@ npm run dev
 
 ## 🚧 Future Enhancements
 
-* WebSocket-based notifications
-* Real-time feed updates
+* WebSocket-based real-time updates (Socket.io)
 * Retweets / reposts
 * Hashtags & trending topics
 * Direct messaging
-* Rate limiting
 * API documentation (Swagger / OpenAPI)
+
 
 ---
 
