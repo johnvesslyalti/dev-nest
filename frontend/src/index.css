@@ -6,7 +6,7 @@
 
 @layer base {
   body {
-    @apply bg-black text-[#e7e9ea] font-sans antialiased overflow-y-scroll;
+    @apply bg-gray-50 text-gray-900 dark:bg-gray-950 dark:text-gray-100 font-sans antialiased selection:bg-primary-100 selection:text-primary-900 dark:selection:bg-primary-900 dark:selection:text-primary-100;
   }
 }
 

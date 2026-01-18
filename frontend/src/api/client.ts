@@ -35,6 +35,11 @@ client.interceptors.response.use(
   async (error) => {
     const originalRequest = error.config;
 
+    // Prevent infinite loops: if the error comes from the refresh endpoint itself, reject immediately
+    if (originalRequest.url.includes('/auth/refresh')) {
+        return Promise.reject(error);
+    }
+
     if (error.response?.status === 401 && !originalRequest._retry) {
       if (isRefreshing) {
         return new Promise(function (resolve, reject) {
@@ -65,7 +70,10 @@ client.interceptors.response.use(
       } catch (err) {
         processQueue(err, null);
         localStorage.removeItem('token');
-        window.location.href = '/login';
+        // Only redirect if we are not already on login/register pages
+        if (!window.location.pathname.includes('/login') && !window.location.pathname.includes('/register')) {
+            window.location.href = '/login';
+        }
         return Promise.reject(err);
       } finally {
         isRefreshing = false;

@@ -7,10 +7,16 @@ import { Profile } from './pages/Profile';
 import { CreatePost } from './pages/CreatePost';
 import { useAuth } from './context/AuthContext';
 
+import { LoadingSpinner } from './components/RightSidebar';
+
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const { user, isLoading } = useAuth();
   
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return (
+      <div className="flex h-[50vh] items-center justify-center">
+          <LoadingSpinner />
+      </div>
+  );
   if (!user) return <Login />;
   
   return children;

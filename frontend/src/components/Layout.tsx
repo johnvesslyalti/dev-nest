@@ -5,7 +5,7 @@ import { Toaster } from 'react-hot-toast';
 
 export const Layout = () => {
   return (
-    <div className="flex justify-center min-h-screen bg-black text-[#e7e9ea]">
+    <div className="flex justify-center min-h-screen bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-gray-100 transition-colors">
       <div className="flex w-full max-w-[1300px]">
         {/* Left Sidebar */}
         <Sidebar />
