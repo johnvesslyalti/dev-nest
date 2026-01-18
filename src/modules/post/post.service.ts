@@ -5,8 +5,8 @@ import { notificationQueue } from "../../jobs/notification.job";
 
 export const postService = {
   // -------------------- CREATE POST --------------------
-  async create(authorId: string, content: string) {
-    const post = await postRepo.create(authorId, content);
+  async create(authorId: string, content: string, imageUrl?: string) {
+    const post = await postRepo.create(authorId, content, imageUrl);
 
     // Best-effort invalidation (do NOT depend on relations)
     await Promise.all([

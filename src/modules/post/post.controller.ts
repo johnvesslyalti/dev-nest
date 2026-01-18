@@ -12,7 +12,8 @@ export const postController = {
                 return res.status(401).json({ message: "User not authentication" })
             }
 
-            const post = await postService.create(authorId, content);
+            const imageUrl = req.file ? `/uploads/${req.file.filename}` : undefined;
+            const post = await postService.create(authorId, content, imageUrl);
 
             res.json({ message: "Post created", post })
         } catch (e: any) {

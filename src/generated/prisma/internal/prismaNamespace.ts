@@ -1007,6 +1007,7 @@ export type BlockedUserScalarFieldEnum = (typeof BlockedUserScalarFieldEnum)[key
 export const PostScalarFieldEnum = {
   id: 'id',
   content: 'content',
+  imageUrl: 'imageUrl',
   authorId: 'authorId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'

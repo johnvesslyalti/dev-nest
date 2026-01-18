@@ -12,6 +12,7 @@ import { Comments } from '../components/Comments';
 interface Post {
   id: string;
   content: string;
+  imageUrl?: string;
   author: {
     username: string;
     name: string;
@@ -181,6 +182,17 @@ export const Home = () => {
                                 <p className="text-gray-800 dark:text-gray-200 whitespace-pre-wrap leading-relaxed mb-4">
                                     {post.content}
                                 </p>
+
+                                {post.imageUrl && (
+                                    <div className="mb-4 rounded-xl overflow-hidden border border-gray-100 dark:border-gray-800">
+                                        <img 
+                                            src={`http://localhost:5000${post.imageUrl}`} 
+                                            alt="Post attachment" 
+                                            className="w-full h-auto object-cover max-h-[500px]"
+                                            loading="lazy"
+                                        />
+                                    </div>
+                                )}
 
                                 <div className="flex items-center gap-6 pt-4 border-t border-gray-100 dark:border-gray-800">
                                      <button 
