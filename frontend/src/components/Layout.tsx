@@ -1,7 +1,7 @@
 import { Outlet } from 'react-router-dom';
 import { Sidebar } from './Sidebar';
 import { RightSidebar } from './RightSidebar';
-import { Toaster } from 'react-hot-toast';
+
 
 export const Layout = () => {
   return (
@@ -19,17 +19,6 @@ export const Layout = () => {
         <RightSidebar />
       </div>
 
-      <Toaster 
-        position="bottom-center"
-        toastOptions={{
-          className: 'bg-primary text-white',
-          style: {
-            background: '#1d9bf0',
-            color: '#fff',
-            borderRadius: '9999px',
-          },
-        }}
-      />
     </div>
   );
 };
