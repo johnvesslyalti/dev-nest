@@ -74,6 +74,7 @@ model BlockedUser {
 model Post {
   id      String @id @default(cuid())
   content String @db.Text
+  imageUrl String?
 
   authorId String
   author   User   @relation(fields: [authorId], references: [id], onDelete: Cascade)

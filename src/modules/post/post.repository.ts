@@ -1,9 +1,9 @@
 import { prisma } from "../../utils/prisma"
 
 export const postRepo = {
-    create: (authorId: string, content: string) => {
+    create: (authorId: string, content: string, imageUrl?: string) => {
         return prisma.post.create({
-            data: { authorId, content }
+            data: { authorId, content, imageUrl }
         });
     },
 
@@ -17,6 +17,7 @@ export const postRepo = {
             select: {
                 id: true,
                 content: true,
+                imageUrl: true,
                 createdAt: true,
 
                 author: {
@@ -39,6 +40,7 @@ export const postRepo = {
             select: {
                 id: true,
                 content: true,
+                imageUrl: true,
                 createdAt: true,
                 author: {
                     select: {
@@ -69,6 +71,7 @@ export const postRepo = {
             select: {
                 id: true,
                 content: true,
+                imageUrl: true,
                 createdAt: true,
                 author: {
                     select: {
