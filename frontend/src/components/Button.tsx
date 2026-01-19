@@ -18,12 +18,12 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       <button
         ref={ref}
         className={cn(
-          "inline-flex items-center justify-center rounded-lg font-medium transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 disabled:pointer-events-none disabled:opacity-50 active:scale-95",
+          "inline-flex items-center justify-center rounded-lg font-medium transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-blue/50 disabled:pointer-events-none disabled:opacity-50 active:scale-95",
           {
-            'bg-primary-600 text-white hover:bg-primary-700 shadow-sm hover:shadow-md': variant === 'primary',
-            'bg-gray-100 text-gray-900 hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-100 dark:hover:bg-gray-700': variant === 'secondary',
-            'border border-gray-200 bg-transparent hover:bg-gray-50 dark:border-gray-700 dark:text-gray-300 dark:hover:bg-gray-800': variant === 'outline',
-            'hover:bg-gray-100 text-gray-700 dark:hover:bg-gray-800 dark:text-gray-300': variant === 'ghost',
+            'bg-accent-blue text-white hover:bg-blue-600 shadow-sm hover:shadow-accent-blue/20 hover:scale-[1.02]': variant === 'primary',
+            'bg-charcoal text-text-primary hover:bg-gray-800 border border-gray-800 hover:border-gray-700': variant === 'secondary',
+            'border-2 border-accent-blue text-accent-blue bg-transparent hover:bg-accent-blue/10': variant === 'outline',
+            'hover:bg-gray-100 dark:hover:bg-white/5 text-text-secondary hover:text-text-primary': variant === 'ghost',
             'h-9 px-4 text-xs': size === 'sm',
             'h-11 px-6 text-sm': size === 'md',
             'h-14 px-8 text-base': size === 'lg',

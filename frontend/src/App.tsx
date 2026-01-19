@@ -6,8 +6,10 @@ import { Register } from './pages/Register';
 import { Home } from './pages/Home';
 import { Profile } from './pages/Profile';
 import { CreatePost } from './pages/CreatePost';
+import { Landing } from './pages/Landing';
+import { Explore } from './pages/Explore';
+import { Projects } from './pages/Projects';
 import { useAuth } from './context/AuthContext';
-
 import { LoadingSpinner } from './components/RightSidebar';
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
@@ -23,38 +25,52 @@ function ProtectedRoute({ children }: { children: React.ReactNode }) {
   return children;
 }
 
+function PublicOnlyRoute({ children }: { children: React.ReactNode }) {
+    const { user, isLoading } = useAuth();
+    if (isLoading) return <LoadingSpinner />;
+    if (user) return <Navigate to="/feed" replace />;
+    return children;
+}
+
 function App() {
+  const { user } = useAuth();
+
   return (
     <>
       <Toaster 
         position="bottom-center"
         toastOptions={{
-          className: 'bg-primary text-white',
+          className: 'bg-charcoal text-white',
           style: {
-            background: '#1d9bf0',
+            background: '#333',
             color: '#fff',
-            borderRadius: '9999px',
+            borderRadius: '12px',
           },
         }}
       />
       <Routes>
         {/* Public Routes - No Layout */}
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
+        <Route path="/" element={
+           user ? <Navigate to="/feed" replace /> : <Landing />
+        } />
+        <Route path="/login" element={<PublicOnlyRoute><Login /></PublicOnlyRoute>} />
+        <Route path="/register" element={<PublicOnlyRoute><Register /></PublicOnlyRoute>} />
         
-        <Route path="/" element={<Layout />}>
-          {/* Protected Routes */}
-          <Route index element={
+        {/* Main App Routes - Wrapped in Layout */}
+        <Route element={<Layout />}>
+          <Route path="/feed" element={
             <ProtectedRoute>
               <Home />
             </ProtectedRoute>
           } /> 
-          <Route path="profile/:username" element={
-            <ProtectedRoute>
-              <Profile />
-            </ProtectedRoute>
-          } />
-          <Route path="create-post" element={
+          <Route path="/explore" element={<Explore />} />
+          <Route path="/projects" element={<Projects />} />
+          <Route path="/community" element={<Navigate to="/explore" replace />} /> {/* Placeholder */}
+          <Route path="/learn" element={<Navigate to="/explore" replace />} /> {/* Placeholder */}
+          
+          <Route path="/profile/:username" element={<Profile />} />
+          
+          <Route path="/create-post" element={
             <ProtectedRoute>
               <CreatePost />
             </ProtectedRoute>

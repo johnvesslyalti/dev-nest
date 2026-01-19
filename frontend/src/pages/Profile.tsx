@@ -73,28 +73,46 @@ export const Profile = () => {
         }
     };
 
-    if (isLoading) return <div className="p-8 text-center">Loading profile...</div>;
+    const [activeTab, setActiveTab] = useState<'overview' | 'projects'>('overview');
+    
+    // ... handling user data ...
+
+    if (isLoading) return <div className="p-8 text-center text-gray-500">Loading profile...</div>;
     if (!profile) return <div className="p-8 text-center text-red-500">User not found</div>;
 
     const isOwnProfile = currentUser?.username === profile.username;
 
     return (
-        <div className="mx-auto max-w-4xl space-y-6">
-            <Card className="overflow-hidden">
-                <div className="h-32 bg-gradient-to-r from-primary-500 to-indigo-600"></div>
-                <div className="px-6 pb-6 relative">
-                    <div className="flex justify-between items-end -mt-12 mb-4">
-                        <Avatar 
-                             src={profile.avatarUrl} 
-                             alt={profile.name} 
-                             size="xl" 
-                             className="ring-4 ring-white dark:ring-gray-900 shadow-md h-24 w-24 sm:h-32 sm:w-32 text-4xl" 
-                        />
-                        <div className="mb-1">
+        <div className="mx-auto max-w-4xl space-y-6 pb-12">
+            {/* Profile Header */}
+            <Card className="overflow-hidden border-none shadow-lg dark:shadow-none">
+                <div className="h-48 bg-gradient-to-r from-accent-blue/80 to-accent-violet/80 relative overflow-hidden">
+                    <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20"></div>
+                </div>
+                <div className="px-6 pb-6 relative bg-white dark:bg-charcoal">
+                    <div className="flex flex-col sm:flex-row justify-between items-end -mt-16 mb-6 gap-4">
+                        <div className="relative group">
+                             <Avatar 
+                                 src={profile.avatarUrl} 
+                                 alt={profile.name} 
+                                 size="xl" 
+                                 className="ring-4 ring-white dark:ring-charcoal shadow-xl h-32 w-32 text-4xl bg-midnight" 
+                            />
+                        </div>
+                        <div className="flex-1 mb-1 pt-16 sm:pt-0">
+                             <h1 className="text-3xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
+                                {profile.name}
+                                {/* Verified badge placeholder */}
+                                <div className="h-5 w-5 rounded-full bg-accent-blue text-white flex items-center justify-center text-[10px]">✓</div>
+                             </h1>
+                             <p className="text-gray-500 dark:text-gray-400 font-medium text-lg">@{profile.username}</p>
+                        </div>
+                        <div className="mb-1 shrink-0">
                             {isOwnProfile ? (
-                                 <Button variant="outline" size="sm">Edit Profile</Button> 
+                                 <Button variant="outline" className="rounded-full">Edit Profile</Button> 
                              ) : (
                                   <Button 
+                                    className="rounded-full px-8"
                                     variant={profile.isFollowing ? "outline" : "primary"}
                                     onClick={handleFollow}
                                   >
@@ -104,61 +122,120 @@ export const Profile = () => {
                         </div>
                     </div>
 
-                    <div className="space-y-4">
-                        <div>
-                            <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{profile.name}</h1>
-                            <p className="text-gray-500 dark:text-gray-400 font-medium">@{profile.username}</p>
-                        </div>
-                        
+                    <div className="space-y-6">
                         {profile.bio && (
-                            <p className="text-gray-700 dark:text-gray-300 max-w-2xl">{profile.bio}</p>
+                            <p className="text-gray-700 dark:text-gray-300 max-w-2xl text-lg leading-relaxed">{profile.bio}</p>
                         )}
 
-                        <div className="flex flex-wrap gap-4 text-sm text-gray-500 dark:text-gray-400">
-                             <div className="flex items-center gap-1.5">
+                        <div className="flex flex-wrap gap-6 text-sm text-gray-500 dark:text-gray-400">
+                             <div className="flex items-center gap-2">
                                  <Calendar className="h-4 w-4" />
                                  Joined {new Date(profile.createdAt).toLocaleDateString()}
                              </div>
-                             {/* Placeholder for location/website if added later */}
+                             <div className="flex items-center gap-2">
+                                 <MapPin className="h-4 w-4" />
+                                 San Francisco, CA {/* Placeholder */}
+                             </div>
+                             <div className="flex items-center gap-2">
+                                 <LinkIcon className="h-4 w-4" />
+                                 <a href="#" className="hover:text-accent-blue transition-colors">github.com/{profile.username}</a>
+                             </div>
                         </div>
 
-                        <div className="flex gap-6 pt-4 border-t border-gray-100 dark:border-gray-800">
-                             <div className="text-center sm:text-left">
-                                 <span className="block font-bold text-xl text-gray-900 dark:text-white">{profile._count.posts}</span>
+                        <div className="flex gap-8 pt-6 border-t border-gray-100 dark:border-gray-800">
+                             <button className="text-center sm:text-left hover:opacity-75 transition-opacity">
+                                 <span className="block font-bold text-lg text-gray-900 dark:text-white">{profile._count.posts}</span>
                                  <span className="text-sm text-gray-500">Posts</span>
-                             </div>
-                             <div className="text-center sm:text-left">
-                                 <span className="block font-bold text-xl text-gray-900 dark:text-white">{profile._count.followers}</span>
+                             </button>
+                             <button className="text-center sm:text-left hover:opacity-75 transition-opacity">
+                                 <span className="block font-bold text-lg text-gray-900 dark:text-white">{profile._count.followers}</span>
                                  <span className="text-sm text-gray-500">Followers</span>
-                             </div>
-                             <div className="text-center sm:text-left">
-                                 <span className="block font-bold text-xl text-gray-900 dark:text-white">{profile._count.following}</span>
+                             </button>
+                             <button className="text-center sm:text-left hover:opacity-75 transition-opacity">
+                                 <span className="block font-bold text-lg text-gray-900 dark:text-white">{profile._count.following}</span>
                                  <span className="text-sm text-gray-500">Following</span>
-                             </div>
+                             </button>
                         </div>
                     </div>
                 </div>
             </Card>
-
-            <div className="space-y-4">
-                <h2 className="text-lg font-bold text-gray-900 dark:text-white">Recent Activity</h2>
-                 {posts.length > 0 ? (
-                     <div className="grid gap-4">
-                         {posts.map(post => (
-                              <Card key={post.id} className="p-6 transition-colors hover:bg-gray-50 dark:hover:bg-gray-800/50">
-                                  <p className="text-gray-800 dark:text-gray-200">{post.content}</p>
-                                  <p className="text-xs text-gray-500 mt-3">
-                                     {new Date(post.createdAt).toLocaleDateString()}
-                                 </p>
-                             </Card>
-                         ))}
-                     </div>
-                 ) : (
-                     <div className="text-center py-10 bg-white dark:bg-gray-900 rounded-lg border border-dashed border-gray-200">
-                         <p className="text-gray-500">No posts yet.</p>
-                     </div>
-                 )}
+            
+            <div className="flex gap-4 border-b border-gray-200 dark:border-gray-800">
+                 <button 
+                    onClick={() => setActiveTab('overview')}
+                    className={`pb-4 px-2 text-sm font-semibold transition-colors relative ${activeTab === 'overview' ? 'text-gray-900 dark:text-white' : 'text-gray-500 hover:text-gray-700 dark:hover:text-gray-300'}`}
+                 >
+                     Overview
+                     {activeTab === 'overview' && <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-accent-blue"></div>}
+                 </button>
+                 <button 
+                    onClick={() => setActiveTab('projects')}
+                    className={`pb-4 px-2 text-sm font-semibold transition-colors relative ${activeTab === 'projects' ? 'text-gray-900 dark:text-white' : 'text-gray-500 hover:text-gray-700 dark:hover:text-gray-300'}`}
+                 >
+                     Projects
+                     {activeTab === 'projects' && <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-accent-blue"></div>}
+                 </button>
             </div>
+
+            {activeTab === 'overview' ? (
+                <div className="grid md:grid-cols-3 gap-6">
+                    <div className="md:col-span-2 space-y-6">
+                         <Card className="p-6">
+                             <h3 className="font-bold text-gray-900 dark:text-white mb-4">Contribution Activity</h3>
+                             <div className="h-32 flex items-end gap-1 opacity-50">
+                                 {/* Fake activity graph */}
+                                 {Array.from({ length: 40 }).map((_, i) => (
+                                     <div key={i} className="flex-1 bg-accent-green rounded-t-sm" style={{ height: `${Math.random() * 100}%`, opacity: Math.random() }}></div>
+                                 ))}
+                             </div>
+                         </Card>
+                         
+                         <h3 className="font-bold text-gray-900 dark:text-white">Latest Posts</h3>
+                         {posts.length > 0 ? (
+                             <div className="grid gap-4">
+                                 {posts.map(post => (
+                                      <Card key={post.id} className="p-6 transition-colors hover:bg-gray-50 dark:hover:bg-gray-800/50 group cursor-pointer border-gray-100 dark:border-gray-800">
+                                          <div className="flex justify-between items-start mb-2">
+                                              <span className="text-xs text-gray-500">{new Date(post.createdAt).toLocaleDateString()}</span>
+                                          </div>
+                                          <p className="text-gray-800 dark:text-gray-200 group-hover:text-primary-600 transition-colors">{post.content}</p>
+                                     </Card>
+                                 ))}
+                             </div>
+                         ) : (
+                             <div className="text-center py-10 bg-white dark:bg-charcoal rounded-lg border border-dashed border-gray-200 dark:border-gray-800">
+                                 <p className="text-gray-500">No recent activity.</p>
+                             </div>
+                         )}
+                    </div>
+                    
+                    <div className="space-y-6">
+                        <Card className="p-6">
+                             <h3 className="font-bold text-gray-900 dark:text-white mb-4">Skills</h3>
+                             <div className="flex flex-wrap gap-2">
+                                 {['React', 'TypeScript', 'Node.js', 'Tailwind', 'PostgreSQL'].map(skill => (
+                                     <span key={skill} className="px-3 py-1 bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 rounded-full text-xs font-medium">
+                                         {skill}
+                                     </span>
+                                 ))}
+                             </div>
+                        </Card>
+                        
+                        <Card className="p-6">
+                             <h3 className="font-bold text-gray-900 dark:text-white mb-4">Achievements</h3>
+                             <div className="grid grid-cols-4 gap-2">
+                                 {[1, 2, 3, 4].map(i => (
+                                     <div key={i} className="aspect-square rounded-full bg-gradient-to-br from-yellow-400 to-orange-500 opacity-80" />
+                                 ))}
+                             </div>
+                        </Card>
+                    </div>
+                </div>
+            ) : (
+                <div className="text-center py-20 bg-gray-50 dark:bg-charcoal/30 rounded-2xl border-2 border-dashed border-gray-200 dark:border-gray-800">
+                     <p className="text-gray-500 font-medium">No projects showcasing yet.</p>
+                </div>
+            )}
         </div>
     );
 };

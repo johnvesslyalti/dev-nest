@@ -22,7 +22,7 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
         )}
         <input
           className={cn(
-            "flex h-11 w-full rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-100 focus:border-primary-500 disabled:cursor-not-allowed disabled:opacity-50 dark:bg-gray-900 dark:border-gray-800 dark:text-white dark:placeholder:text-gray-500 transition-all duration-200",
+            "flex h-11 w-full rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-accent-blue/20 focus:border-accent-blue disabled:cursor-not-allowed disabled:opacity-50 dark:bg-charcoal dark:border-gray-800 dark:text-gray-100 dark:placeholder:text-gray-600 transition-all duration-200",
             error && "border-red-500 focus:ring-red-100 focus:border-red-500",
             className
           )}
@@ -30,7 +30,7 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
           {...props}
         />
         {error && (
-          <p className="text-sm text-red-500 ml-1 animate-slide-up">{error}</p>
+          <p className="text-sm text-red-500 ml-1 animate-slide-up font-medium">{error}</p>
         )}
       </div>
     );
