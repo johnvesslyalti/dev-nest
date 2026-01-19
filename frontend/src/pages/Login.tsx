@@ -58,7 +58,7 @@ export const Login = () => {
               </div>
             </div>
             
-            <Button type="submit" className="w-full h-11 text-base shadow-lg shadow-primary-500/20" isLoading={isLoading}>
+            <Button type="submit" className="w-full h-11 text-base shadow-lg shadow-accent-blue/20" isLoading={isLoading}>
               Sign In
             </Button>
           </form>
@@ -66,7 +66,7 @@ export const Login = () => {
 
         <p className="text-center text-sm text-gray-500 dark:text-gray-400">
           Don't have an account?{' '}
-          <Link to="/register" className="font-semibold text-primary-600 hover:text-primary-500 hover:underline">
+          <Link to="/register" className="font-semibold text-accent-blue hover:text-blue-500 hover:underline">
             Sign up
           </Link>
         </p>

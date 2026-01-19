@@ -70,7 +70,7 @@ export const Register = () => {
               required
               minLength={6}
             />
-            <Button type="submit" className="w-full h-11 text-base shadow-lg shadow-primary-500/20" isLoading={isLoading}>
+            <Button type="submit" className="w-full h-11 text-base shadow-lg shadow-accent-blue/20" isLoading={isLoading}>
               Create Account
             </Button>
           </form>
@@ -78,7 +78,7 @@ export const Register = () => {
 
         <p className="text-center text-sm text-gray-500 dark:text-gray-400">
           Already have an account?{' '}
-          <Link to="/login" className="font-semibold text-primary-600 hover:text-primary-500 hover:underline">
+          <Link to="/login" className="font-semibold text-accent-blue hover:text-blue-500 hover:underline">
             Sign in
           </Link>
         </p>

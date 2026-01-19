@@ -8,8 +8,21 @@ export default {
     extend: {
       fontFamily: {
         sans: ['Inter', 'sans-serif'],
+        mono: ['JetBrains Mono', 'monospace'],
       },
       colors: {
+        midnight: '#0B0E14',
+        charcoal: '#111827',
+        accent: {
+          blue: '#3B82F6',
+          green: '#22C55E',
+          violet: '#8B5CF6',
+        },
+        text: {
+          primary: '#E5E7EB',
+          secondary: '#9CA3AF',
+          muted: '#6B7280',
+        },
         gray: {
           50: '#f8fafc',
           100: '#f1f5f9',
