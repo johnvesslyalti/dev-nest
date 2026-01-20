@@ -23,7 +23,7 @@ Routes → Controller → Service → Repository → Database
 
 ---
 
-## 🛠 Tech Stack
+## 📁 Project Structure
 
 * **Node.js**
 * **TypeScript**
@@ -63,17 +63,6 @@ uploads/              # Static file storage (Images)
 
 ```
 
-Each module follows:
-
-```txt
-module/
-├── module.routes.ts
-├── module.controller.ts
-├── module.service.ts
-├── module.repository.ts
-└── module.types.ts
-```
-
 ---
 
 ## 🔐 Authentication
@@ -85,7 +74,7 @@ module/
 
 ---
 
-## ⚡ Redis Caching Strategy
+## 🐦 Core Features
 
 Redis is used as a **shared caching layer across modules** to improve performance and reduce database load.
 
@@ -117,7 +106,7 @@ Request → Redis → Database (if cache miss) → Redis update → Response
 
 ---
 
-## 🐦 Core Features
+## 🧱 Database Design (Prisma)
 
 ### 👤 Users
 
@@ -182,8 +171,6 @@ Request → Redis → Database (if cache miss) → Redis update → Response
 
 ---
 
-## 🧱 Database Design (Prisma)
-
 Key models:
 
 * `User`
@@ -204,60 +191,78 @@ Designed with:
 
 ## ⚙️ Setup & Installation
 
-### 1️⃣ Clone the repository
+Follow these steps to set up the project locally for development and testing.
+
+### 📋 Prerequisites
+
+Ensure you have the following installed on your machine:
+
+* **Node.js** (v18+ recommended)
+* **PostgreSQL** (Running locally or via Docker)
+* **Redis** (Required for caching and queues)
+* **Git**
+
+### 1️⃣ Clone the Repository
 
 ```bash
 git clone https://github.com/johnvesslyalti/dev-nest.git
 cd dev-nest
 ```
 
-### 2️⃣ Install dependencies
+### 2️⃣ Backend Setup
 
-```bash
-npm install
-```
+1. **Install Dependencies**
+   ```bash
+   npm install
+   ```
 
-### 3️⃣ Setup environment variables
+2. **Configure Environment Variables**
+   Create a `.env` file in the root directory and add your credentials:
+   ```env
+   DATABASE_URL=postgresql://user:password@localhost:5432/devnest
+   REDIS_URL=redis://localhost:6379
+   JWT_SECRET=your_super_secret_jwt_key
+   REFRESH_TOKEN_SECRET=your_super_secret_refresh_key
+   PORT=5000
+   ```
 
-Create a `.env` file:
+3. **Database Setup**
+   Generate the Prisma client and run migrations:
+   ```bash
+   npx prisma generate
+   npx prisma migrate dev
+   ```
 
-```env
-DATABASE_URL=postgresql://user:password@localhost:5432/devnest
-REDIS_URL=redis://localhost:6379
-JWT_SECRET=your_jwt_secret
-REFRESH_TOKEN_SECRET=your_refresh_secret
-```
+4. **Start Redis**
+   Make sure your Redis server is running:
+   ```bash
+   redis-server
+   ```
 
-### 4️⃣ Run Prisma
+5. **Start the Backend Server**
+   ```bash
+   npm run dev
+   ```
+   The backend will start at `http://localhost:5000` (or your defined PORT).
 
-```bash
-npx prisma generate
-npx prisma migrate dev
-```
+### 3️⃣ Frontend Setup
 
-### 5️⃣ Start Redis
+1. **Navigate to Frontend Directory**
+   Open a new terminal window:
+   ```bash
+   cd frontend
+   ```
 
-```bash
-redis-server
-```
+2. **Install Dependencies**
+   ```bash
+   npm install
+   ```
 
-### 6️⃣ Start the Backend
-
-```bash
-npm run dev
-```
-
-### 7️⃣ Start the Frontend
-
-Open a new terminal:
-
-```bash
-cd frontend
-npm install
-npm run dev
-```
-
-The app will be available at `http://localhost:5173`.
+3. **Start the Frontend Development Server**
+   ```bash
+   npm run dev
+   ```
+   The application will be available at `http://localhost:5173`.
 
 
 ---
