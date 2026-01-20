@@ -1,5 +1,7 @@
 import { Link, useLocation } from 'react-router-dom';
+import { useState, useEffect } from 'react';
 import { Home, User, Settings, LogOut, Bell, Mail, Bookmark } from 'lucide-react';
+import { notifications } from '../api/client';
 import { useAuth } from '../context/AuthContext';
 import { Avatar } from './Avatar';
 import { Button } from './Button';
@@ -7,6 +9,25 @@ import { Button } from './Button';
 export const Sidebar = () => {
   const { user, logout, isLoading } = useAuth();
   const location = useLocation();
+  const [unreadCount, setUnreadCount] = useState(0);
+
+  useEffect(() => {
+    if (user) {
+        const fetchUnreadCount = async () => {
+             try {
+                 const { data } = await notifications.getUnreadCount();
+                 setUnreadCount(data.count);
+             } catch (error) {
+                 console.error('Failed to fetch unread count:', error);
+             }
+        };
+        fetchUnreadCount();
+        
+        // Optional: Poll every minute
+        const interval = setInterval(fetchUnreadCount, 60000);
+        return () => clearInterval(interval);
+    }
+  }, [user]);
 
   if (isLoading) {
       return (
@@ -58,6 +79,11 @@ export const Sidebar = () => {
                     >
                         <item.icon className={`h-5 w-5 transition-transform group-hover:scale-110 ${isActive ? 'fill-current opacity-100' : 'opacity-70'}`} />
                         <span className="text-base">{item.label}</span>
+                        {item.label === 'Notifications' && unreadCount > 0 && (
+                            <span className="ml-auto flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-[10px] font-bold text-white">
+                                {unreadCount > 9 ? '9+' : unreadCount}
+                            </span>
+                        )}
                     </Link>
                 );
             })}

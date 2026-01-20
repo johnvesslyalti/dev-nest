@@ -8,6 +8,7 @@ import homeRoutes from "./modules/home/home.routes"
 import followRoutes from "./modules/follow/follow.routes"
 import profileRoutes from "./modules/profile/profile.routes"
 import blockRoutes from "./modules/block/block.routes"
+import notificationRoutes from "./modules/notification/notification.routes"
 
 const app = express()
 app.use(express.json())
@@ -21,6 +22,7 @@ app.use("/api/v1/block", blockRoutes)
 
 app.use("/api/v1/profile", profileRoutes);
 app.use("/api/v1/home", homeRoutes);
+app.use("/api/v1/notifications", notificationRoutes);
 
 app.get("/health", (_, res) => {
     res.send("OK");

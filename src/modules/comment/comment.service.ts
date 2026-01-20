@@ -1,6 +1,9 @@
 import { cacheKeys } from "../../utils/cacheKeys";
 import { redis } from "../../utils/redis";
 import { commentRepository } from "./comment.repository";
+import { notificationQueue } from "../../jobs/notification.job";
+import { NotificationType } from "../../generated/prisma/enums";
+import { postRepo } from "../post/post.repository";
 
 const COMMENTS_TTL = 60;
 
@@ -17,6 +20,18 @@ export const commentService = {
 
         // Soft cache count
         await redis.del(cacheKeys.commentCount(postId));
+
+        // Trigger notification
+        const post = await postRepo.findOne(postId);
+        if (post && post.author.id !== userId) {
+             await notificationQueue.add("comment-notification", {
+                 type: NotificationType.COMMENT,
+                 recipientId: post.author.id,
+                 actorId: userId,
+                 postId: postId,
+                 commentId: comment.id
+             });
+        }
 
         return {
             ...comment,
