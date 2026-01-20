@@ -85,4 +85,11 @@ client.interceptors.response.use(
   }
 );
 
+export const notifications = {
+  getAll: () => client.get('/notifications'),
+  getUnreadCount: () => client.get('/notifications/unread-count'),
+  markRead: (id: string) => client.patch(`/notifications/${id}/read`),
+  markAllRead: () => client.patch('/notifications/read-all'),
+};
+
 export default client;

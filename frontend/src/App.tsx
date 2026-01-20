@@ -9,6 +9,7 @@ import { CreatePost } from './pages/CreatePost';
 import { Landing } from './pages/Landing';
 import { Explore } from './pages/Explore';
 import { Projects } from './pages/Projects';
+import { Notifications } from './pages/Notifications';
 import { useAuth } from './context/AuthContext';
 import { LoadingSpinner } from './components/RightSidebar';
 
@@ -65,6 +66,11 @@ function App() {
           } /> 
           <Route path="/explore" element={<Explore />} />
           <Route path="/projects" element={<Projects />} />
+          <Route path="/notifications" element={
+            <ProtectedRoute>
+              <Notifications />
+            </ProtectedRoute>
+          } />
           <Route path="/community" element={<Navigate to="/explore" replace />} /> {/* Placeholder */}
           <Route path="/learn" element={<Navigate to="/explore" replace />} /> {/* Placeholder */}
           

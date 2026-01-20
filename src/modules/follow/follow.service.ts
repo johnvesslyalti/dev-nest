@@ -1,5 +1,7 @@
 import { constants } from "node:vm";
 import { followRepo } from "./follow.repository";
+import { notificationQueue } from "../../jobs/notification.job";
+import { NotificationType } from "../../generated/prisma/enums";
 
 export const followService = {
     follow: async (followerId: string, followingId: string) => {
@@ -16,7 +18,15 @@ export const followService = {
             throw new Error("Already following this user");
         }
 
-        return followRepo.create(followerId, followingId);
+        const follow = await followRepo.create(followerId, followingId);
+
+        await notificationQueue.add("follow-notification", {
+            type: NotificationType.FOLLOW,
+            recipientId: followingId,
+            actorId: followerId
+        });
+
+        return follow;
     },
 
     unfollow: async (followerId: string, followingId: string) => {
