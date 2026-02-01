@@ -1,5 +1,5 @@
-import { Injectable } from '@nestjs/common';
-import { PrismaService } from '../prisma/prisma.service';
+import { Injectable } from "@nestjs/common";
+import { PrismaService } from "../prisma/prisma.service";
 
 @Injectable()
 export class CommentsService {
@@ -24,7 +24,7 @@ export class CommentsService {
   async findByPost(postId: string, page = 1, limit = 20) {
     return this.prisma.comment.findMany({
       where: { postId },
-      orderBy: { createdAt: 'desc' },
+      orderBy: { createdAt: "desc" },
       skip: (page - 1) * limit,
       take: limit,
       select: {

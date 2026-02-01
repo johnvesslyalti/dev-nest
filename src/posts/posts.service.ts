@@ -1,5 +1,5 @@
-import { Injectable } from '@nestjs/common';
-import { PrismaService } from '../prisma/prisma.service';
+import { Injectable } from "@nestjs/common";
+import { PrismaService } from "../prisma/prisma.service";
 
 @Injectable()
 export class PostsService {
@@ -31,7 +31,7 @@ export class PostsService {
         },
         _count: { select: { likes: true, comments: true } },
       },
-      orderBy: { createdAt: 'desc' },
+      orderBy: { createdAt: "desc" },
     });
   }
 
@@ -68,7 +68,7 @@ export class PostsService {
         skip: 1,
         cursor: { id: cursor },
       }),
-      orderBy: { createdAt: 'desc' },
+      orderBy: { createdAt: "desc" },
       select: {
         id: true,
         content: true,

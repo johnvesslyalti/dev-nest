@@ -1,5 +1,5 @@
-import { Injectable } from '@nestjs/common';
-import { PrismaService } from '../prisma/prisma.service';
+import { Injectable } from "@nestjs/common";
+import { PrismaService } from "../prisma/prisma.service";
 
 @Injectable()
 export class ProfileService {
@@ -8,10 +8,7 @@ export class ProfileService {
   async findUser(identifier: string, currentUserId?: string) {
     const profile = await this.prisma.user.findFirst({
       where: {
-        OR: [
-          { id: identifier },
-          { username: identifier }
-        ]
+        OR: [{ id: identifier }, { username: identifier }],
       },
       select: {
         id: true,
@@ -24,24 +21,28 @@ export class ProfileService {
           select: {
             followers: true,
             following: true,
-            posts: true
-          }
+            posts: true,
+          },
         },
-        ...(currentUserId ? {
-          followers: {
-            where: { followerId: currentUserId },
-            select: { id: true }
-          }
-        } : {})
-      }
+        ...(currentUserId
+          ? {
+              followers: {
+                where: { followerId: currentUserId },
+                select: { id: true },
+              },
+            }
+          : {}),
+      },
     });
 
     if (!profile) return null;
 
     return {
       ...profile,
-      isFollowing: currentUserId ? (profile as any).followers.length > 0 : false,
-      followers: undefined
+      isFollowing: currentUserId
+        ? (profile as any).followers.length > 0
+        : false,
+      followers: undefined,
     };
   }
 
@@ -52,16 +53,16 @@ export class ProfileService {
       where: {
         OR: [
           { username: { contains: query, mode: "insensitive" } },
-          { name: { contains: query, mode: "insensitive" } }
-        ]
+          { name: { contains: query, mode: "insensitive" } },
+        ],
       },
       take: 5,
       select: {
         id: true,
         name: true,
         username: true,
-        avatarUrl: true
-      }
+        avatarUrl: true,
+      },
     });
   }
 
@@ -80,10 +81,10 @@ export class ProfileService {
           select: {
             followers: true,
             following: true,
-            posts: true
-          }
-        }
-      }
+            posts: true,
+          },
+        },
+      },
     });
   }
 }
