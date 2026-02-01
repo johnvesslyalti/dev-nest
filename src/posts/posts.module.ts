@@ -1,12 +1,12 @@
-import { Module } from '@nestjs/common';
-import { PostsService } from './posts.service';
-import { PostsController } from './posts.controller';
-import { MulterModule } from '@nestjs/platform-express';
+import { Module } from "@nestjs/common";
+import { PostsService } from "./posts.service";
+import { PostsController } from "./posts.controller";
+import { MulterModule } from "@nestjs/platform-express";
 
 @Module({
   imports: [
     MulterModule.register({
-      dest: './uploads',
+      dest: "./uploads",
     }),
   ],
   controllers: [PostsController],
