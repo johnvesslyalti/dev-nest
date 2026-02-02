@@ -1,19 +1,18 @@
 import { Injectable } from "@nestjs/common";
-import { PrismaService } from "../prisma/prisma.service";
+import { LikesRepository } from "./likes.repository";
 
 @Injectable()
 export class LikesService {
-  constructor(private prisma: PrismaService) {}
+  constructor(private likesRepository: LikesRepository) {}
 
   async like(userId: string, postId: string) {
-    return this.prisma.like.create({
-      data: { userId, postId },
+    return this.likesRepository.create({
+      userId,
+      postId,
     });
   }
 
   async unlike(userId: string, postId: string) {
-    return this.prisma.like.delete({
-      where: { userId_postId: { userId, postId } },
-    });
+    return this.likesRepository.delete(userId, postId);
   }
 }
