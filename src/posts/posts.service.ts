@@ -1,93 +1,27 @@
 import { Injectable } from "@nestjs/common";
-import { PrismaService } from "../prisma/prisma.service";
+import { PostsRepository } from "./posts.repository";
 
 @Injectable()
 export class PostsService {
-  constructor(private prisma: PrismaService) {}
+  constructor(private postsRepository: PostsRepository) {}
 
   async create(authorId: string, content: string, imageUrl?: string) {
-    return this.prisma.post.create({
-      data: { authorId, content, imageUrl },
+    return this.postsRepository.create({
+      authorId,
+      content,
+      imageUrl,
     });
   }
 
   async findByUserName(username: string) {
-    return this.prisma.post.findMany({
-      where: {
-        author: { username },
-      },
-      select: {
-        id: true,
-        content: true,
-        imageUrl: true,
-        createdAt: true,
-        author: {
-          select: {
-            id: true,
-            name: true,
-            username: true,
-            avatarUrl: true,
-          },
-        },
-        _count: { select: { likes: true, comments: true } },
-      },
-      orderBy: { createdAt: "desc" },
-    });
+    return this.postsRepository.findByUserName(username);
   }
 
   async findOne(id: string) {
-    return this.prisma.post.findUnique({
-      where: { id },
-      select: {
-        id: true,
-        content: true,
-        imageUrl: true,
-        createdAt: true,
-        author: {
-          select: {
-            id: true,
-            name: true,
-            username: true,
-            avatarUrl: true,
-          },
-        },
-        _count: {
-          select: {
-            likes: true,
-            comments: true,
-          },
-        },
-      },
-    });
+    return this.postsRepository.findOne(id);
   }
 
   async findPublicFeed(cursor?: string) {
-    return this.prisma.post.findMany({
-      take: 20,
-      ...(cursor && {
-        skip: 1,
-        cursor: { id: cursor },
-      }),
-      orderBy: { createdAt: "desc" },
-      select: {
-        id: true,
-        content: true,
-        imageUrl: true,
-        createdAt: true,
-        author: {
-          select: {
-            id: true,
-            username: true,
-            avatarUrl: true,
-          },
-        },
-        _count: {
-          select: {
-            likes: true,
-            comments: true,
-          },
-        },
-      },
-    });
+    return this.postsRepository.findPublicFeed(20, cursor);
   }
 }

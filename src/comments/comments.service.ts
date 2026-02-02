@@ -1,45 +1,20 @@
 import { Injectable } from "@nestjs/common";
-import { PrismaService } from "../prisma/prisma.service";
+import { CommentsRepository } from "./comments.repository";
 
 @Injectable()
 export class CommentsService {
-  constructor(private prisma: PrismaService) {}
+  constructor(private commentsRepository: CommentsRepository) {}
 
   async create(userId: string, postId: string, content: string) {
-    return this.prisma.comment.create({
-      data: { userId, postId, content },
-      include: {
-        user: {
-          select: {
-            id: true,
-            username: true,
-            name: true,
-            avatarUrl: true,
-          },
-        },
-      },
+    return this.commentsRepository.create({
+      userId,
+      postId,
+      content,
     });
   }
 
   async findByPost(postId: string, page = 1, limit = 20) {
-    return this.prisma.comment.findMany({
-      where: { postId },
-      orderBy: { createdAt: "desc" },
-      skip: (page - 1) * limit,
-      take: limit,
-      select: {
-        id: true,
-        content: true,
-        createdAt: true,
-        user: {
-          select: {
-            id: true,
-            username: true,
-            name: true,
-            avatarUrl: true,
-          },
-        },
-      },
-    });
+    const skip = (page - 1) * limit;
+    return this.commentsRepository.findByPost(postId, skip, limit);
   }
 }
