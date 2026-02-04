@@ -9,7 +9,10 @@
     "dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/main",
-    "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix"
+    "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
+    "generate": "npx prisma generate --schema ./prisma-postgres/schema.prisma && npx prisma generate --schema ./prisma-mongo/schema.prisma",
+    "migrate:pg": "npx prisma migrate dev --config=./prisma-postgres/prisma.config.ts",
+    "migrate:mongo": "npx prisma db push --config=./prisma-mongo/prisma.config.ts"
   },
   "keywords": [],
   "author": "",
