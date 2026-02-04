@@ -1,41 +1,25 @@
 # 🚀 DevNest
 
-**DevNest** is a scalable backend platform inspired by **X (Twitter)**, built with **Node.js, TypeScript, Express, Prisma, PostgreSQL, and Redis**.
+**DevNest** is a scalable backend platform inspired by **X (Twitter)**, built with **Node.js, TypeScript, NestJS, Prisma, PostgreSQL, and Redis**.
 
-It follows a **clean, layered architecture** and focuses on building **production-ready social platform features** with performance, scalability, and maintainability in mind.
+It follows a **modular architecture** and focuses on building **production-ready social platform features** with performance, scalability, and maintainability in mind.
 
 ---
 
 ## 🧠 Architecture Overview
 
-DevNest strictly follows this flow:
+DevNest follows the standard **NestJS modular architecture**:
 
 ```
-Routes → Controller → Service → Repository → Database
+Module → Controller → Service → Repository (Prisma) → Database
 ```
 
 ### Why this architecture?
 
 * ✅ Clear separation of concerns
+* ✅ Modular and scalable
 * ✅ Easy to test and refactor
-* ✅ Business logic isolated from HTTP & DB layers
-* ✅ Scales cleanly as features grow
-
----
-
-## 📁 Project Structure
-
-* **Node.js**
-* **TypeScript**
-* **Express.js**
-* **Prisma ORM**
-* **PostgreSQL**
-* **Redis** (Caching & Queues)
-* **BullMQ** (Background Jobs)
-* **Multer** (File Uploads)
-* **Vite + React** (Frontend)
-* **Tailwind CSS** (Styling)
-* **JWT Authentication (Access & Refresh Tokens)**
+* ✅ Dependency injection for better maintainability
 
 ---
 
@@ -43,163 +27,82 @@ Routes → Controller → Service → Repository → Database
 
 ```txt
 src/
-├── modules/          # Feature-based texture (Controller, Service, Routes)
-├── middlewares/      # Auth, Rate Limiting, Validation, Error Handling
-├── jobs/             # Background workers (Email, Notifications)
-├── lib/              # Core utilities (Prisma, Redis, Logger)
-├── types/            # Global type definitions
-├── app.ts            # Express setup
-└── server.ts         # Server entry point
+├── auth/             # Authentication module (JWT, Login, Register)
+├── comments/         # Comments module
+├── common/           # Shared utilities (Guards, Interceptors, Middleware, Pipes)
+├── generated/        # Generated Prisma client code
+├── likes/            # Likes module
+├── posts/            # Posts module
+├── prisma/           # Prisma service and module (DB Connection)
+├── profile/          # User profile management
+├── users/            # User management
+├── app.module.ts     # Root module
+└── main.ts           # Application entry point
 
 frontend/             # React + Vite application
 ├── src/
-│   ├── api/          # Axios client & API modules
+│   ├── api/          # API integration
+│   ├── assets/       # Static assets
 │   ├── components/   # Reusable UI components
-│   ├── context/      # React Context (Auth)
+│   ├── context/      # Global state (AuthContext)
 │   ├── pages/        # Route pages
 │   └── main.tsx      # Frontend entry point
 
+prisma/               # Database schema (`schema.prisma`) and migrations
 uploads/              # Static file storage (Images)
-
 ```
+
+---
+
+## 🛠️ Tech Stack
+
+* **Node.js** & **TypeScript**
+* **NestJS** (Backend Framework)
+* **Prisma ORM** (Database Access)
+* **PostgreSQL** (Relational Database)
+* **Redis** (Caching)
+* **BullMQ** (Background Jobs)
+* **Multer** (File Uploads)
+* **Vite + React** (Frontend)
+* **Tailwind CSS** (Styling)
 
 ---
 
 ## 🔐 Authentication
 
-* JWT-based authentication
-* Access & refresh token flow
-* Secure route protection via middleware
-* Authenticated user attached to `req.user`
+* **JWT-based authentication** (Access & Refresh Tokens)
+* **Guards** for route protection
+* Secure cookie handling for refresh tokens
+* Current user injection via decorators (e.g., `@CurrentUser`)
 
 ---
 
 ## 🐦 Core Features
 
-Redis is used as a **shared caching layer across modules** to improve performance and reduce database load.
+### ⚡ Caching with Redis
+Redis is used as a **caching layer** to improve performance for frequently accessed data.
 
-### Where Redis is used
+* **Read-through caching** for profiles, posts, and feeds.
+* **Cache invalidation** on updates/deletes to ensure data consistency.
 
-* User profile reads
-* Feed responses
-* Posts & interactions
-* Follow / block checks
-* Frequently accessed relational data
+### 🧱 Database Models (Prisma)
 
-### Cache Pattern Used
-
-* **Read-through caching**
-* Cache invalidation on write/update/delete
-* Fallback to database on cache miss
-
-### Example Flow
-
-```
-Request → Redis → Database (if cache miss) → Redis update → Response
-```
-
-### Benefits
-
-* 🚀 Faster response times
-* 📉 Reduced database queries
-* 📈 Better scalability under load
-
----
-
-## 🧱 Database Design (Prisma)
-
-### 👤 Users
-
-* Register & login
-* Profile management
-* Follow / unfollow users
-* Cached profile reads
-
-### 📝 Posts
-
-* Create posts
-* Fetch posts efficiently
-* Cached post lists
-
-### ❤️ Likes
-
-* Like / unlike posts
-* Prevent duplicate likes
-* Cache-aware invalidation
-
-### 💬 Comments
-
-* Comment on posts
-* Delete own comments
-
-### 🚫 Blocking (X-like Behavior)
-
-* Block users
-* Unblock users
-* View blocked users list
-* Blocking removes follow relationships
-* Blocked users cannot:
-
-  * follow
-  * like
-  * comment
-  * view feed content
-
-### 📰 Feed
-
-* Feed based on follow relationships
-* Block-aware feed filtering
-* Redis-cached feed responses
-
-### 📨 Background Jobs & Notifications
-
-* **BullMQ + Redis** based job queue
-* Asynchronous email sending (Welcome emails)
-* Notification generation (Likes, Follows)
-
-### 🛡️ Security & Performance
-
-* **Rate Limiting**: Redis-based sliding window limiter protected endpoints.
-* **JWT Auth**: Secure access/refresh token rotation.
-* **Helmet & CORS**: Enhanced security headers.
-
-### 🖼️ Media Management
-
-* Image uploads via **Multer**
-* Static file serving for user avatars and post images
-
-
----
-
-Key models:
-
-* `User`
-* `Post`
-* `Follow`
-* `BlockedUser`
-* `Like`
-* `Comment`
-
-Designed with:
-
-* Unique constraints
-* Indexes for performance
-* Cascade deletes
-* Proper relational modeling
+* **Users**: Profile, auth, skills, bio.
+* **Posts**: Content, images, author relation.
+* **Likes & Comments**: Interactions on posts.
+* **Follow system**: Many-to-many relationship for following users.
+* **Blocking**: System to block users, preventing interactions.
+* **Notifications**: Alerts for likes, comments, and follows.
 
 ---
 
 ## ⚙️ Setup & Installation
 
-Follow these steps to set up the project locally for development and testing.
-
 ### 📋 Prerequisites
 
-Ensure you have the following installed on your machine:
-
 * **Node.js** (v18+ recommended)
-* **PostgreSQL** (Running locally or via Docker)
-* **Redis** (Required for caching and queues)
+* **PostgreSQL**
+* **Redis**
 * **Git**
 
 ### 1️⃣ Clone the Repository
@@ -217,38 +120,35 @@ cd dev-nest
    ```
 
 2. **Configure Environment Variables**
-   Create a `.env` file in the root directory and add your credentials:
+   Create a `.env` file in the root directory:
    ```env
    DATABASE_URL=postgresql://user:password@localhost:5432/devnest
    REDIS_URL=redis://localhost:6379
-   JWT_SECRET=your_super_secret_jwt_key
-   REFRESH_TOKEN_SECRET=your_super_secret_refresh_key
-   PORT=5000
+   JWT_SECRET=your_jwt_secret
+   REFRESH_TOKEN_SECRET=your_refresh_secret
+   PORT=3000
    ```
 
 3. **Database Setup**
-   Generate the Prisma client and run migrations:
    ```bash
    npx prisma generate
    npx prisma migrate dev
    ```
 
-4. **Start Redis**
-   Make sure your Redis server is running:
+4. **Start the Backend**
    ```bash
-   redis-server
-   ```
-
-5. **Start the Backend Server**
-   ```bash
+   # Development mode
    npm run dev
+   
+   # Production mode
+   npm run build
+   npm run start:prod
    ```
-   The backend will start at `http://localhost:5000` (or your defined PORT).
+   Server defaults to `http://localhost:3000/api/v1` (Global Prefix).
 
 ### 3️⃣ Frontend Setup
 
 1. **Navigate to Frontend Directory**
-   Open a new terminal window:
    ```bash
    cd frontend
    ```
@@ -258,34 +158,21 @@ cd dev-nest
    npm install
    ```
 
-3. **Start the Frontend Development Server**
+3. **Start the Frontend**
    ```bash
    npm run dev
    ```
-   The application will be available at `http://localhost:5173`.
-
+   App available at `http://localhost:5173`.
 
 ---
 
 ## 🧪 Development Principles
 
-* ❌ No Prisma calls in controllers
-* ❌ No HTTP logic in services
-* ❌ No business logic in repositories
-* ✅ Repositories handle DB access
-* ✅ Services enforce business rules
-* ✅ Redis caching handled consistently per module
-
----
-
-## 🚧 Future Enhancements
-
-* WebSocket-based real-time updates (Socket.io)
-* Retweets / reposts
-* Hashtags & trending topics
-* Direct messaging
-* API documentation (Swagger / OpenAPI)
-
+* ✅ **Modules**: Feature-based separation.
+* ✅ **DTOs**: Strict input validation using `class-validator`.
+* ✅ **Guards**: Role-based and auth-based access control.
+* ✅ **Prisma**: Type-safe database queries.
+* ✅ **Prettier/ESLint**: Consistent code style.
 
 ---
 
@@ -294,13 +181,6 @@ cd dev-nest
 **Johnvessly Alti**
 Backend-focused Software Engineer
 Building scalable systems with clean architecture.
-
----
-
-## ⭐ Contributing
-
-Pull requests are welcome.
-Please open an issue before making major changes.
 
 ---
 
