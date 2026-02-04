@@ -19,7 +19,10 @@
     "noFallthroughCasesInSwitch": false
   },
   "include": [
-    "src"
+    "src",
+    "lib",
+    "prisma-postgres/postgres-client",
+    "prisma-mongo/mongo-client"
   ],
   "exclude": [
     "node_modules",

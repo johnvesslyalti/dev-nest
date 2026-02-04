@@ -1,6 +1,6 @@
 generator client {
-  provider = "prisma-client"
-  output   = "../src/generated/prisma"
+  provider = "prisma-client-js"
+  output   = "../prisma-postgres/postgres-client"
 }
 
 datasource db {
@@ -35,7 +35,7 @@ model User {
   blockedUsers BlockedUser[] @relation("Blocked")
   blockedBy    BlockedUser[] @relation("Blocker")
 
-  notifications Notification[] @relation("Recipient")
+  notifications          Notification[] @relation("Recipient")
   triggeredNotifications Notification[] @relation("Actor")
 
   createdAt DateTime @default(now())
@@ -72,15 +72,15 @@ model BlockedUser {
 }
 
 model Post {
-  id      String @id @default(cuid())
-  content String @db.Text
+  id       String  @id @default(cuid())
+  content  String  @db.Text
   imageUrl String?
 
   authorId String
   author   User   @relation(fields: [authorId], references: [id], onDelete: Cascade)
 
-  comments Comment[]
-  likes    Like[]
+  comments      Comment[]
+  likes         Like[]
   notifications Notification[]
 
   createdAt DateTime @default(now())
@@ -121,23 +121,23 @@ model Like {
 }
 
 model Notification {
-  id        String           @id @default(cuid())
-  type      NotificationType
-  read      Boolean          @default(false)
-  
+  id   String           @id @default(cuid())
+  type NotificationType
+  read Boolean          @default(false)
+
   recipientId String
-  recipient   User @relation("Recipient", fields: [recipientId], references: [id], onDelete: Cascade)
+  recipient   User   @relation("Recipient", fields: [recipientId], references: [id], onDelete: Cascade)
 
-  actorId     String
-  actor       User @relation("Actor", fields: [actorId], references: [id], onDelete: Cascade)
+  actorId String
+  actor   User   @relation("Actor", fields: [actorId], references: [id], onDelete: Cascade)
 
-  postId      String?
-  post        Post? @relation(fields: [postId], references: [id], onDelete: Cascade)
+  postId String?
+  post   Post?   @relation(fields: [postId], references: [id], onDelete: Cascade)
 
-  commentId   String?
-  comment     Comment? @relation(fields: [commentId], references: [id], onDelete: Cascade)
+  commentId String?
+  comment   Comment? @relation(fields: [commentId], references: [id], onDelete: Cascade)
 
-  createdAt   DateTime @default(now())
+  createdAt DateTime @default(now())
 
   @@index([recipientId])
 }
