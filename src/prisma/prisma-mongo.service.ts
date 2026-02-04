@@ -1,5 +1,5 @@
 import { Injectable, OnModuleInit, OnModuleDestroy } from "@nestjs/common";
-import { PrismaClient } from "../../prisma-mongo/mongo-client";
+import { PrismaClient } from "@internal/mongo-client";
 
 import { ConfigService } from "@nestjs/config";
 
@@ -9,7 +9,13 @@ export class PrismaMongoService
   implements OnModuleInit, OnModuleDestroy
 {
   constructor(config: ConfigService) {
-    super();
+    super({
+      datasources: {
+        db: {
+          url: config.get<string>("MONGODB_URL"),
+        },
+      },
+    } as any);
   }
   async onModuleInit() {
     await this.$connect();

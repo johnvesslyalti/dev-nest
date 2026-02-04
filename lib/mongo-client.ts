@@ -1,6 +1,12 @@
-import { PrismaClient } from "../prisma-mongo/mongo-client"
+import { PrismaClient } from "@internal/mongo-client"
 
-const getPrisma = () => new PrismaClient()
+const getPrisma = () => new PrismaClient({
+  datasources: {
+    db: {
+      url: process.env.MONGODB_URL
+    }
+  }
+} as any)
 
 const globalForMongo = global as unknown as {
   mongoPrisma?: ReturnType<typeof getPrisma>

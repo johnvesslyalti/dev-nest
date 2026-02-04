@@ -20,9 +20,7 @@
   },
   "include": [
     "src",
-    "lib",
-    "prisma-postgres/postgres-client",
-    "prisma-mongo/mongo-client"
+    "lib"
   ],
   "exclude": [
     "node_modules",
