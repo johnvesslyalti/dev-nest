@@ -1,4 +1,4 @@
-import { PrismaClient } from "@internal/mongo-client"
+import { PrismaClient } from "prisma-mongo-client"
 
 const getPrisma = () => new PrismaClient({
   datasources: {
