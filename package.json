@@ -12,7 +12,8 @@
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
     "generate": "npx prisma generate --schema ./prisma/postgres/schema.prisma && npx prisma generate --schema ./prisma/mongo/schema.prisma",
     "migrate:pg": "npx prisma migrate dev --schema=./prisma/postgres/schema.prisma",
-    "migrate:mongo": "npx prisma db push --schema=./prisma/mongo/schema.prisma"
+    "migrate:mongo": "npx prisma db push --schema=./prisma/mongo/schema.prisma",
+    "test:manual": "node scripts/test_all_apis.js"
   },
   "keywords": [],
   "author": "",

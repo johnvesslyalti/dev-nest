@@ -146,6 +146,17 @@ cd dev-nest
    ```
    Server defaults to `http://localhost:3000/api/v1` (Global Prefix).
 
+### 🧪 Verifying the Backend (Manual Test)
+
+Since standard test suites are currently being set up, you can run a comprehensive manual verification script to ensure all API endpoints (Auth, Posts, Comments, Likes) are working correctly.
+
+1. **Ensure the backend is running** (`npm run dev`).
+2. **Run the manual test script**:
+   ```bash
+   npm run test:manual
+   ```
+   This will execute a sequence of API calls (Register -> Login -> Create Post -> interact -> Check Feed) and report the status.
+
 ### 3️⃣ Frontend Setup
 
 1. **Navigate to Frontend Directory**
