@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { PrismaService } from "../prisma/prisma.service";
-import { Like, Prisma } from "../generated/prisma/client";
+import { Like, Prisma } from "@internal/postgres-client";
 
 @Injectable()
 export class LikesRepository {

@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { PrismaService } from "../prisma/prisma.service";
-import { Comment, Prisma } from "../generated/prisma/client";
+import { Comment, Prisma } from "@internal/postgres-client";
 
 @Injectable()
 export class CommentsRepository {
@@ -24,7 +24,10 @@ export class CommentsRepository {
 
   async findByPost(postId: string, skip: number, take: number) {
     return this.prisma.comment.findMany({
-      where: { postId },
+      where: { 
+        postId,
+        user: { deletedAt: null }
+      },
       orderBy: { createdAt: "desc" },
       skip,
       take,

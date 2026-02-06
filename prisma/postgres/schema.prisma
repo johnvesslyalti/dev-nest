@@ -24,7 +24,13 @@ model User {
   skills    String[]
   avatarUrl String?
 
-  refreshToken String?
+  deletedAt DateTime?
+  
+  lastLoginAt         DateTime?
+  lastLoginIp         String?
+  lastLoginUserAgent  String?
+
+  refreshTokens RefreshToken[]
 
   posts    Post[]
   comments Comment[]
@@ -141,4 +147,23 @@ model Notification {
   createdAt   DateTime @default(now())
 
   @@index([recipientId])
+}
+
+model RefreshToken {
+  id          String   @id @default(cuid())
+  token       String   @unique
+  
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  userAgent   String?
+  ipAddress   String?
+  
+  revokedAt       DateTime?
+  replacedByToken String?
+  
+  expiresAt   DateTime
+  createdAt   DateTime @default(now())
+  
+  @@index([userId])
 }
