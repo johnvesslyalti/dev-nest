@@ -1,6 +1,7 @@
 import { MiddlewareConsumer, Module, NestModule } from "@nestjs/common";
 import { ThrottlerModule } from "@nestjs/throttler";
-import { ConfigModule } from "@nestjs/config";
+import { ConfigModule, ConfigService } from "@nestjs/config";
+import { ThrottlerStorageRedisService } from "./common/throttler-storage-redis.service";
 
 import { AuthModule } from "./auth/auth.module";
 import { PrismaModule } from "./prisma/prisma.module";
@@ -14,12 +15,14 @@ import { LoggingMiddleware } from "./common/middleware/logging.middleware";
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
-    ThrottlerModule.forRoot([
-      {
-        ttl: 60000,
-        limit: 10,
-      },
-    ]),
+    ThrottlerModule.forRootAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: (config: ConfigService) => ({
+        throttlers: [{ ttl: 60000, limit: 10 }],
+        storage: new ThrottlerStorageRedisService(config),
+      }),
+    }),
     PrismaModule,
     AuthModule,
     UsersModule,

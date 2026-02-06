@@ -1,5 +1,6 @@
 import { Module } from "@nestjs/common";
 import { CacheModule } from "@nestjs/cache-manager";
+import { redisStore } from "cache-manager-redis-yet";
 import { AuthService } from "./auth.service";
 import { AuthController } from "./auth.controller";
 import { PassportModule } from "@nestjs/passport";
@@ -10,7 +11,18 @@ import { ConfigModule, ConfigService } from "@nestjs/config";
 @Module({
   imports: [
     PassportModule,
-    CacheModule.register(),
+    CacheModule.registerAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: async (configService: ConfigService) => ({
+        store: await redisStore({
+          socket: {
+            host: configService.get<string>("REDIS_HOST") || "localhost",
+            port: parseInt(configService.get<string>("REDIS_PORT")!) || 6379,
+          },
+        }),
+      }),
+    }),
     JwtModule.registerAsync({
       imports: [ConfigModule],
       useFactory: async (configService: ConfigService) => ({
