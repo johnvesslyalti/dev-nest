@@ -60,6 +60,22 @@ frontend/             # React + Vite application
 * **Redis** (Caching)
 * **BullMQ** (Background Jobs)
 * **Vite + React** (Frontend)
+* **Authentication** (JWT, Refresh Token Rotation, Privacy Hashing)
+
+---
+
+## 🛡️ Security & Privacy
+
+DevNest implements advanced security and privacy features:
+
+### 🔐 Authentication & Security
+* **Refresh Token Rotation**: Each time a token is refreshed, a new one is issued, and the old one is revoked. Reuse of an old token triggers a **chain revocation** for security.
+* **Device Tracking**: We log `IP Address` and `User-Agent` for each login to detect suspicious activity.
+* **IP Privacy**: All IP addresses are **hashed (SHA-256)** before storage to protect user privacy.
+
+### 🗑️ Data Management
+* **Soft Deletes**: User accounts are soft-deleted (`deletedAt` timestamp), ensuring data integrity while preventing access.
+* **Cascade Revocation**: Deleting an account instantly invalidates all active sessions (Refresh Tokens).
 
 ---
 
@@ -141,7 +157,14 @@ Since standard test suites are currently being set up, you can run a comprehensi
    ```bash
    npm run test:manual
    ```
+   ```
    This will execute a sequence of API calls (Register -> Login -> Create Post -> interact -> Check Feed) and report the status.
+
+3. **Verify Authentication & Privacy Features**:
+   ```bash
+   npm run test:auth
+   ```
+   This verifies registration, token rotation, soft deletes, and IP hashing privacy mechanics.
 
 ### 3️⃣ Frontend Setup
 
