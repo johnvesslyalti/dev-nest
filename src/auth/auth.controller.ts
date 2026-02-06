@@ -8,12 +8,16 @@ import {
   Get,
   Ip,
   Headers,
+  UseInterceptors,
 } from "@nestjs/common";
 import { AuthService } from "./auth.service";
 import { RegisterDto, LoginDto } from "./dto/auth.dto";
 import { Response, Request } from "express";
 import { AuthGuard } from "@nestjs/passport";
+import { ThrottlerGuard } from "@nestjs/throttler";
+import { CacheInterceptor, CacheKey, CacheTTL } from "@nestjs/cache-manager";
 
+@UseGuards(ThrottlerGuard)
 @Controller("auth")
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
@@ -80,6 +84,9 @@ export class AuthController {
   }
 
   @Get("me")
+  @UseInterceptors(CacheInterceptor)
+  @CacheKey("custom_key")
+  @CacheTTL(30) // 30 seconds
   @UseGuards(AuthGuard("jwt"))
   async me(@Req() req: any) {
     return this.authService.me(req.user.id);
