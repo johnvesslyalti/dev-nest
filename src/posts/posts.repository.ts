@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { PrismaService } from "../prisma/prisma.service";
-import { Post, Prisma } from "../generated/prisma/client";
+import { Post, Prisma } from "@internal/postgres-client";
 
 @Injectable()
 export class PostsRepository {
@@ -15,7 +15,10 @@ export class PostsRepository {
   async findByUserName(username: string) {
     return this.prisma.post.findMany({
       where: {
-        author: { username },
+        author: { 
+          username,
+          deletedAt: null
+        },
       },
       select: {
         id: true,
@@ -69,6 +72,9 @@ export class PostsRepository {
         skip: 1,
         cursor: { id: cursor },
       }),
+      where: {
+        author: { deletedAt: null }
+      },
       orderBy: { createdAt: "desc" },
       select: {
         id: true,

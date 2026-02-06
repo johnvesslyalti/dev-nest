@@ -6,7 +6,8 @@ import {
   Req,
   UseGuards,
   Get,
-  UnauthorizedException,
+  Ip,
+  Headers,
 } from "@nestjs/common";
 import { AuthService } from "./auth.service";
 import { RegisterDto, LoginDto } from "./dto/auth.dto";
@@ -21,8 +22,10 @@ export class AuthController {
   async register(
     @Body() registerDto: RegisterDto,
     @Res({ passthrough: true }) res: Response,
+    @Ip() ip: string,
+    @Headers("user-agent") userAgent: string,
   ) {
-    const result = await this.authService.register(registerDto);
+    const result = await this.authService.register(registerDto, ip, userAgent);
     this.setCookie(res, result.refreshToken);
     return {
       message: "User registered successfully",
@@ -35,8 +38,10 @@ export class AuthController {
   async login(
     @Body() loginDto: LoginDto,
     @Res({ passthrough: true }) res: Response,
+    @Ip() ip: string,
+    @Headers("user-agent") userAgent: string,
   ) {
-    const result = await this.authService.login(loginDto);
+    const result = await this.authService.login(loginDto, ip, userAgent);
     this.setCookie(res, result.refreshToken);
     return {
       message: "Login successful",
@@ -46,17 +51,32 @@ export class AuthController {
   }
 
   @Post("logout")
-  @UseGuards(AuthGuard("jwt"))
-  async logout(@Req() req: any, @Res({ passthrough: true }) res: Response) {
-    await this.authService.logout(req.user.id);
+  async logout(@Req() req: Request, @Res({ passthrough: true }) res: Response) {
+    const refreshToken = req.cookies["refreshToken"];
+    await this.authService.logout(refreshToken);
     res.clearCookie("refreshToken");
     return { message: "Logged out successfully" };
   }
 
   @Post("refresh")
-  async refresh(@Req() req: Request) {
+  async refresh(
+    @Req() req: Request, 
+    @Res({ passthrough: true }) res: Response,
+    @Ip() ip: string,
+    @Headers("user-agent") userAgent: string,
+  ) {
     const refreshToken = req.cookies["refreshToken"];
-    return this.authService.refresh(refreshToken);
+    const result = await this.authService.refresh(refreshToken, ip, userAgent);
+    this.setCookie(res, result.refreshToken);
+    return result;
+  }
+
+  @Post("delete")
+  @UseGuards(AuthGuard("jwt"))
+  async deleteAccount(@Req() req: any, @Res({ passthrough: true }) res: Response) {
+    await this.authService.softDelete(req.user.id);
+    res.clearCookie("refreshToken");
+    return { message: "Account deleted successfully" };
   }
 
   @Get("me")
