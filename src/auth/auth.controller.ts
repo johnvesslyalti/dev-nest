@@ -15,7 +15,8 @@ import { RegisterDto, LoginDto } from "./dto/auth.dto";
 import { Response, Request } from "express";
 import { AuthGuard } from "@nestjs/passport";
 import { ThrottlerGuard } from "@nestjs/throttler";
-import { CacheInterceptor, CacheKey, CacheTTL } from "@nestjs/cache-manager";
+import { CacheTTL } from "@nestjs/cache-manager";
+import { UserCacheInterceptor } from "../common/interceptors/user-cache.interceptor";
 
 @UseGuards(ThrottlerGuard)
 @Controller("auth")
@@ -84,8 +85,7 @@ export class AuthController {
   }
 
   @Get("me")
-  @UseInterceptors(CacheInterceptor)
-  @CacheKey("custom_key")
+  @UseInterceptors(UserCacheInterceptor)
   @CacheTTL(30) // 30 seconds
   @UseGuards(AuthGuard("jwt"))
   async me(@Req() req: any) {
