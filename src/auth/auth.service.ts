@@ -184,7 +184,7 @@ export class AuthService {
         },
       ),
       this.jwtService.signAsync(
-        { id: userId },
+        { id: userId, tokenId: crypto.randomUUID() },
         {
           secret:
             this.configService.get<string>("REFRESH_SECRET") ||
