@@ -69,13 +69,14 @@ frontend/             # React + Vite application
 DevNest implements advanced security and privacy features:
 
 ### 🔐 Authentication & Security
+* **Robust Token Generation**: Refresh tokens include a **unique UUID (`tokenId`)** in the payload to prevent collisions during rapid authentication requests (e.g., simultaneous Login/Register), ensuring reliability under high concurrency.
 * **Refresh Token Rotation**: Each time a token is refreshed, a new one is issued, and the old one is revoked. Reuse of an old token triggers a **chain revocation** for security.
 * **Device Tracking**: We log `IP Address` and `User-Agent` for each login to detect suspicious activity.
 * **IP Privacy**: All IP addresses are **hashed (SHA-256)** before storage to protect user privacy.
 
 ### 🗑️ Data Management
-* **Soft Deletes**: User accounts are soft-deleted (`deletedAt` timestamp), ensuring data integrity while preventing access.
-* **Cascade Revocation**: Deleting an account instantly invalidates all active sessions (Refresh Tokens).
+* **Soft Deletes**: User accounts are soft-deleted (`deletedAt` timestamp). This action **instantly revokes all active sessions** (Refresh Tokens) and prevents further logins, preserving data integrity while effectively disabling the account.
+* **Cascade Revocation**: Deleting an account or detecting token reuse instantly invalidates all associated tokens.
 
 ---
 
@@ -122,6 +123,7 @@ cd dev-nest
    ```
 
 3. **Database Setup (Multi-DB)**
+   
    Generate Prisma clients for both Postgres and Mongo:
    ```bash
    npm run generate
@@ -148,23 +150,28 @@ cd dev-nest
    ```
    Server defaults to `http://localhost:3000/api/v1`.
 
-### 🧪 Verifying the Backend (Manual Test)
+### 🧪 Verifying the Backend
 
-Since standard test suites are currently being set up, you can run a comprehensive manual verification script to ensure all API endpoints (Auth, Posts, Comments, Likes) are working correctly.
+Since standard test suites are currently being set up, you can run comprehensive manual verification scripts to ensure all API endpoints and security features are working correctly.
 
 1. **Ensure the backend is running** (`npm run dev`).
-2. **Run the manual test script**:
+2. **Run the manual functional test**:
    ```bash
    npm run test:manual
    ```
-   ```
-   This will execute a sequence of API calls (Register -> Login -> Create Post -> interact -> Check Feed) and report the status.
+   **Scope**: Register -> Login -> Create Post -> Like/Unlike -> Comment -> Get Feed.
+   **Expected Output**: `✅ All tests passed successfully!`
 
 3. **Verify Authentication & Privacy Features**:
    ```bash
    npm run test:auth
    ```
-   This verifies registration, token rotation, soft deletes, and IP hashing privacy mechanics.
+   **Scope**:
+   - **Registration**: Checks DB for correct user creation and IP hashing.
+   - **Token Rotation**: Verifies that refreshing a token issues a new one and revokes the old one.
+   - **Soft Delete**: Confirms that deleting a user sets `deletedAt` and revokes **all** refresh tokens.
+   - **Login Prevention**: Ensures a soft-deleted user cannot log in.
+   **Expected Output**: `Verification Complete!`
 
 ### 3️⃣ Frontend Setup
 
