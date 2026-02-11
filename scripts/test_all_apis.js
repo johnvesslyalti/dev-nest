@@ -167,12 +167,24 @@ async function main() {
     }
   });
   
-  /*
-  // Optional: functionality based on UsersController and ProfileController
-  await testStep('Get User Profile', async () => {
-     // Assuming implementation details from profile controller
+  await testStep('Get Profile', async () => {
+    const res = await request(`/profile/${userId}`);
+    if (res.id !== userId) throw new Error('Profile ID mismatch');
+    if (!res.username) throw new Error('Profile username missing');
   });
-  */
+
+  await testStep('Update Bio', async () => {
+    const newBio = `Updated bio at ${Date.now()}`;
+    const res = await request('/profile/bio', {
+      method: 'PATCH',
+      body: JSON.stringify({ bio: newBio })
+    });
+    if (res.bio !== newBio) throw new Error('Bio update response mismatch');
+    
+    // Check if GET returns new bio (verifying cache invalidation)
+    const getRes = await request(`/profile/${userId}`);
+    if (getRes.bio !== newBio) throw new Error('Profile GET did not return updated bio (Cache invalidation failed?)');
+  });
 
   console.log('\n✅ All tests passed successfully!');
 }
