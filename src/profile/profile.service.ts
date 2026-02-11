@@ -1,47 +1,51 @@
-import { Injectable } from "@nestjs/common";
-import { PrismaService } from "../prisma/prisma.service";
+import { Injectable, Inject } from "@nestjs/common";
+import { CACHE_MANAGER } from "@nestjs/cache-manager";
+import { Cache } from "cache-manager";
+import { ProfileRepository } from "./profile.repository";
 
 @Injectable()
 export class ProfileService {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private profileRepository: ProfileRepository,
+    @Inject(CACHE_MANAGER) private cacheManager: Cache,
+  ) {}
+
+  private async getPublicProfile(identifier: string) {
+    const cacheKey = `profile:public:${identifier}`;
+    const cachedProfile = await this.cacheManager.get(cacheKey);
+
+    if (cachedProfile) {
+      return cachedProfile;
+    }
+
+    const profile = await this.profileRepository.findUserPublicData(identifier);
+
+    if (profile) {
+      await this.cacheManager.set(cacheKey, profile, 600000); // 10 minutes
+    }
+
+    return profile;
+  }
 
   async findUser(identifier: string, currentUserId?: string) {
-    const profile = await this.prisma.user.findFirst({
-      where: {
-        OR: [{ id: identifier }, { username: identifier }],
-      },
-      select: {
-        id: true,
-        name: true,
-        username: true,
-        avatarUrl: true,
-        bio: true,
-        createdAt: true,
-        _count: {
-          select: {
-            followers: true,
-            following: true,
-            posts: true,
-          },
-        },
-        ...(currentUserId
-          ? {
-              followers: {
-                where: { followerId: currentUserId },
-                select: { id: true },
-              },
-            }
-          : {}),
-      },
-    });
+    const profile: any = await this.getPublicProfile(identifier);
+
+    if (!profile) return null;
+
+    let isFollowing = false;
+
+    if (currentUserId) {
+      isFollowing = await this.profileRepository.checkIsFollowing(
+        profile.id,
+        currentUserId,
+      );
+    }
 
     if (!profile) return null;
 
     return {
       ...profile,
-      isFollowing: currentUserId
-        ? (profile as any).followers.length > 0
-        : false,
+      isFollowing,
       followers: undefined,
     };
   }
@@ -49,42 +53,16 @@ export class ProfileService {
   async searchUsers(query: string) {
     if (!query || query.length < 2) return [];
 
-    return this.prisma.user.findMany({
-      where: {
-        OR: [
-          { username: { contains: query, mode: "insensitive" } },
-          { name: { contains: query, mode: "insensitive" } },
-        ],
-      },
-      take: 5,
-      select: {
-        id: true,
-        name: true,
-        username: true,
-        avatarUrl: true,
-      },
-    });
+    return this.profileRepository.searchUsersMinimal(query);
   }
 
   async updateBio(userId: string, bio: string) {
-    return this.prisma.user.update({
-      where: { id: userId },
-      data: { bio },
-      select: {
-        id: true,
-        name: true,
-        username: true,
-        avatarUrl: true,
-        bio: true,
-        createdAt: true,
-        _count: {
-          select: {
-            followers: true,
-            following: true,
-            posts: true,
-          },
-        },
-      },
-    });
+    const updatedUser = await this.profileRepository.updateUserBio(userId, bio);
+
+    // Invalidate cache for both ID and username
+    await this.cacheManager.del(`profile:public:${updatedUser.id}`);
+    await this.cacheManager.del(`profile:public:${updatedUser.username}`);
+
+    return updatedUser;
   }
 }
