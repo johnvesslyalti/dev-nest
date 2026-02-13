@@ -2,7 +2,6 @@ import { MiddlewareConsumer, Module, NestModule } from "@nestjs/common";
 import { ThrottlerModule } from "@nestjs/throttler";
 import { ConfigModule, ConfigService } from "@nestjs/config";
 import { ThrottlerStorageRedisService } from "./common/throttler-storage-redis.service";
-
 import { AuthModule } from "./auth/auth.module";
 import { PrismaModule } from "./prisma/prisma.module";
 import { UsersModule } from "./users/users.module";
