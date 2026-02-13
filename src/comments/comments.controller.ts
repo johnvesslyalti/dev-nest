@@ -7,10 +7,14 @@ import {
   Query,
   UseGuards,
   Req,
+  UseInterceptors,
 } from "@nestjs/common";
 import { CommentsService } from "./comments.service";
 import { JwtAuthGuard } from "../auth/guards/jwt-auth.guard";
+import { ThrottlerGuard } from "@nestjs/throttler";
+import { CacheInterceptor, CacheTTL } from "@nestjs/cache-manager";
 
+@UseGuards(ThrottlerGuard)
 @Controller("posts/:postId/comments")
 export class CommentsController {
   constructor(private readonly commentsService: CommentsService) {}
@@ -30,6 +34,8 @@ export class CommentsController {
     return { message: "Comment added", comment };
   }
 
+  @UseInterceptors(CacheInterceptor)
+  @CacheTTL(30000) // 30 seconds
   @Get()
   async findByPost(
     @Param("postId") postId: string,
