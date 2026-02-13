@@ -8,7 +8,9 @@ import {
 } from "@nestjs/common";
 import { LikesService } from "./likes.service";
 import { JwtAuthGuard } from "../auth/guards/jwt-auth.guard";
+import { ThrottlerGuard } from "@nestjs/throttler";
 
+@UseGuards(ThrottlerGuard)
 @Controller("posts/:postId/like")
 export class LikesController {
   constructor(private readonly likesService: LikesService) {}
