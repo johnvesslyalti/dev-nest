@@ -11,6 +11,8 @@ import { CommentsModule } from "./comments/comments.module";
 import { LikesModule } from "./likes/likes.module";
 import { LoggingMiddleware } from "./common/middleware/logging.middleware";
 
+import { FeedModule } from "./feed/feed.module";
+
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
@@ -29,6 +31,7 @@ import { LoggingMiddleware } from "./common/middleware/logging.middleware";
     PostsModule,
     CommentsModule,
     LikesModule,
+    FeedModule,
   ],
   controllers: [],
   providers: [],

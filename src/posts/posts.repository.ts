@@ -97,4 +97,14 @@ export class PostsRepository {
       },
     });
   }
+  async findFollowers(userId: string) {
+    return this.prisma.follow.findMany({
+      where: {
+        followingId: userId,
+      },
+      select: {
+        followerId: true,
+      },
+    });
+  }
 }
