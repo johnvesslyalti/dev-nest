@@ -19,3 +19,11 @@ model User {
   email String @unique
   name  String?
 }
+
+model Feed {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String
+  posts     Json
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
