@@ -7,10 +7,13 @@ import {
   Body,
   UseGuards,
   Req,
+  UseInterceptors,
 } from "@nestjs/common";
 import { ProfileService } from "./profile.service";
 import { JwtAuthGuard } from "../auth/guards/jwt-auth.guard";
 import { Request } from "express";
+import { ThrottlerGuard } from "@nestjs/throttler";
+import { CacheInterceptor, CacheTTL } from "@nestjs/cache-manager";
 
 // To gracefully handle optional auth for getUserProfile (to see if following),
 // we might need a LooseAuthGuard or just manually check header.
@@ -23,10 +26,13 @@ import { Request } from "express";
 // Wait, global auth middleware? NestJS uses Guards per route mostly.
 // I'll implement a simple helper for getProfile to extract ID optionally.
 
+@UseGuards(ThrottlerGuard)
 @Controller("profile")
 export class ProfileController {
   constructor(private readonly profileService: ProfileService) {}
 
+  @UseInterceptors(CacheInterceptor)
+  @CacheTTL(60000) // 1 minute
   @Get("search")
   async search(@Query("query") query: string) {
     return this.profileService.searchUsers(query);
@@ -38,6 +44,8 @@ export class ProfileController {
     return this.profileService.updateBio(req.user.id, body.bio);
   }
 
+  @UseInterceptors(CacheInterceptor)
+  @CacheTTL(60000) // 1 minute
   @Get(":identifier")
   async getProfile(
     @Param("identifier") identifier: string,

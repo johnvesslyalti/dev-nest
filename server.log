@@ -2,70 +2,83 @@
 > devnest-backend@1.0.0 start
 > nest start
 
-[32m[Nest] 18893  - [39m02/11/2026, 3:14:09 PM [32m    LOG[39m [38;5;3m[NestFactory] [39m[32mStarting Nest application...[39m
-[32m[Nest] 18893  - [39m02/11/2026, 3:14:09 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mAppModule dependencies initialized[39m[38;5;3m +15ms[39m
-[32m[Nest] 18893  - [39m02/11/2026, 3:14:09 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mPassportModule dependencies initialized[39m[38;5;3m +0ms[39m
-[32m[Nest] 18893  - [39m02/11/2026, 3:14:09 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mRedisCacheModule dependencies initialized[39m[38;5;3m +0ms[39m
-[32m[Nest] 18893  - [39m02/11/2026, 3:14:09 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mConfigHostModule dependencies initialized[39m[38;5;3m +0ms[39m
-[32m[Nest] 18893  - [39m02/11/2026, 3:14:09 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mConfigModule dependencies initialized[39m[38;5;3m +12ms[39m
-[32m[Nest] 18893  - [39m02/11/2026, 3:14:09 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mConfigModule dependencies initialized[39m[38;5;3m +0ms[39m
-[32m[Nest] 18893  - [39m02/11/2026, 3:14:09 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mPrismaModule dependencies initialized[39m[38;5;3m +1ms[39m
-[32m[Nest] 18893  - [39m02/11/2026, 3:14:09 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mThrottlerModule dependencies initialized[39m[38;5;3m +0ms[39m
-[32m[Nest] 18893  - [39m02/11/2026, 3:14:09 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mJwtModule dependencies initialized[39m[38;5;3m +0ms[39m
-[32m[Nest] 18893  - [39m02/11/2026, 3:14:09 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mUsersModule dependencies initialized[39m[38;5;3m +2ms[39m
-[32m[Nest] 18893  - [39m02/11/2026, 3:14:09 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mPostsModule dependencies initialized[39m[38;5;3m +1ms[39m
-[32m[Nest] 18893  - [39m02/11/2026, 3:14:09 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mCommentsModule dependencies initialized[39m[38;5;3m +0ms[39m
-[32m[Nest] 18893  - [39m02/11/2026, 3:14:09 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mLikesModule dependencies initialized[39m[38;5;3m +0ms[39m
-[32m[Nest] 18893  - [39m02/11/2026, 3:14:09 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mCacheModule dependencies initialized[39m[38;5;3m +7ms[39m
-[32m[Nest] 18893  - [39m02/11/2026, 3:14:09 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mAuthModule dependencies initialized[39m[38;5;3m +0ms[39m
-[32m[Nest] 18893  - [39m02/11/2026, 3:14:09 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mCacheModule dependencies initialized[39m[38;5;3m +1ms[39m
-[32m[Nest] 18893  - [39m02/11/2026, 3:14:09 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mProfileModule dependencies initialized[39m[38;5;3m +0ms[39m
-[33m[Nest] 18893  - [39m02/11/2026, 3:14:09 PM [33m   WARN[39m [38;5;3m[LegacyRouteConverter] [39m[33mUnsupported route path: "/api/v1/*". In previous versions, the symbols ?, *, and + were used to denote optional or repeating path parameters. The latest version of "path-to-regexp" now requires the use of named parameters. For example, instead of using a route like /users/* to capture all routes starting with "/users", you should use /users/*path. For more details, refer to the migration guide. Attempting to auto-convert...[39m
-[32m[Nest] 18893  - [39m02/11/2026, 3:14:09 PM [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mAuthController {/api/v1/auth}:[39m[38;5;3m +1ms[39m
-[32m[Nest] 18893  - [39m02/11/2026, 3:14:09 PM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/v1/auth/register, POST} route[39m[38;5;3m +7ms[39m
-[32m[Nest] 18893  - [39m02/11/2026, 3:14:09 PM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/v1/auth/login, POST} route[39m[38;5;3m +1ms[39m
-[32m[Nest] 18893  - [39m02/11/2026, 3:14:09 PM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/v1/auth/logout, POST} route[39m[38;5;3m +0ms[39m
-[32m[Nest] 18893  - [39m02/11/2026, 3:14:09 PM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/v1/auth/refresh, POST} route[39m[38;5;3m +0ms[39m
-[32m[Nest] 18893  - [39m02/11/2026, 3:14:09 PM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/v1/auth/delete, POST} route[39m[38;5;3m +0ms[39m
-[32m[Nest] 18893  - [39m02/11/2026, 3:14:09 PM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/v1/auth/me, GET} route[39m[38;5;3m +1ms[39m
-[32m[Nest] 18893  - [39m02/11/2026, 3:14:09 PM [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mUsersController {/api/v1/users}:[39m[38;5;3m +0ms[39m
-[32m[Nest] 18893  - [39m02/11/2026, 3:14:09 PM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/v1/users/:id, GET} route[39m[38;5;3m +0ms[39m
-[32m[Nest] 18893  - [39m02/11/2026, 3:14:09 PM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/v1/users, POST} route[39m[38;5;3m +0ms[39m
-[32m[Nest] 18893  - [39m02/11/2026, 3:14:09 PM [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mProfileController {/api/v1/profile}:[39m[38;5;3m +0ms[39m
-[32m[Nest] 18893  - [39m02/11/2026, 3:14:09 PM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/v1/profile/search, GET} route[39m[38;5;3m +1ms[39m
-[32m[Nest] 18893  - [39m02/11/2026, 3:14:09 PM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/v1/profile/bio, PATCH} route[39m[38;5;3m +0ms[39m
-[32m[Nest] 18893  - [39m02/11/2026, 3:14:09 PM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/v1/profile/:identifier, GET} route[39m[38;5;3m +0ms[39m
-[32m[Nest] 18893  - [39m02/11/2026, 3:14:09 PM [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mPostsController {/api/v1/posts}:[39m[38;5;3m +0ms[39m
-[32m[Nest] 18893  - [39m02/11/2026, 3:14:09 PM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/v1/posts, POST} route[39m[38;5;3m +0ms[39m
-[32m[Nest] 18893  - [39m02/11/2026, 3:14:09 PM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/v1/posts/user/:username, GET} route[39m[38;5;3m +0ms[39m
-[32m[Nest] 18893  - [39m02/11/2026, 3:14:09 PM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/v1/posts/:id, GET} route[39m[38;5;3m +0ms[39m
-[32m[Nest] 18893  - [39m02/11/2026, 3:14:09 PM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/v1/posts, GET} route[39m[38;5;3m +1ms[39m
-[32m[Nest] 18893  - [39m02/11/2026, 3:14:09 PM [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mCommentsController {/api/v1/posts/:postId/comments}:[39m[38;5;3m +0ms[39m
-[32m[Nest] 18893  - [39m02/11/2026, 3:14:09 PM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/v1/posts/:postId/comments, POST} route[39m[38;5;3m +0ms[39m
-[32m[Nest] 18893  - [39m02/11/2026, 3:14:09 PM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/v1/posts/:postId/comments, GET} route[39m[38;5;3m +0ms[39m
-[32m[Nest] 18893  - [39m02/11/2026, 3:14:09 PM [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mLikesController {/api/v1/posts/:postId/like}:[39m[38;5;3m +0ms[39m
-[32m[Nest] 18893  - [39m02/11/2026, 3:14:09 PM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/v1/posts/:postId/like, POST} route[39m[38;5;3m +0ms[39m
-[32m[Nest] 18893  - [39m02/11/2026, 3:14:09 PM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/v1/posts/:postId/like, DELETE} route[39m[38;5;3m +0ms[39m
-[32m[Nest] 18893  - [39m02/11/2026, 3:14:09 PM [32m    LOG[39m [38;5;3m[NestApplication] [39m[32mNest application successfully started[39m[38;5;3m +27ms[39m
-[31m[Nest] 18893  - [39m02/11/2026, 3:14:09 PM [31m  ERROR[39m [38;5;3m[NestApplication] [39m[31mError: listen EADDRINUSE: address already in use :::3000[39m[38;5;3m +1ms[39m
-node:net:1940
-    const ex = new UVExceptionWithHostPort(err, 'listen', address, port);
-               ^
-
-Error: listen EADDRINUSE: address already in use :::3000
-    at Server.setupListenHandle [as _listen2] (node:net:1940:16)
-    at listenInCluster (node:net:1997:12)
-    at Server.listen (node:net:2102:7)
-    at ExpressAdapter.listen (/home/johnvesslyalti/johnvesslyalti_workspace/dev-nest/node_modules/@nestjs/platform-express/adapters/express-adapter.js:127:32)
-    at /home/johnvesslyalti/johnvesslyalti_workspace/dev-nest/node_modules/@nestjs/core/nest-application.js:188:30
-    at new Promise (<anonymous>)
-    at NestApplication.listen (/home/johnvesslyalti/johnvesslyalti_workspace/dev-nest/node_modules/@nestjs/core/nest-application.js:178:16)
-    at async bootstrap (/home/johnvesslyalti/johnvesslyalti_workspace/dev-nest/src/main.ts:19:3) {
-  code: 'EADDRINUSE',
-  errno: -98,
-  syscall: 'listen',
-  address: '::',
-  port: 3000
-}
-
-Node.js v25.4.0
+[32m[Nest] 9406  - [39m02/14/2026, 2:05:32 PM [32m    LOG[39m [38;5;3m[NestFactory] [39m[32mStarting Nest application...[39m
+[32m[Nest] 9406  - [39m02/14/2026, 2:05:32 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mAppModule dependencies initialized[39m[38;5;3m +12ms[39m
+[32m[Nest] 9406  - [39m02/14/2026, 2:05:32 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mPassportModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 9406  - [39m02/14/2026, 2:05:32 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mRedisCacheModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 9406  - [39m02/14/2026, 2:05:32 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mConfigHostModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 9406  - [39m02/14/2026, 2:05:32 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mConfigModule dependencies initialized[39m[38;5;3m +13ms[39m
+[32m[Nest] 9406  - [39m02/14/2026, 2:05:32 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mConfigModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 9406  - [39m02/14/2026, 2:05:32 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mPrismaModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 9406  - [39m02/14/2026, 2:05:32 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mThrottlerModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 9406  - [39m02/14/2026, 2:05:32 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mJwtModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 9406  - [39m02/14/2026, 2:05:32 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mLikesModule dependencies initialized[39m[38;5;3m +2ms[39m
+[32m[Nest] 9406  - [39m02/14/2026, 2:05:32 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mCacheModule dependencies initialized[39m[38;5;3m +10ms[39m
+[32m[Nest] 9406  - [39m02/14/2026, 2:05:32 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mAuthModule dependencies initialized[39m[38;5;3m +1ms[39m
+[32m[Nest] 9406  - [39m02/14/2026, 2:05:32 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mCacheModule dependencies initialized[39m[38;5;3m +5ms[39m
+[32m[Nest] 9406  - [39m02/14/2026, 2:05:32 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mUsersModule dependencies initialized[39m[38;5;3m +1ms[39m
+[32m[Nest] 9406  - [39m02/14/2026, 2:05:32 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mPostsModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 9406  - [39m02/14/2026, 2:05:32 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mProfileModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 9406  - [39m02/14/2026, 2:05:32 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mCacheModule dependencies initialized[39m[38;5;3m +1ms[39m
+[32m[Nest] 9406  - [39m02/14/2026, 2:05:32 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mCommentsModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 9406  - [39m02/14/2026, 2:05:32 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mCacheModule dependencies initialized[39m[38;5;3m +0ms[39m
+[33m[Nest] 9406  - [39m02/14/2026, 2:05:32 PM [33m   WARN[39m [38;5;3m[LegacyRouteConverter] [39m[33mUnsupported route path: "/api/v1/*". In previous versions, the symbols ?, *, and + were used to denote optional or repeating path parameters. The latest version of "path-to-regexp" now requires the use of named parameters. For example, instead of using a route like /users/* to capture all routes starting with "/users", you should use /users/*path. For more details, refer to the migration guide. Attempting to auto-convert...[39m
+[32m[Nest] 9406  - [39m02/14/2026, 2:05:32 PM [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mAuthController {/api/v1/auth}:[39m[38;5;3m +1ms[39m
+[32m[Nest] 9406  - [39m02/14/2026, 2:05:32 PM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/v1/auth/register, POST} route[39m[38;5;3m +2ms[39m
+[32m[Nest] 9406  - [39m02/14/2026, 2:05:32 PM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/v1/auth/login, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 9406  - [39m02/14/2026, 2:05:32 PM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/v1/auth/logout, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 9406  - [39m02/14/2026, 2:05:32 PM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/v1/auth/refresh, POST} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 9406  - [39m02/14/2026, 2:05:32 PM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/v1/auth/delete, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 9406  - [39m02/14/2026, 2:05:32 PM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/v1/auth/me, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 9406  - [39m02/14/2026, 2:05:32 PM [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mUsersController {/api/v1/users}:[39m[38;5;3m +0ms[39m
+[32m[Nest] 9406  - [39m02/14/2026, 2:05:32 PM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/v1/users/:id, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 9406  - [39m02/14/2026, 2:05:32 PM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/v1/users, POST} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 9406  - [39m02/14/2026, 2:05:32 PM [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mProfileController {/api/v1/profile}:[39m[38;5;3m +0ms[39m
+[32m[Nest] 9406  - [39m02/14/2026, 2:05:32 PM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/v1/profile/search, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 9406  - [39m02/14/2026, 2:05:32 PM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/v1/profile/bio, PATCH} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 9406  - [39m02/14/2026, 2:05:32 PM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/v1/profile/:identifier, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 9406  - [39m02/14/2026, 2:05:32 PM [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mPostsController {/api/v1/posts}:[39m[38;5;3m +0ms[39m
+[32m[Nest] 9406  - [39m02/14/2026, 2:05:32 PM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/v1/posts, POST} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 9406  - [39m02/14/2026, 2:05:32 PM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/v1/posts/user/:username, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 9406  - [39m02/14/2026, 2:05:32 PM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/v1/posts/:id, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 9406  - [39m02/14/2026, 2:05:32 PM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/v1/posts, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 9406  - [39m02/14/2026, 2:05:32 PM [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mCommentsController {/api/v1/posts/:postId/comments}:[39m[38;5;3m +0ms[39m
+[32m[Nest] 9406  - [39m02/14/2026, 2:05:32 PM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/v1/posts/:postId/comments, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 9406  - [39m02/14/2026, 2:05:32 PM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/v1/posts/:postId/comments, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 9406  - [39m02/14/2026, 2:05:32 PM [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mLikesController {/api/v1/posts/:postId/like}:[39m[38;5;3m +0ms[39m
+[32m[Nest] 9406  - [39m02/14/2026, 2:05:32 PM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/v1/posts/:postId/like, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 9406  - [39m02/14/2026, 2:05:32 PM [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/v1/posts/:postId/like, DELETE} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 9406  - [39m02/14/2026, 2:05:32 PM [32m    LOG[39m [38;5;3m[NestApplication] [39m[32mNest application successfully started[39m[38;5;3m +23ms[39m
+[32m[Nest] 9406  - [39m02/14/2026, 2:06:11 PM [32m    LOG[39m [38;5;3m[LoggingMiddleware] [39m[32mGET /api/v1/posts 429 - 10ms[39m
+[32m[Nest] 9406  - [39m02/14/2026, 2:06:11 PM [32m    LOG[39m [38;5;3m[LoggingMiddleware] [39m[32mGET /api/v1/posts 429 - 11ms[39m
+[32m[Nest] 9406  - [39m02/14/2026, 2:06:11 PM [32m    LOG[39m [38;5;3m[LoggingMiddleware] [39m[32mGET /api/v1/posts 429 - 11ms[39m
+[32m[Nest] 9406  - [39m02/14/2026, 2:06:11 PM [32m    LOG[39m [38;5;3m[LoggingMiddleware] [39m[32mGET /api/v1/posts 429 - 11ms[39m
+[32m[Nest] 9406  - [39m02/14/2026, 2:06:11 PM [32m    LOG[39m [38;5;3m[LoggingMiddleware] [39m[32mGET /api/v1/posts 429 - 12ms[39m
+[32m[Nest] 9406  - [39m02/14/2026, 2:06:11 PM [32m    LOG[39m [38;5;3m[LoggingMiddleware] [39m[32mGET /api/v1/posts 200 - 94ms[39m
+[32m[Nest] 9406  - [39m02/14/2026, 2:06:11 PM [32m    LOG[39m [38;5;3m[LoggingMiddleware] [39m[32mGET /api/v1/posts 200 - 93ms[39m
+[32m[Nest] 9406  - [39m02/14/2026, 2:06:11 PM [32m    LOG[39m [38;5;3m[LoggingMiddleware] [39m[32mGET /api/v1/posts 200 - 93ms[39m
+[32m[Nest] 9406  - [39m02/14/2026, 2:06:11 PM [32m    LOG[39m [38;5;3m[LoggingMiddleware] [39m[32mGET /api/v1/posts 200 - 92ms[39m
+[32m[Nest] 9406  - [39m02/14/2026, 2:06:11 PM [32m    LOG[39m [38;5;3m[LoggingMiddleware] [39m[32mGET /api/v1/posts 200 - 92ms[39m
+[32m[Nest] 9406  - [39m02/14/2026, 2:06:11 PM [32m    LOG[39m [38;5;3m[LoggingMiddleware] [39m[32mGET /api/v1/posts 200 - 94ms[39m
+[32m[Nest] 9406  - [39m02/14/2026, 2:06:11 PM [32m    LOG[39m [38;5;3m[LoggingMiddleware] [39m[32mGET /api/v1/posts 200 - 95ms[39m
+[32m[Nest] 9406  - [39m02/14/2026, 2:06:11 PM [32m    LOG[39m [38;5;3m[LoggingMiddleware] [39m[32mGET /api/v1/posts 200 - 96ms[39m
+[32m[Nest] 9406  - [39m02/14/2026, 2:06:11 PM [32m    LOG[39m [38;5;3m[LoggingMiddleware] [39m[32mGET /api/v1/posts 200 - 98ms[39m
+[32m[Nest] 9406  - [39m02/14/2026, 2:06:11 PM [32m    LOG[39m [38;5;3m[LoggingMiddleware] [39m[32mGET /api/v1/posts 200 - 109ms[39m
+[32m[Nest] 9406  - [39m02/14/2026, 2:06:16 PM [32m    LOG[39m [38;5;3m[LoggingMiddleware] [39m[32mGET /api/v1/posts 429 - 1ms[39m
+[32m[Nest] 9406  - [39m02/14/2026, 2:08:13 PM [32m    LOG[39m [38;5;3m[LoggingMiddleware] [39m[32mGET /api/v1/posts 200 - 12ms[39m
+[32m[Nest] 9406  - [39m02/14/2026, 2:08:13 PM [32m    LOG[39m [38;5;3m[LoggingMiddleware] [39m[32mGET /api/v1/posts 200 - 1ms[39m
+[32m[Nest] 9406  - [39m02/14/2026, 2:08:15 PM [32m    LOG[39m [38;5;3m[LoggingMiddleware] [39m[32mGET /api/v1/posts 200 - 1ms[39m
+[32m[Nest] 9406  - [39m02/14/2026, 2:08:15 PM [32m    LOG[39m [38;5;3m[LoggingMiddleware] [39m[32mGET /api/v1/posts 429 - 3ms[39m
+[32m[Nest] 9406  - [39m02/14/2026, 2:08:15 PM [32m    LOG[39m [38;5;3m[LoggingMiddleware] [39m[32mGET /api/v1/posts 200 - 4ms[39m
+[32m[Nest] 9406  - [39m02/14/2026, 2:08:15 PM [32m    LOG[39m [38;5;3m[LoggingMiddleware] [39m[32mGET /api/v1/posts 200 - 4ms[39m
+[32m[Nest] 9406  - [39m02/14/2026, 2:08:15 PM [32m    LOG[39m [38;5;3m[LoggingMiddleware] [39m[32mGET /api/v1/posts 200 - 4ms[39m
+[32m[Nest] 9406  - [39m02/14/2026, 2:08:15 PM [32m    LOG[39m [38;5;3m[LoggingMiddleware] [39m[32mGET /api/v1/posts 200 - 3ms[39m
+[32m[Nest] 9406  - [39m02/14/2026, 2:08:15 PM [32m    LOG[39m [38;5;3m[LoggingMiddleware] [39m[32mGET /api/v1/posts 200 - 3ms[39m
+[32m[Nest] 9406  - [39m02/14/2026, 2:08:15 PM [32m    LOG[39m [38;5;3m[LoggingMiddleware] [39m[32mGET /api/v1/posts 200 - 3ms[39m
+[32m[Nest] 9406  - [39m02/14/2026, 2:08:15 PM [32m    LOG[39m [38;5;3m[LoggingMiddleware] [39m[32mGET /api/v1/posts 200 - 4ms[39m
+[32m[Nest] 9406  - [39m02/14/2026, 2:08:15 PM [32m    LOG[39m [38;5;3m[LoggingMiddleware] [39m[32mGET /api/v1/posts 429 - 6ms[39m
+[32m[Nest] 9406  - [39m02/14/2026, 2:08:15 PM [32m    LOG[39m [38;5;3m[LoggingMiddleware] [39m[32mGET /api/v1/posts 429 - 2ms[39m
+[32m[Nest] 9406  - [39m02/14/2026, 2:08:15 PM [32m    LOG[39m [38;5;3m[LoggingMiddleware] [39m[32mGET /api/v1/posts 429 - 2ms[39m
+[32m[Nest] 9406  - [39m02/14/2026, 2:08:15 PM [32m    LOG[39m [38;5;3m[LoggingMiddleware] [39m[32mGET /api/v1/posts 429 - 2ms[39m
+[32m[Nest] 9406  - [39m02/14/2026, 2:08:15 PM [32m    LOG[39m [38;5;3m[LoggingMiddleware] [39m[32mGET /api/v1/posts 429 - 2ms[39m
+[32m[Nest] 9406  - [39m02/14/2026, 2:08:15 PM [32m    LOG[39m [38;5;3m[LoggingMiddleware] [39m[32mGET /api/v1/posts 429 - 1ms[39m
