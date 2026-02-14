@@ -6,10 +6,14 @@ import {
   Param,
   UseGuards,
   Req,
+  UseInterceptors,
 } from "@nestjs/common";
 import { PostsService } from "./posts.service";
 import { JwtAuthGuard } from "../auth/guards/jwt-auth.guard";
+import { ThrottlerGuard } from "@nestjs/throttler";
+import { CacheInterceptor, CacheTTL } from "@nestjs/cache-manager";
 
+@UseGuards(ThrottlerGuard)
 @Controller("posts")
 export class PostsController {
   constructor(private readonly postsService: PostsService) {}
@@ -27,11 +31,15 @@ export class PostsController {
     return { message: "Post created", post };
   }
 
+  @UseInterceptors(CacheInterceptor)
+  @CacheTTL(60000) // 1 minute
   @Get("user/:username")
   async findByUserName(@Param("username") username: string) {
     return this.postsService.findByUserName(username);
   }
 
+  @UseInterceptors(CacheInterceptor)
+  @CacheTTL(60000) // 1 minute
   @Get(":id")
   async findOne(@Param("id") id: string) {
     return this.postsService.findOne(id);
@@ -44,6 +52,8 @@ export class PostsController {
   // Let's keep public feed here for now or standard findAll?
   // Let's add it as generic GET /, but maybe that conflicts with findOne /:id?
   // No, GET / is fine.
+  @UseInterceptors(CacheInterceptor)
+  @CacheTTL(30000) // 30 seconds for feed
   @Get()
   async findAll() {
     return this.postsService.findPublicFeed();
