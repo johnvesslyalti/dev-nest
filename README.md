@@ -16,10 +16,10 @@ Module → Controller → Service → Repository (Prisma) → Database (Postgres
 
 ### Why this architecture?
 
-* ✅ Clear separation of concerns
-* ✅ **Hybrid Database Approach**: PostgreSQL for relational data (Users, Posts) and MongoDB for flexible data (Logs, interactions).
-* ✅ Modular and scalable
-* ✅ Dependency injection for better maintainability
+- ✅ Clear separation of concerns
+- ✅ **Hybrid Database Approach**: PostgreSQL for relational data (Users, Posts) and MongoDB for flexible data (Logs, interactions).
+- ✅ Modular and scalable
+- ✅ Dependency injection for better maintainability
 
 ---
 
@@ -30,6 +30,8 @@ src/
 ├── auth/             # Authentication module
 ├── comments/         # Comments module
 ├── common/           # Shared utilities
+├── email/            # Email module (Worker-compatible)
+├── feed/             # Feed module
 ├── generated/        # Generated Prisma client code
 ├── likes/            # Likes module
 ├── posts/            # Posts module
@@ -37,7 +39,9 @@ src/
 ├── profile/          # User profile management
 ├── users/            # User management
 ├── app.module.ts     # Root module
-└── main.ts           # Application entry point
+├── main.ts           # Application entry point
+├── worker.module.ts  # Worker entry module
+└── worker.ts         # Worker entry point
 
 prisma/
 ├── postgres/         # PostgreSQL schema & migrations
@@ -52,15 +56,15 @@ frontend/             # React + Vite application
 
 ## 🛠️ Tech Stack
 
-* **Node.js** & **TypeScript**
-* **NestJS** (Backend Framework)
-* **Prisma ORM** (Multi-DB Support)
-* **PostgreSQL** (Relational Database)
-* **MongoDB** (NoSQL Database)
-* **Redis** (Caching)
-* **BullMQ** (Background Jobs)
-* **Vite + React** (Frontend)
-* **Authentication** (JWT, Refresh Token Rotation, Privacy Hashing)
+- **Node.js** & **TypeScript**
+- **NestJS** (Backend Framework)
+- **Prisma ORM** (Multi-DB Support)
+- **PostgreSQL** (Relational Database)
+- **MongoDB** (NoSQL Database)
+- **Redis** (Caching)
+- **BullMQ** (Background Jobs & Queues)
+- **Vite + React** (Frontend)
+- **Authentication** (JWT, Refresh Token Rotation, Privacy Hashing)
 
 ---
 
@@ -69,14 +73,16 @@ frontend/             # React + Vite application
 DevNest implements advanced security and privacy features:
 
 ### 🔐 Authentication & Security
-* **Robust Token Generation**: Refresh tokens include a **unique UUID (`tokenId`)** in the payload to prevent collisions during rapid authentication requests (e.g., simultaneous Login/Register), ensuring reliability under high concurrency.
-* **Refresh Token Rotation**: Each time a token is refreshed, a new one is issued, and the old one is revoked. Reuse of an old token triggers a **chain revocation** for security.
-* **Device Tracking**: We log `IP Address` and `User-Agent` for each login to detect suspicious activity.
-* **IP Privacy**: All IP addresses are **hashed (SHA-256)** before storage to protect user privacy.
+
+- **Robust Token Generation**: Refresh tokens include a **unique UUID (`tokenId`)** in the payload to prevent collisions during rapid authentication requests (e.g., simultaneous Login/Register), ensuring reliability under high concurrency.
+- **Refresh Token Rotation**: Each time a token is refreshed, a new one is issued, and the old one is revoked. Reuse of an old token triggers a **chain revocation** for security.
+- **Device Tracking**: We log `IP Address` and `User-Agent` for each login to detect suspicious activity.
+- **IP Privacy**: All IP addresses are **hashed (SHA-256)** before storage to protect user privacy.
 
 ### 🗑️ Data Management
-* **Soft Deletes**: User accounts are soft-deleted (`deletedAt` timestamp). This action **instantly revokes all active sessions** (Refresh Tokens) and prevents further logins, preserving data integrity while effectively disabling the account.
-* **Cascade Revocation**: Deleting an account or detecting token reuse instantly invalidates all associated tokens.
+
+- **Soft Deletes**: User accounts are soft-deleted (`deletedAt` timestamp). This action **instantly revokes all active sessions** (Refresh Tokens) and prevents further logins, preserving data integrity while effectively disabling the account.
+- **Cascade Revocation**: Deleting an account or detecting token reuse instantly invalidates all associated tokens.
 
 ---
 
@@ -84,11 +90,11 @@ DevNest implements advanced security and privacy features:
 
 ### 📋 Prerequisites
 
-* **Node.js** (v18+ recommended)
-* **PostgreSQL**
-* **MongoDB**
-* **Redis**
-* **Git**
+- **Node.js** (v18+ recommended)
+- **PostgreSQL**
+- **MongoDB**
+- **Redis**
+- **Git**
 
 ### 1️⃣ Clone the Repository
 
@@ -100,12 +106,14 @@ cd dev-nest
 ### 2️⃣ Backend Setup
 
 1. **Install Dependencies**
+
    ```bash
    npm install
    ```
 
 2. **Configure Environment Variables**
    Create a `.env` file in the root directory:
+
    ```env
    # PostgreSQL
    DATABASE_URL=postgresql://user:password@localhost:5432/devnest?schema=public
@@ -123,23 +131,27 @@ cd dev-nest
    ```
 
 3. **Database Setup (Multi-DB)**
-   
+
    Generate Prisma clients for both Postgres and Mongo:
+
    ```bash
    npm run generate
    ```
 
    Run migrations for PostgreSQL:
+
    ```bash
    npm run migrate:pg
    ```
 
    Push schema for MongoDB:
+
    ```bash
    npm run migrate:mongo
    ```
 
 4. **Start the Backend**
+
    ```bash
    # Development mode
    npm run dev
@@ -148,7 +160,20 @@ cd dev-nest
    npm run build
    npm run start:prod
    ```
+
    Server defaults to `http://localhost:3000/api/v1`.
+
+5. **Start the Background Worker (Optional but recommended)**
+   The worker handles background jobs such as sending emails.
+
+   ```bash
+   # Development mode
+   npm run start:worker:dev
+
+   # Production mode
+   npm run build # (if not already built)
+   npm run start:worker
+   ```
 
 ### 🧪 Verifying the Backend
 
@@ -156,9 +181,11 @@ Since standard test suites are currently being set up, you can run comprehensive
 
 1. **Ensure the backend is running** (`npm run dev`).
 2. **Run the manual functional test**:
+
    ```bash
    npm run test:manual
    ```
+
    **Scope**: Register -> Login -> Create Post -> Like/Unlike -> Comment -> Get Feed.
    **Expected Output**: `✅ All tests passed successfully!`
 
@@ -171,16 +198,18 @@ Since standard test suites are currently being set up, you can run comprehensive
    - **Token Rotation**: Verifies that refreshing a token issues a new one and revokes the old one.
    - **Soft Delete**: Confirms that deleting a user sets `deletedAt` and revokes **all** refresh tokens.
    - **Login Prevention**: Ensures a soft-deleted user cannot log in.
-   **Expected Output**: `Verification Complete!`
+     **Expected Output**: `Verification Complete!`
 
 ### 3️⃣ Frontend Setup
 
 1. **Navigate to Frontend Directory**
+
    ```bash
    cd frontend
    ```
 
 2. **Install Dependencies**
+
    ```bash
    npm install
    ```
@@ -195,11 +224,11 @@ Since standard test suites are currently being set up, you can run comprehensive
 
 ## 🧪 Development Principles
 
-* ✅ **Modules**: Feature-based separation.
-* ✅ **DTOs**: Strict input validation using `class-validator`.
-* ✅ **Guards**: Role-based and auth-based access control.
-* ✅ **Prisma**: Type-safe database queries.
-* ✅ **Prettier/ESLint**: Consistent code style.
+- ✅ **Modules**: Feature-based separation.
+- ✅ **DTOs**: Strict input validation using `class-validator`.
+- ✅ **Guards**: Role-based and auth-based access control.
+- ✅ **Prisma**: Type-safe database queries.
+- ✅ **Prettier/ESLint**: Consistent code style.
 
 ---
 
