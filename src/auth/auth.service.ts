@@ -9,6 +9,7 @@ import * as bcrypt from "bcrypt";
 import * as crypto from "crypto";
 import { RegisterDto, LoginDto } from "./dto/auth.dto";
 import { ConfigService } from "@nestjs/config";
+import { EmailService } from "../email/email.service";
 
 @Injectable()
 export class AuthService {
@@ -16,6 +17,7 @@ export class AuthService {
     private prisma: PrismaService,
     private jwtService: JwtService,
     private configService: ConfigService,
+    private emailService: EmailService,
   ) {}
 
   private hashIp(ip: string): string {
@@ -50,7 +52,8 @@ export class AuthService {
 
     const tokens = await this.generateTokens(user.id, ip, userAgent);
 
-    // TODO: Trigger email queue
+    // Trigger email queue
+    await this.emailService.sendWelcomeEmail(user.id, user.email);
 
     return {
       user: {
