@@ -1,0 +1,9 @@
+nohup: ignoring input
+18717:M 16 Feb 2026 14:25:07.053 # WARNING Memory overcommit must be enabled! Without it, a background save or replication may fail under low memory condition. Being disabled, it can also cause failures without low memory condition, see https://github.com/jemalloc/jemalloc/issues/1328. To fix this issue add 'vm.overcommit_memory = 1' to /etc/sysctl.conf and then reboot or run the command 'sysctl vm.overcommit_memory=1' for this to take effect.
+18717:M 16 Feb 2026 14:25:07.053 * oO0OoO0OoO0Oo Valkey is starting oO0OoO0OoO0Oo
+18717:M 16 Feb 2026 14:25:07.053 * Valkey version=8.1.4, bits=64, commit=5f4bae3e, modified=1, pid=18717, just started
+18717:M 16 Feb 2026 14:25:07.053 # Warning: no config file specified, using the default config. In order to specify a config file use redis-server /path/to/valkey.conf
+18717:M 16 Feb 2026 14:25:07.053 * monotonic clock: POSIX clock_gettime
+18717:M 16 Feb 2026 14:25:07.054 * Running mode=standalone, port=6379.
+18717:M 16 Feb 2026 14:25:07.054 # Warning: Could not create server TCP listening socket *:6379: bind: Address already in use
+18717:M 16 Feb 2026 14:25:07.054 # Failed listening on port 6379 (tcp), aborting.
