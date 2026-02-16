@@ -9,6 +9,8 @@
     "dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/main",
+    "start:worker": "node dist/worker",
+    "start:worker:dev": "ts-node src/worker.ts",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
     "generate": "npx prisma generate --schema ./prisma/postgres/schema.prisma && npx prisma generate --schema ./prisma/mongo/schema.prisma",
     "migrate:pg": "npx prisma migrate dev --schema=./prisma/postgres/schema.prisma",
