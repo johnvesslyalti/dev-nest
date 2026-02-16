@@ -44,8 +44,6 @@ export class ProfileController {
     return this.profileService.updateBio(req.user.id, body.bio);
   }
 
-  @UseInterceptors(CacheInterceptor)
-  @CacheTTL(60000) // 1 minute
   @Get(":identifier")
   async getProfile(
     @Param("identifier") identifier: string,
