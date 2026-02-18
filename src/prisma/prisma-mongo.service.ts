@@ -8,10 +8,15 @@ export class PrismaMongoService
   extends PrismaClient
   implements OnModuleInit, OnModuleDestroy
 {
-  constructor() {
+  constructor(private configService: ConfigService) {
     super({});
   }
   async onModuleInit() {
+    const mongoUrl = this.configService.get<string>("MONGODB_URL");
+    if (!mongoUrl) {
+      console.warn("⚠️ MONGODB_URL not found. Skipping MongoDB connection.");
+      return;
+    }
     await this.$connect();
   }
 
