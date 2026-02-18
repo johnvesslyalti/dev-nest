@@ -13,6 +13,8 @@ import { JwtAuthGuard } from "../auth/guards/jwt-auth.guard";
 import { ThrottlerGuard } from "@nestjs/throttler";
 import { CacheInterceptor, CacheTTL } from "@nestjs/cache-manager";
 
+import { CreatePostDto } from "./dto/create-post.dto";
+
 @UseGuards(ThrottlerGuard)
 @Controller("posts")
 export class PostsController {
@@ -22,7 +24,7 @@ export class PostsController {
   @UseGuards(JwtAuthGuard)
   async create(
     @Req() req: any,
-    @Body() body: { content: string },
+    @Body() body: CreatePostDto,
   ) {
     const post = await this.postsService.create(
       req.user.id,

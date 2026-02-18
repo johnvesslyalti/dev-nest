@@ -7,15 +7,7 @@ import { IsString, IsNotEmpty } from 'class-validator';
 import { ThrottlerGuard } from '@nestjs/throttler';
 import { CacheInterceptor, CacheTTL } from '@nestjs/cache-manager';
 
-class CreateUserDto {
-  @IsString()
-  @IsNotEmpty()
-  username: string;
-
-  @IsString()
-  @IsNotEmpty()
-  email: string;
-}
+import { CreateUserDto } from "./dto/create-user.dto";
 
 @Controller('users')
 @UseGuards(ApiKeyGuard, ThrottlerGuard)
