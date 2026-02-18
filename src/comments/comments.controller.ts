@@ -14,6 +14,8 @@ import { JwtAuthGuard } from "../auth/guards/jwt-auth.guard";
 import { ThrottlerGuard } from "@nestjs/throttler";
 import { CacheInterceptor, CacheTTL } from "@nestjs/cache-manager";
 
+import { CreateCommentDto } from "./dto/create-comment.dto";
+
 @UseGuards(ThrottlerGuard)
 @Controller("posts/:postId/comments")
 export class CommentsController {
@@ -24,7 +26,7 @@ export class CommentsController {
   async create(
     @Req() req: any,
     @Param("postId") postId: string,
-    @Body() body: { content: string },
+    @Body() body: CreateCommentDto,
   ) {
     const comment = await this.commentsService.create(
       req.user.id,
