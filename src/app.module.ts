@@ -3,6 +3,7 @@ import { ThrottlerModule } from "@nestjs/throttler";
 import { ConfigModule, ConfigService } from "@nestjs/config";
 import { ThrottlerStorageRedisService } from "./common/throttler-storage-redis.service";
 import { BullModule } from "@nestjs/bullmq"
+import { RedisCacheModule } from "./common/cache/cache.module";
 import { AuthModule } from "./auth/auth.module";
 import { PrismaModule } from "./prisma/prisma.module";
 import { UsersModule } from "./users/users.module";
@@ -37,6 +38,7 @@ import { EmailModule } from "./email/email.module";
       }),
     }),
     PrismaModule,
+    RedisCacheModule,
     AuthModule,
     UsersModule,
     ProfileModule,
