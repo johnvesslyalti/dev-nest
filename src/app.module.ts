@@ -16,6 +16,8 @@ import { LoggingMiddleware } from "./common/middleware/logging.middleware";
 import { FeedModule } from "./feed/feed.module";
 import { EmailModule } from "./email/email.module";
 
+import { AppController } from "./app.controller";
+
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
@@ -48,7 +50,7 @@ import { EmailModule } from "./email/email.module";
     FeedModule,
     EmailModule,
   ],
-  controllers: [],
+  controllers: [AppController],
   providers: [],
 })
 export class AppModule implements NestModule {
