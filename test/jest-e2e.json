@@ -1,4 +1,5 @@
 {
+  "testTimeout": 30000,
   "moduleFileExtensions": ["js", "json", "ts"],
   "rootDir": ".",
   "testEnvironment": "node",
@@ -8,5 +9,8 @@
   },
   "moduleNameMapper": {
     "^src/(.*)$": "<rootDir>/../src/$1"
-  }
+  },
+  "collectCoverageFrom": ["../src/**/*.ts"],
+  "coverageDirectory": "../coverage-e2e",
+  "maxWorkers": 1
 }

@@ -1,10 +1,7 @@
-import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
-import { AppModule } from '../src/app.module';
-import { ValidationPipe } from '../src/common/pipes/validation.pipe';
-import * as cookieParser from 'cookie-parser';
-import { migrateDb, resetDb } from './utils/db';
+import { createTestApp } from './utils/app';
+import { migrateDb, resetDb, seedTestData, SeededData } from './utils/db';
 import { PrismaService } from '../src/prisma/prisma.service';
 
 describe('AppController (e2e)', () => {
@@ -12,26 +9,9 @@ describe('AppController (e2e)', () => {
   let prisma: PrismaService;
 
   beforeAll(async () => {
-    jest.setTimeout(60000);
-    // Set test database URL
     process.env.POSTGRES_URL = 'postgresql://postgres:3132@localhost:5432/devnest_test';
-
-    // Migrate the test database
     migrateDb();
-
-    const moduleFixture: TestingModule = await Test.createTestingModule({
-      imports: [AppModule],
-    }).compile();
-
-    app = moduleFixture.createNestApplication();
-    
-    // Mirror main.ts setup
-    app.setGlobalPrefix('api/v1');
-    app.use(cookieParser());
-    app.useGlobalPipes(new ValidationPipe());
-
-    await app.init();
-    
+    app = await createTestApp();
     prisma = app.get(PrismaService);
   });
 
@@ -78,17 +58,15 @@ describe('AppController (e2e)', () => {
       });
 
       it('should fail if email already exists', async () => {
-        // First registration
         await request(app.getHttpServer())
           .post('/api/v1/auth/register')
           .send(registerDto)
           .expect(201);
 
-        // Second registration with same email
         await request(app.getHttpServer())
           .post('/api/v1/auth/register')
           .send(registerDto)
-          .expect(409); // ConflictException
+          .expect(409);
       });
     });
 
@@ -114,10 +92,10 @@ describe('AppController (e2e)', () => {
         await request(app.getHttpServer())
           .post('/api/v1/auth/login')
           .send({ ...loginDto, password: 'wrongpassword' })
-          .expect(401); // UnauthorizedException
+          .expect(401);
       });
     });
-    
+
     describe('POST /refresh', () => {
       let refreshTokenCookie: string;
 
@@ -125,8 +103,7 @@ describe('AppController (e2e)', () => {
         const response = await request(app.getHttpServer())
           .post('/api/v1/auth/register')
           .send(registerDto);
-        
-        // Extract refresh token cookie
+
         const cookies = response.headers['set-cookie'];
         if (Array.isArray(cookies)) {
           refreshTokenCookie = cookies.find((c: string) => c.startsWith('refreshToken='));
@@ -142,11 +119,11 @@ describe('AppController (e2e)', () => {
         expect(response.body).toHaveProperty('accessToken');
         expect(response.body).toHaveProperty('refreshToken');
       });
-      
+
       it('should fail without cookie', async () => {
         await request(app.getHttpServer())
           .post('/api/v1/auth/refresh')
-          .expect(401); // Assuming Unauthorized if guard is used or service throws
+          .expect(401);
       });
     });
 
@@ -158,7 +135,7 @@ describe('AppController (e2e)', () => {
         const response = await request(app.getHttpServer())
           .post('/api/v1/auth/register')
           .send(registerDto);
-        
+
         const cookies = response.headers['set-cookie'];
         if (Array.isArray(cookies)) {
           refreshTokenCookie = cookies.find((c: string) => c.startsWith('refreshToken='));
@@ -167,7 +144,7 @@ describe('AppController (e2e)', () => {
       });
 
       it('should logout successfully', async () => {
-         await request(app.getHttpServer())
+        await request(app.getHttpServer())
           .post('/api/v1/auth/logout')
           .set('Cookie', [refreshTokenCookie])
           .set('Authorization', `Bearer ${accessToken}`)
