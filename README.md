@@ -1,5 +1,17 @@
 # 🚀 DevNest
 
+![CI](https://github.com/johnvesslyalti/dev-nest/actions/workflows/ci.yml/badge.svg)
+
+## CI
+
+The CI pipeline runs on every push and pull request to the `main` branch. It installs dependencies, lints the code, builds the project, performs a migration safety check, and runs end‑to‑end tests.
+
+To run the same checks locally, use the helper script:
+
+```bash
+./scripts/ci-check.sh
+```
+
 **DevNest** is a scalable backend platform inspired by **X (Twitter)**, built with **Node.js, TypeScript, NestJS, Prisma (Multi-DB), PostgreSQL, MongoDB, and Redis**.
 
 It follows a **modular architecture** and focuses on building **production-ready social platform features** with performance, scalability, and maintainability in mind.
