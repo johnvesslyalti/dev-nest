@@ -1,3 +1,4 @@
+// src/post/posts.repository.ts
 import { Injectable } from "@nestjs/common";
 import { PrismaService } from "../prisma/prisma.service";
 import { Post, Prisma } from "@internal/postgres-client";
@@ -66,16 +67,34 @@ export class PostsRepository {
   }
 
   async findPublicFeed(take: number, cursor?: string) {
+    const cursorPost = cursor
+      ? await this.prisma.post.findUnique({
+          where: { id: cursor },
+          select: { id: true, createdAt: true },
+        })
+      : null;
+
+    if (cursor && !cursorPost) {
+      return [];
+    }
+
     return this.prisma.post.findMany({
       take,
-      ...(cursor && {
-        skip: 1,
-        cursor: { id: cursor },
-      }),
       where: {
-        author: { deletedAt: null }
+        author: { deletedAt: null },
+        ...(cursorPost && {
+          OR: [
+            { createdAt: { lt: cursorPost.createdAt } },
+            {
+              AND: [
+                { createdAt: cursorPost.createdAt },
+                { id: { lt: cursorPost.id } },
+              ],
+            },
+          ],
+        }),
       },
-      orderBy: { createdAt: "desc" },
+      orderBy: [{ createdAt: "desc" }, { id: "desc" }],
       select: {
         id: true,
         content: true,
