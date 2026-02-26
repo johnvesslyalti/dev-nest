@@ -4,6 +4,7 @@ import {
   Post,
   Body,
   Param,
+  Query,
   UseGuards,
   Req,
   UseInterceptors,
@@ -57,7 +58,11 @@ export class PostsController {
   @UseInterceptors(CacheInterceptor)
   @CacheTTL(30000) // 30 seconds for feed
   @Get()
-  async findAll() {
-    return this.postsService.findPublicFeed();
+  async findAll(
+    @Query("cursor") cursor?: string,
+    @Query("limit") limit?: string,
+  ) {
+    const parsedLimit = limit ? Number.parseInt(limit, 10) : undefined;
+    return this.postsService.findPublicFeed(cursor, parsedLimit);
   }
 }
