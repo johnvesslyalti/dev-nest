@@ -3,6 +3,26 @@ import { Injectable } from "@nestjs/common";
 import { PrismaService } from "../prisma/prisma.service";
 import { Post, Prisma } from "@internal/postgres-client";
 
+const publicFeedSelect = {
+  id: true,
+  content: true,
+  imageUrl: true,
+  createdAt: true,
+  author: {
+    select: {
+      id: true,
+      username: true,
+      avatarUrl: true,
+    },
+  },
+  _count: {
+    select: {
+      likes: true,
+      comments: true,
+    },
+  },
+} satisfies Prisma.PostSelect;
+
 @Injectable()
 export class PostsRepository {
   constructor(private prisma: PrismaService) {}
@@ -75,11 +95,11 @@ export class PostsRepository {
       : null;
 
     if (cursor && !cursorPost) {
-      return [];
+      return { items: [], nextCursor: null };
     }
 
-    return this.prisma.post.findMany({
-      take,
+    const posts = await this.prisma.post.findMany({
+      take: take + 1,
       where: {
         author: { deletedAt: null },
         ...(cursorPost && {
@@ -95,26 +115,14 @@ export class PostsRepository {
         }),
       },
       orderBy: [{ createdAt: "desc" }, { id: "desc" }],
-      select: {
-        id: true,
-        content: true,
-        imageUrl: true,
-        createdAt: true,
-        author: {
-          select: {
-            id: true,
-            username: true,
-            avatarUrl: true,
-          },
-        },
-        _count: {
-          select: {
-            likes: true,
-            comments: true,
-          },
-        },
-      },
+      select: publicFeedSelect,
     });
+
+    const hasNextPage = posts.length > take;
+    const items = hasNextPage ? posts.slice(0, take) : posts;
+    const nextCursor = hasNextPage ? items[items.length - 1].id : null;
+
+    return { items, nextCursor };
   }
   async findFollowers(userId: string) {
     return this.prisma.follow.findMany({

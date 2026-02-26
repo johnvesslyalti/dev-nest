@@ -30,7 +30,8 @@ export class PostsService {
     return this.postsRepository.findOne(id);
   }
 
-  async findPublicFeed(cursor?: string) {
-    return this.postsRepository.findPublicFeed(20, cursor);
+  async findPublicFeed(cursor?: string, limit = 20) {
+    const take = Math.min(Math.max(limit, 1), 50);
+    return this.postsRepository.findPublicFeed(take, cursor);
   }
 }
