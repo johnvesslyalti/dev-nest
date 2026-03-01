@@ -77,6 +77,7 @@ frontend/             # React + Vite application
 - **BullMQ** (Background Jobs & Queues)
 - **Vite + React** (Frontend)
 - **Authentication** (JWT, Refresh Token Rotation, Privacy Hashing)
+- **Testing** (Jest for E2E)
 
 ---
 
@@ -189,7 +190,23 @@ cd dev-nest
 
 ### 🧪 Verifying the Backend
 
-Since standard test suites are currently being set up, you can run comprehensive manual verification scripts to ensure all API endpoints and security features are working correctly.
+DevNest includes comprehensive **End-to-End (E2E) testing** for all major features (Authentication, Posts, Comments, Likes, and Feed), along with manual verification scripts.
+
+#### 1️⃣ Run E2E Tests (Jest)
+
+Ensure your test databases are correctly configured in `.env`, then run:
+
+```bash
+# Run all E2E tests
+npm run test:e2e
+
+# Run with coverage report
+npm run test:e2e:cov
+```
+
+#### 2️⃣ Manual API Verification
+
+You can also run comprehensive manual verification scripts to ensure all API endpoints and security features are working correctly in your active environment.
 
 1. **Ensure the backend is running** (`npm run dev`).
 2. **Run the manual functional test**:
@@ -241,6 +258,7 @@ Since standard test suites are currently being set up, you can run comprehensive
 - ✅ **Guards**: Role-based and auth-based access control.
 - ✅ **Prisma**: Type-safe database queries.
 - ✅ **Prettier/ESLint**: Consistent code style.
+- ✅ **Cursor Pagination**: Keyset pagination implemented for efficient list rendering (e.g., Feed).
 
 ---
 
