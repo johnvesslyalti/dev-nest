@@ -10,6 +10,9 @@ import * as crypto from "crypto";
 import { RegisterDto, LoginDto } from "./dto/auth.dto";
 import { ConfigService } from "@nestjs/config";
 import { EmailService } from "../email/email.service";
+import { CACHE_MANAGER } from "@nestjs/cache-manager";
+import { Cache } from "cache-manager";
+import { Inject } from "@nestjs/common";
 
 @Injectable()
 export class AuthService {
@@ -18,6 +21,7 @@ export class AuthService {
     private jwtService: JwtService,
     private configService: ConfigService,
     private emailService: EmailService,
+    @Inject(CACHE_MANAGER) private cacheManager: Cache,
   ) {}
 
   private hashIp(ip: string): string {
@@ -101,12 +105,27 @@ export class AuthService {
     };
   }
 
-  async logout(refreshToken: string) {
-    if (!refreshToken) return;
-    await this.prisma.refreshToken.update({
-      where: { token: refreshToken },
-      data: { revokedAt: new Date() },
-    });
+  async logout(refreshToken: string, accessToken?: string) {
+    if (refreshToken) {
+      await this.prisma.refreshToken.update({
+        where: { token: refreshToken },
+        data: { revokedAt: new Date() },
+      });
+    }
+
+    if (accessToken) {
+      try {
+        const decoded = this.jwtService.decode(accessToken) as any;
+        if (decoded && decoded.exp && decoded.jti) {
+          const ttl = (decoded.exp * 1000) - Date.now();
+          if (ttl > 0) {
+            await this.cacheManager.set(`denylist:${decoded.jti}`, true, ttl);
+          }
+        }
+      } catch (error) {
+        // Ignore decode errors on logout
+      }
+    }
   }
 
   async refresh(oldToken: string, ip: string, userAgent: string) {
@@ -178,7 +197,7 @@ export class AuthService {
   private async generateTokens(userId: string, ip: string, userAgent: string) {
     const [accessToken, refreshToken] = await Promise.all([
       this.jwtService.signAsync(
-        { id: userId },
+        { id: userId, jti: crypto.randomUUID() },
         {
           secret:
             this.configService.get<string>("ACCESS_SECRET") ||
