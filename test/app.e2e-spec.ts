@@ -94,6 +94,22 @@ describe('AppController (e2e)', () => {
           .send({ ...loginDto, password: 'wrongpassword' })
           .expect(401);
       });
+
+      it('should enforce maximum of 5 active sessions', async () => {
+        for (let i = 0; i < 6; i++) {
+          await request(app.getHttpServer())
+            .post('/api/v1/auth/login')
+            .send(loginDto)
+            .expect(201);
+        }
+
+        const user = await prisma.user.findUnique({ where: { email: loginDto.email } });
+        const activeSessions = await prisma.refreshToken.findMany({
+          where: { userId: user!.id, revokedAt: null },
+        });
+
+        expect(activeSessions.length).toBe(5);
+      });
     });
 
     describe('POST /refresh', () => {

@@ -92,6 +92,7 @@ export class AuthService {
       },
     });
 
+    await this.enforceDeviceLimit(user.id);
     const tokens = await this.generateTokens(user.id, ip, userAgent);
 
     return {
@@ -192,6 +193,33 @@ export class AuthService {
         avatarUrl: user.avatarUrl,
       },
     };
+  }
+
+  private async enforceDeviceLimit(userId: string) {
+    const MAX_SESSIONS = 5;
+
+    const activeSessions = await this.prisma.refreshToken.findMany({
+      where: {
+        userId,
+        revokedAt: null,
+      },
+      orderBy: {
+        createdAt: "asc",
+      },
+      select: { id: true },
+    });
+
+    if (activeSessions.length >= MAX_SESSIONS) {
+      const numToRevoke = activeSessions.length - MAX_SESSIONS + 1;
+      const sessionsToRevoke = activeSessions
+        .slice(0, numToRevoke)
+        .map((s) => s.id);
+
+      await this.prisma.refreshToken.updateMany({
+        where: { id: { in: sessionsToRevoke } },
+        data: { revokedAt: new Date() },
+      });
+    }
   }
 
   private async generateTokens(userId: string, ip: string, userAgent: string) {
