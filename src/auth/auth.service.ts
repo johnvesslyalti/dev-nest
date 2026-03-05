@@ -78,6 +78,13 @@ export class AuthService {
 
     if (user.deletedAt) throw new UnauthorizedException("Account disabled");
 
+    // Google-only accounts have no password — direct them to use OAuth
+    if (!user.password) {
+      throw new UnauthorizedException(
+        "This account uses Google sign-in. Please continue with Google.",
+      );
+    }
+
     const match = await bcrypt.compare(password, user.password);
     if (!match) throw new UnauthorizedException("Invalid credentials");
 
@@ -272,4 +279,76 @@ export class AuthService {
       data: { revokedAt: new Date() },
     });
   }
+
+  async googleLogin(
+    googleUser: { googleId: string; email: string; name: string; avatarUrl?: string },
+    ip: string,
+    userAgent: string,
+  ) {
+    const { googleId, email, name, avatarUrl } = googleUser;
+
+    // 1. Find by Google ID first
+    let user = await this.prisma.user.findUnique({ where: { googleId } });
+
+    // 2. Try to merge with an existing account by email
+    if (!user) {
+      const existing = await this.prisma.user.findUnique({ where: { email } });
+      if (existing) {
+        user = await this.prisma.user.update({
+          where: { id: existing.id },
+          data: { googleId, avatarUrl: existing.avatarUrl ?? avatarUrl },
+        });
+      }
+    }
+
+    // 3. Create a brand-new Google-only user
+    if (!user) {
+      const base = (name ?? email.split('@')[0])
+        .toLowerCase()
+        .replace(/[^a-z0-9]/g, '_')
+        .slice(0, 20);
+      const suffix = crypto.randomBytes(3).toString('hex'); // 6 chars
+      const username = `${base}_${suffix}`;
+
+      user = await this.prisma.user.create({
+        data: {
+          googleId,
+          email,
+          name,
+          username,
+          avatarUrl,
+          lastLoginAt: new Date(),
+          lastLoginIp: this.hashIp(ip),
+          lastLoginUserAgent: userAgent,
+        },
+      });
+
+      // Send welcome email for new users
+      await this.emailService.sendWelcomeEmail(user.id, user.email);
+    } else {
+      // Update login metadata for returning users
+      await this.prisma.user.update({
+        where: { id: user.id },
+        data: {
+          lastLoginAt: new Date(),
+          lastLoginIp: this.hashIp(ip),
+          lastLoginUserAgent: userAgent,
+        },
+      });
+    }
+
+    await this.enforceDeviceLimit(user.id);
+    const tokens = await this.generateTokens(user.id, ip, userAgent);
+
+    return {
+      user: {
+        id: user.id,
+        name: user.name,
+        username: user.username,
+        email: user.email,
+      },
+      ...tokens,
+    };
+  }
 }
+

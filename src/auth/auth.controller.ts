@@ -60,7 +60,7 @@ export class AuthController {
     const refreshToken = req.cookies["refreshToken"];
     const authHeader = req.headers.authorization;
     const accessToken = authHeader && authHeader.split(" ")[1];
-    
+
     await this.authService.logout(refreshToken, accessToken);
     res.clearCookie("refreshToken");
     return { message: "Logged out successfully" };
@@ -68,7 +68,7 @@ export class AuthController {
 
   @Post("refresh")
   async refresh(
-    @Req() req: Request, 
+    @Req() req: Request,
     @Res({ passthrough: true }) res: Response,
     @Ip() ip: string,
     @Headers("user-agent") userAgent: string,
@@ -94,6 +94,31 @@ export class AuthController {
   async me(@Req() req: any) {
     return this.authService.me(req.user.id);
   }
+
+  // ── Google OAuth ─────────────────────────────────────────────────────────────
+
+  @Get("google")
+  @UseGuards(AuthGuard("google"))
+  async googleAuth() {
+    // Passport guard handles the redirect to Google — no body needed
+  }
+
+  @Get("google/callback")
+  @UseGuards(AuthGuard("google"))
+  async googleCallback(
+    @Req() req: any,
+    @Res() res: Response,
+    @Ip() ip: string,
+    @Headers("user-agent") userAgent: string,
+  ) {
+    const result = await this.authService.googleLogin(req.user, ip, userAgent);
+    this.setCookie(res, result.refreshToken);
+    // Redirect frontend with the short-lived access token in the query string
+    const frontendUrl = process.env.FRONTEND_URL || "http://localhost:5173";
+    res.redirect(`${frontendUrl}/auth/callback?token=${result.accessToken}`);
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────────
 
   private setCookie(res: Response, token: string) {
     res.cookie("refreshToken", token, {
