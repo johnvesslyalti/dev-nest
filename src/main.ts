@@ -4,6 +4,8 @@ import { AppModule } from "./app.module";
 import { NestExpressApplication } from "@nestjs/platform-express";
 import * as cookieParser from "cookie-parser";
 import { ValidationPipe } from "./common/pipes/validation.pipe";
+import { LoggingInterceptor } from "./common/interceptors/logging.interceptor";
+import { GlobalExceptionFilter } from "./common/filters/global-exception.filter";
 import * as cluster from 'cluster';
 import * as os from 'os';
 
@@ -16,6 +18,8 @@ async function bootstrap() {
     credentials: true,
   });
   app.useGlobalPipes(new ValidationPipe());
+  app.useGlobalInterceptors(new LoggingInterceptor());
+  app.useGlobalFilters(new GlobalExceptionFilter());
 
   const configService = app.get(ConfigService);
   const port = configService.get("PORT") || 3001;
