@@ -7,9 +7,16 @@ export class EmailService {
   constructor(@InjectQueue('email') private emailQueue: Queue) {}
 
   async sendWelcomeEmail(userId: string, email: string) {
-    await this.emailQueue.add('welcome-email', {
-      userId,
-      email,
-    });
+    await this.emailQueue.add(
+      'welcome-email',
+      {
+        userId,
+        email,
+      },
+      {
+        attempts: 3,
+        backoff: { type: 'exponential', delay: 1000 },
+      },
+    );
   }
 }
