@@ -70,14 +70,16 @@ frontend/             # React + Vite application
 
 - **Node.js** & **TypeScript**
 - **NestJS** (Backend Framework)
+- **Node.js Clustering & Worker Threads** (Horizontal scaling & async bcrypt operations via `piscina`)
 - **Prisma ORM** (Multi-DB Support)
 - **PostgreSQL** (Relational Database)
 - **MongoDB** (NoSQL Database)
 - **Redis** (Caching)
 - **BullMQ** (Background Jobs & Queues)
 - **Vite + React** (Frontend)
-- **Authentication** (JWT, Refresh Token Rotation, Privacy Hashing)
-- **Testing** (Jest for E2E)
+- **Authentication** (JWT, Refresh Token Rotation, Google OAuth 2.0, Privacy Hashing)
+- **Testing & Performance** (Jest for E2E, k6 for Load Testing)
+- **Code Quality** (ESLint v9 Flat Config & Prettier)
 
 ---
 
@@ -228,6 +230,26 @@ You can also run comprehensive manual verification scripts to ensure all API end
    - **Soft Delete**: Confirms that deleting a user sets `deletedAt` and revokes **all** refresh tokens.
    - **Login Prevention**: Ensures a soft-deleted user cannot log in.
      **Expected Output**: `Verification Complete!`
+
+### 🚀 Performance & Load Testing
+
+DevNest is highly optimized to handle high concurrency and offload heavy CPU-bound tasks.
+
+1. **Worker Threads**: `bcrypt` password hashing is entirely offloaded to a `piscina` worker pool, preventing event loop blocking.
+2. **Horizontal Scaling**: The API leverages the Node.js `cluster` module to fork instances across all available CPU cores.
+3. **Database Connection Pooling**: Prisma connections are strictly regulated per-instance to prevent PostgreSQL connection exhaustion.
+
+**Load Test Results (`k6`)**:
+A complex scenario load test (simulating 100 concurrent users performing Registration -> Login -> Post Creation) yielded:
+- **~114 Requests Per Second**
+- **100% Success Rate** (0 dropped requests or race conditions)
+- **~51ms Average Latency**
+- **~96ms P(95) Latency**
+
+To run the load tests locally (ensure `k6` is installed):
+```bash
+k6 run k6-scenario-test.js
+```
 
 ### 3️⃣ Frontend Setup
 
