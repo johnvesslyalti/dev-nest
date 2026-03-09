@@ -1,0 +1,60 @@
+version: '3.8'
+
+services:
+  dev-nest-api:
+    build: .
+    ports:
+      - "3001:3001"
+    environment:
+      - PORT=3001
+      - POSTGRES_URL=postgresql://postgres:password123@postgres:5432/devnest?schema=public
+      - MONGODB_URI=mongodb://root:example@mongodb:27017/devnest?authSource=admin
+      - REDIS_URL=redis://redis:6379
+      - ACCESS_SECRET=dev_acc_secret
+      - REFRESH_SECRET=dev_ref_secret
+      - GOOGLE_CLIENT_ID=test
+      - GOOGLE_CLIENT_SECRET=test
+      - GOOGLE_CALLBACK_URL=http://localhost:3001/api/v1/auth/google/callback
+      - NODE_ENV=production
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_started
+      mongodb:
+        condition: service_started
+
+  postgres:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password123
+      POSTGRES_DB: devnest
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  mongodb:
+    image: mongo:6
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodata:/data/db
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+
+volumes:
+  pgdata:
+  mongodata:
