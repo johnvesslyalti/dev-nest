@@ -174,13 +174,15 @@ export class AuthService {
 
       const tokens = await this.generateTokens(user.id, ip, userAgent);
       
-      // Update chain
-      await this.prisma.refreshToken.update({
-        where: { id: savedToken.id },
-        data: { 
-          revokedAt: new Date(),
-          replacedByToken: tokens.refreshToken 
-        },
+      // Update chain via transaction
+      await this.prisma.$transaction(async (tx) => {
+        await tx.refreshToken.update({
+          where: { id: savedToken.id },
+          data: { 
+            revokedAt: new Date(),
+            replacedByToken: tokens.refreshToken 
+          },
+        });
       });
 
       return { accessToken: tokens.accessToken, refreshToken: tokens.refreshToken };
