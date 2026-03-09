@@ -7,6 +7,7 @@ import { JwtStrategy } from "./strategies/jwt.strategy";
 import { GoogleStrategy } from "./strategies/google.strategy";
 import { ConfigModule, ConfigService } from "@nestjs/config";
 import { EmailModule } from "../email/email.module";
+import { BcryptPoolService } from "./workers/bcrypt-pool.service";
 
 @Module({
   imports: [
@@ -23,7 +24,7 @@ import { EmailModule } from "../email/email.module";
     }),
   ],
   controllers: [AuthController],
-  providers: [AuthService, JwtStrategy, GoogleStrategy],
+  providers: [AuthService, JwtStrategy, GoogleStrategy, BcryptPoolService],
   exports: [AuthService],
 })
 export class AuthModule {}

@@ -63,7 +63,7 @@ export class ProfileController {
     // Actually, I can use @Req() and parse existing header if I want.
     // But better: Use a guard that returns true always but sets user.
 
-    let currentUserId: string | undefined;
+    const currentUserId: string | undefined = undefined;
 
     // Quick and dirty manual check for migration speed, assume generic JWT format
     const authHeader = req.headers.authorization;

@@ -13,6 +13,7 @@ import { EmailService } from "../email/email.service";
 import { CACHE_MANAGER } from "@nestjs/cache-manager";
 import { Cache } from "cache-manager";
 import { Inject } from "@nestjs/common";
+import { BcryptPoolService } from "./workers/bcrypt-pool.service";
 
 @Injectable()
 export class AuthService {
@@ -22,6 +23,7 @@ export class AuthService {
     private configService: ConfigService,
     private emailService: EmailService,
     @Inject(CACHE_MANAGER) private cacheManager: Cache,
+    private bcryptPoolService: BcryptPoolService,
   ) {}
 
   private hashIp(ip: string): string {
@@ -39,7 +41,7 @@ export class AuthService {
     });
     if (usernameExists) throw new ConflictException("Username already exists");
 
-    const hashedPassword = await bcrypt.hash(password, 10);
+    const hashedPassword = await this.bcryptPoolService.hash(password, 8); // Reduced cost factor for speed
     const hashedIp = this.hashIp(ip);
 
     const user = await this.prisma.user.create({
@@ -85,7 +87,7 @@ export class AuthService {
       );
     }
 
-    const match = await bcrypt.compare(password, user.password);
+    const match = await this.bcryptPoolService.compare(password, user.password);
     if (!match) throw new UnauthorizedException("Invalid credentials");
 
     const hashedIp = this.hashIp(ip);

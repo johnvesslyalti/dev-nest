@@ -11,7 +11,11 @@ export class PrismaService
 {
   constructor(@Inject(ConfigService) config: ConfigService) {
     const connectionString = config.get<string>("POSTGRES_URL");
-    const pool = new Pool({ connectionString });
+    const pool = new Pool({
+      connectionString,
+      // Target around 4 connections per instance if we have many CPU workers
+      max: 4,
+    });
     const adapter = new PrismaPg(pool);
     super({ adapter } as any);
   }
