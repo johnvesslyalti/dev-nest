@@ -17,6 +17,7 @@
     "migrate:mongo": "npx prisma db push --schema=./prisma/mongo/schema.prisma",
     "test:manual": "node scripts/test_all_apis.js",
     "test:auth": "npx tsx scripts/verify-auth.ts",
+    "pretest:e2e": "npx tsc src/auth/workers/bcrypt.worker.ts --skipLibCheck --outDir dist-test/auth/workers --esModuleInterop",
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "test:e2e:cov": "jest --config ./test/jest-e2e.json --coverage"
   },
