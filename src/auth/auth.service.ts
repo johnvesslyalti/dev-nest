@@ -207,7 +207,7 @@ export class AuthService {
   }
 
   private async enforceDeviceLimit(userId: string) {
-    const MAX_SESSIONS = 5;
+    const MAX_SESSIONS = this.configService.get<number>('MAX_SESSIONS') || 5;
 
     const activeSessions = await this.prisma.refreshToken.findMany({
       where: {
