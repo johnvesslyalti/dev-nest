@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Req, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Post, Req, Query, UseGuards } from '@nestjs/common';
 import { FeedService } from './feed.service';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 
@@ -8,8 +8,13 @@ export class FeedController {
 
   @UseGuards(JwtAuthGuard)
   @Get()
-  async getFeed(@Req() req) {
-    return this.feedService.getFeed(req.user.id);
+  async getFeed(
+    @Req() req,
+    @Query('cursor') cursor?: string,
+    @Query('limit') limit?: string,
+  ) {
+    const take = limit ? parseInt(limit, 10) : 20;
+    return this.feedService.getFeed(req.user.id, take, cursor);
   }
 
   // Test endpoint to add items to feed manually

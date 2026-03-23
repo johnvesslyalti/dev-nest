@@ -12,15 +12,22 @@ export class FeedService {
     private prisma: PrismaService,
   ) {}
 
-  async getFeed(userId: string) {
-    const cacheKey = `feed:${userId}`;
-    const cachedFeed = await this.cacheManager.get(cacheKey);
-    if (cachedFeed) {
-      return cachedFeed;
+  async getFeed(userId: string, take: number = 20, cursor?: string) {
+    const isFirstPage = !cursor;
+    const cacheKey = `feed:${userId}:first_page`;
+
+    if (isFirstPage) {
+      const cachedFeed = await this.cacheManager.get(cacheKey);
+      if (cachedFeed) {
+        return cachedFeed;
+      }
     }
 
-    const feed = await this.feedRepository.findByUserId(userId);
-    await this.cacheManager.set(cacheKey, feed, 60000); // 60s TTL
+    const feed = await this.feedRepository.findByUserId(userId, take, cursor);
+    
+    if (isFirstPage) {
+      await this.cacheManager.set(cacheKey, feed, 60000); // 60s TTL
+    }
     return feed;
   }
 
@@ -32,7 +39,7 @@ export class FeedService {
     });
 
     await Promise.all(
-      followers.map((f) => this.cacheManager.del(`feed:${f.followerId}`))
+      followers.map((f) => this.cacheManager.del(`feed:${f.followerId}:first_page`))
     );
   }
 }

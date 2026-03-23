@@ -35,10 +35,11 @@ describe('Feed (e2e)', () => {
         .set('Authorization', `Bearer ${seed.tokenA}`)
         .expect(200);
 
-      expect(Array.isArray(res.body)).toBe(true);
-      expect(res.body.length).toBeGreaterThanOrEqual(1);
-      expect(res.body[0]).toHaveProperty('author');
-      expect(res.body[0].author).toHaveProperty('username', 'userb');
+      expect(res.body).toHaveProperty('items');
+      expect(Array.isArray(res.body.items)).toBe(true);
+      expect(res.body.items.length).toBeGreaterThanOrEqual(1);
+      expect(res.body.items[0]).toHaveProperty('author');
+      expect(res.body.items[0].author).toHaveProperty('username', 'userb');
     });
 
     it('should return empty feed when user follows nobody', async () => {
@@ -48,8 +49,9 @@ describe('Feed (e2e)', () => {
         .set('Authorization', `Bearer ${seed.tokenB}`)
         .expect(200);
 
-      expect(Array.isArray(res.body)).toBe(true);
-      expect(res.body.length).toBe(0);
+      expect(res.body).toHaveProperty('items');
+      expect(Array.isArray(res.body.items)).toBe(true);
+      expect(res.body.items.length).toBe(0);
     });
   });
 

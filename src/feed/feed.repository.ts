@@ -5,9 +5,21 @@ import { PrismaService } from '../prisma/prisma.service';
 export class FeedRepository {
   constructor(private readonly prisma: PrismaService) {}
 
-  async findByUserId(userId: string) {
+  async findByUserId(userId: string, take: number = 20, cursor?: string) {
+    const cursorPost = cursor
+      ? await this.prisma.post.findUnique({
+          where: { id: cursor },
+          select: { id: true, createdAt: true },
+        })
+      : null;
+
+    if (cursor && !cursorPost) {
+      return { items: [], nextCursor: null };
+    }
+
     // Pull model: Find posts from users that the current user follows
     const posts = await this.prisma.post.findMany({
+      take: take + 1,
       where: {
         author: {
           followers: {
@@ -16,10 +28,22 @@ export class FeedRepository {
             },
           },
         },
+        ...(cursorPost && {
+          OR: [
+            { createdAt: { lt: cursorPost.createdAt } },
+            {
+              AND: [
+                { createdAt: cursorPost.createdAt },
+                { id: { lt: cursorPost.id } },
+              ],
+            },
+          ],
+        }),
       },
-      orderBy: {
-        createdAt: 'desc',
-      },
+      orderBy: [
+        { createdAt: 'desc' },
+        { id: 'desc' },
+      ],
       include: {
         author: {
           select: {
@@ -46,7 +70,11 @@ export class FeedRepository {
       },
     });
 
-    return posts;
+    const hasNextPage = posts.length > take;
+    const items = hasNextPage ? posts.slice(0, take) : posts;
+    const nextCursor = hasNextPage ? items[items.length - 1].id : null;
+
+    return { items, nextCursor };
   }
 
   // Deprecated/No-op for Pull model
