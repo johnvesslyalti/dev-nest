@@ -1,5 +1,6 @@
 import { Injectable, OnModuleDestroy, OnModuleInit } from '@nestjs/common';
 import * as path from 'path';
+// eslint-disable-next-line @typescript-eslint/no-require-imports
 const Piscina = require('piscina');
 
 @Injectable()
