@@ -7,8 +7,6 @@ import * as cookieParser from "cookie-parser";
 import { ValidationPipe } from "./common/pipes/validation.pipe";
 import { LoggingInterceptor } from "./common/interceptors/logging.interceptor";
 import { GlobalExceptionFilter } from "./common/filters/global-exception.filter";
-import * as cluster from 'cluster';
-import * as os from 'os';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
@@ -35,25 +33,7 @@ async function bootstrap() {
   SwaggerModule.setup("api/docs", app, document);
 
   await app.listen(port);
-  console.log(`Worker ${process.pid} started on port ${port}`);
+  console.log(`API Application started on port ${port}`);
 }
 
-// Ensure the cluster properly types using node's cluster module
-const clusterModule = cluster as unknown as cluster.Cluster;
-
-if (clusterModule.isPrimary) {
-  const cpuCount = os.cpus().length;
-  console.log(`Primary ${process.pid} is running`);
-  console.log(`Forking ${cpuCount} workers...`);
-
-  for (let i = 0; i < cpuCount; i++) {
-    clusterModule.fork();
-  }
-
-  clusterModule.on('exit', (worker, code, signal) => {
-    console.log(`Worker ${worker.process.pid} died. Forking a new one...`);
-    clusterModule.fork();
-  });
-} else {
-  bootstrap();
-}
+bootstrap();

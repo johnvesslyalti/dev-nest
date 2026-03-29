@@ -12,9 +12,14 @@ import { redisStore } from 'cache-manager-redis-yet';
       inject: [ConfigService],
       useFactory: async (configService: ConfigService) => {
         const redisUrlStr = configService.get<string>('REDIS_URL') || 'redis://localhost:6379';
+        const isUpstash = redisUrlStr.includes('upstash.io');
         return {
           store: await redisStore({
             url: redisUrlStr,
+            socket: {
+              tls: redisUrlStr.startsWith('rediss://') || isUpstash ? true : false,
+              rejectUnauthorized: false,
+            },
             ttl: 600, // Default 10 minutes
           }),
         };

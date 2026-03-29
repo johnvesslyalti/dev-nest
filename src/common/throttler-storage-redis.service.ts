@@ -9,7 +9,10 @@ export class ThrottlerStorageRedisService implements ThrottlerStorage, OnModuleD
   private redis: Redis;
 
   constructor(private configService: ConfigService) {
-    this.redis = new Redis(this.configService.get<string>('REDIS_URL') || 'redis://localhost:6379');
+    const redisUrlStr = this.configService.get<string>('REDIS_URL') || 'redis://localhost:6379';
+    const isUpstash = redisUrlStr.includes('upstash.io');
+    const isTls = redisUrlStr.startsWith('rediss://') || isUpstash;
+    this.redis = new Redis(redisUrlStr, isTls ? { tls: { rejectUnauthorized: false } } : {});
   }
 
   async increment(
