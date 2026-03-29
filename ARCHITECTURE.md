@@ -8,7 +8,7 @@ DevNest V1 is a monolithic NestJS application designed for social networking fea
 
 1.  **Single Source of Truth**: PostgreSQL holds all critical user data (Users, Posts, Comments, Likes, Graph).
 2.  **Pull-based Feed**: The home feed is generated on-the-fly by querying posts from followed users. This avoids data duplication and synchronization issues typical of push-based models in early stages.
-3.  **Optional Auxiliary Stores**: MongoDB and Redis are treated as auxiliary. The system defaults to Postgres for core functionality. Redis is used for caching and queuing (BullMQ) but is not the primary data store.
+3.  **Auxiliary Stores**: Redis is treated as auxiliary for caching and queuing (BullMQ) but is not the primary data store.
 
 ## Module Boundaries
 
@@ -52,10 +52,8 @@ DevNest V1 is a monolithic NestJS application designed for social networking fea
 | **Posts**        | Postgres           | `Post`         | Indexed by author and date.   |
 | **Social Graph** | Postgres           | `Follow`       | Bidirectional relations.      |
 | **Feed**         | Postgres           | _(Computed)_   | Derived from Posts + Follows. |
-| **Logs**         | MongoDB (Optional) | `Log`          | Non-critical logging.         |
 
 ## Infrastructure Support
 
 - **Postgres**: Required. Primary DB.
 - **Redis**: Required. Used for BullMQ (background jobs) and Throttling.
-- **MongoDB**: Optional. Used only for archival logging if configured.
