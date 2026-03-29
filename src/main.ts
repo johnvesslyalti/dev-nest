@@ -1,4 +1,5 @@
 import { NestFactory } from "@nestjs/core";
+import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
 import { ConfigService } from "@nestjs/config";
 import { AppModule } from "./app.module";
 import { NestExpressApplication } from "@nestjs/platform-express";
@@ -23,6 +24,16 @@ async function bootstrap() {
 
   const configService = app.get(ConfigService);
   const port = configService.get("PORT") || 3001;
+
+  const config = new DocumentBuilder()
+    .setTitle("DevNest API")
+    .setDescription("The API documentation for DevNest services.")
+    .setVersion("1.0")
+    .addBearerAuth()
+    .build();
+  const document = SwaggerModule.createDocument(app, config);
+  SwaggerModule.setup("api/docs", app, document);
+
   await app.listen(port);
   console.log(`Worker ${process.pid} started on port ${port}`);
 }
