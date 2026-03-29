@@ -23,12 +23,18 @@ import { AppController } from "./app.controller";
     ConfigModule.forRoot({ isGlobal: true }),
     BullModule.forRootAsync({
       imports: [ConfigModule],
-      useFactory: async (configService: ConfigService) => ({
-        connection: {
-          host: 'localhost',
-          port: 6379,
-        },
-      }),
+      useFactory: async (configService: ConfigService) => {
+        const redisUrl = new URL(configService.get<string>('REDIS_URL') || 'redis://localhost:6379');
+        return {
+          connection: {
+            host: redisUrl.hostname,
+            port: parseInt(redisUrl.port, 10) || 6379,
+            username: redisUrl.username || undefined,
+            password: redisUrl.password || undefined,
+            db: redisUrl.pathname ? parseInt(redisUrl.pathname.slice(1), 10) : undefined,
+          },
+        };
+      },
       inject: [ConfigService],
     }),
     ThrottlerModule.forRootAsync({

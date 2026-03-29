@@ -9,10 +9,7 @@ export class ThrottlerStorageRedisService implements ThrottlerStorage, OnModuleD
   private redis: Redis;
 
   constructor(private configService: ConfigService) {
-    this.redis = new Redis({
-      host: this.configService.get<string>('REDIS_HOST') || 'localhost',
-      port: parseInt(this.configService.get<string>('REDIS_PORT')!) || 6379,
-    });
+    this.redis = new Redis(this.configService.get<string>('REDIS_URL') || 'redis://localhost:6379');
   }
 
   async increment(
