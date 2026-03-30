@@ -1,4 +1,5 @@
 import { Injectable, OnModuleDestroy, OnModuleInit } from '@nestjs/common';
+import * as fs from 'fs';
 import * as path from 'path';
 // eslint-disable-next-line @typescript-eslint/no-require-imports
 const Piscina = require('piscina');
@@ -8,13 +9,16 @@ export class BcryptPoolService implements OnModuleInit, OnModuleDestroy {
   private piscina: any;
 
   onModuleInit() {
-    const isTs = __filename.endsWith('.ts');
-    let workerPath = path.resolve(__dirname, isTs ? 'bcrypt.worker-loader.js' : 'bcrypt.worker.js');
-    
-    if (process.env.JEST_WORKER_ID) {
-      // Avoid ts-node hangs in Jest by pointing to the pre-built JS worker
-      workerPath = path.resolve(__dirname.replace('/src/', '/dist-test/'), 'bcrypt.worker.js');
-    }
+    const candidateWorkerPaths = [
+      path.resolve(__dirname, 'bcrypt.worker.js'),
+      path.resolve(__dirname, 'bcrypt.worker-loader.js'),
+      path.resolve(process.cwd(), 'dist', 'auth', 'workers', 'bcrypt.worker.js'),
+      path.resolve(process.cwd(), 'src', 'auth', 'workers', 'bcrypt.worker-loader.js'),
+    ];
+
+    const workerPath =
+      candidateWorkerPaths.find((candidatePath) => fs.existsSync(candidatePath)) ??
+      path.resolve(__dirname, 'bcrypt.worker-loader.js');
 
     const piscinaOptions: any = {
       filename: workerPath,

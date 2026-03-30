@@ -83,8 +83,9 @@ describe('Posts (e2e)', () => {
         .get('/api/v1/posts')
         .expect(200);
 
-      expect(Array.isArray(res.body)).toBe(true);
-      const authorUsernames = res.body.map((p: any) => p.author.username);
+      expect(res.body).toHaveProperty('items');
+      expect(Array.isArray(res.body.items)).toBe(true);
+      const authorUsernames = res.body.items.map((p: any) => p.author.username);
       expect(authorUsernames).toContain('userb');
       expect(authorUsernames).not.toContain('deleteduser');
     });
