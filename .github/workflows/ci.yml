@@ -8,6 +8,36 @@ on:
 jobs:
   ci:
     runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_PASSWORD: password
+          POSTGRES_DB: devnest_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+      redis:
+        image: redis:7
+        ports:
+          - 6379:6379
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    env:
+      POSTGRES_URL: postgresql://postgres:password@localhost:5432/devnest_test
+      REDIS_URL: redis://localhost:6379
+      JWT_SECRET: worldwar3
+      REFRESH_TOKEN_SECRET: helloworld
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v6

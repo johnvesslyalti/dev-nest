@@ -1,6 +1,7 @@
 import { INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
 import { createTestApp } from './utils/app';
+import { getTestDbUrl } from './utils/config';
 import { migrateDb, resetDb, seedTestData, SeededData } from './utils/db';
 import { PrismaService } from '../src/prisma/prisma.service';
 
@@ -10,7 +11,7 @@ describe('Likes (e2e)', () => {
   let seed: SeededData;
 
   beforeAll(async () => {
-    process.env.POSTGRES_URL = 'postgresql://postgres:3132@localhost:5432/devnest_test';
+    process.env.POSTGRES_URL = getTestDbUrl();
     migrateDb();
     app = await createTestApp();
     prisma = app.get(PrismaService);

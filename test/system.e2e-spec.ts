@@ -8,14 +8,16 @@ import { LoggingInterceptor } from '../src/common/interceptors/logging.intercept
 import { GlobalExceptionFilter } from '../src/common/filters/global-exception.filter';
 import Redis from 'ioredis';
 import { AuthService } from '../src/auth/auth.service';
+import { getTestDbUrl, getTestRedisUrl } from './utils/config';
 
-describe('Day 15 Requirements (e2e)', () => {
+describe('System Features (e2e)', () => {
   let app: INestApplication;
   let prisma: PrismaService;
   let userToken: string;
   let userId: string;
 
   beforeAll(async () => {
+    process.env.POSTGRES_URL = getTestDbUrl();
     const moduleFixture: TestingModule = await Test.createTestingModule({
       imports: [AppModule],
     }).compile();
@@ -40,9 +42,9 @@ describe('Day 15 Requirements (e2e)', () => {
     const res = await request(app.getHttpServer())
       .post('/api/v1/auth/register')
       .send({
-        name: 'Test Day15 User',
-        username: 'testday15',
-        email: 'day15@example.com',
+        name: 'System Feature User',
+        username: 'sysfeatures',
+        email: 'sysfeatures@example.com',
         password: 'password123',
       });
 
@@ -60,7 +62,7 @@ describe('Day 15 Requirements (e2e)', () => {
 
   beforeEach(async () => {
     // Clean Redis to reset rate limits before each test
-    const redis = new Redis({ host: 'localhost', port: 6379 });
+    const redis = new Redis(getTestRedisUrl());
     await redis.flushall();
     redis.disconnect();
   });
@@ -88,7 +90,7 @@ describe('Day 15 Requirements (e2e)', () => {
       const res = await request(app.getHttpServer())
         .post('/api/v1/auth/login')
         .send({
-          email: 'day15@example.com',
+          email: 'sysfeatures@example.com',
           password: 'password123',
         });
       const setCookieRaw = res.headers['set-cookie'];
