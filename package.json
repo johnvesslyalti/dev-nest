@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "DevNest is a tool for the Developers",
   "scripts": {
-    "build": "nest build",
+    "build": "npm run generate && nest build",
     "format": "prettier --write \"src/**/*.ts\"",
     "start": "nest start",
     "dev": "nest start --watch",
