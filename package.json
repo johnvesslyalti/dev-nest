@@ -16,7 +16,7 @@
     "migrate:pg": "npx prisma migrate dev --schema=./prisma/postgres/schema.prisma",
     "test:manual": "node scripts/test_all_apis.js",
     "test:auth": "npx tsx scripts/verify-auth.ts",
-    "pretest:e2e": "npx tsc src/auth/workers/bcrypt.worker.ts --skipLibCheck --outDir dist-test/auth/workers --esModuleInterop",
+    "test:ci": "npm run lint && npm run build && npx prisma validate --schema=./prisma/postgres/schema.prisma",
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "test:e2e:cov": "jest --config ./test/jest-e2e.json --coverage"
   },
