@@ -4,6 +4,10 @@ import { INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
 
 export const migrateDb = () => {
+    if (process.env.CI) {
+        // In CI, we run migrations as a separate step for the whole shard
+        return;
+    }
     try {
         execSync('npx prisma db push --schema=./prisma/postgres/schema.prisma --accept-data-loss', { 
             env: {
