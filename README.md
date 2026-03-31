@@ -113,9 +113,9 @@ POSTGRES_URL=postgresql://postgres:password123@localhost:5432/devnest?schema=pub
 REDIS_URL=redis://localhost:6379
 
 # Auth
-JWT_SECRET=your_jwt_secret
-REFRESH_TOKEN_SECRET=your_refresh_secret
-PORT=3000
+ACCESS_SECRET=your_access_secret
+REFRESH_SECRET=your_refresh_secret
+PORT=3001
 ```
 
 ### 3️⃣ Start Infrastracture (Docker)
@@ -160,7 +160,7 @@ docker-compose up postgres redis -d
    npm run start:prod
    ```
 
-   Server defaults to `http://localhost:3000/api/v1`.
+   Server defaults to `http://localhost:3001/api/v1`.
 
 4. **Start the Background Worker (Optional but recommended)**
    The worker handles background jobs such as sending emails.
