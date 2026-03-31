@@ -36,9 +36,9 @@ export class PostsRepository {
   async findByUserName(username: string) {
     return this.prisma.post.findMany({
       where: {
-        author: { 
+        author: {
           username,
-          deletedAt: null
+          deletedAt: null,
         },
       },
       select: {

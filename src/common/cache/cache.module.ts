@@ -1,7 +1,7 @@
-import { Module, Global } from '@nestjs/common';
-import { CacheModule } from '@nestjs/cache-manager';
-import { ConfigModule, ConfigService } from '@nestjs/config';
-import { redisStore } from 'cache-manager-redis-yet';
+import { Module, Global } from "@nestjs/common";
+import { CacheModule } from "@nestjs/cache-manager";
+import { ConfigModule, ConfigService } from "@nestjs/config";
+import { redisStore } from "cache-manager-redis-yet";
 
 @Global()
 @Module({
@@ -11,13 +11,15 @@ import { redisStore } from 'cache-manager-redis-yet';
       imports: [ConfigModule],
       inject: [ConfigService],
       useFactory: async (configService: ConfigService) => {
-        const redisUrlStr = configService.get<string>('REDIS_URL') || 'redis://localhost:6379';
-        const isUpstash = redisUrlStr.includes('upstash.io');
+        const redisUrlStr =
+          configService.get<string>("REDIS_URL") || "redis://localhost:6379";
+        const isUpstash = redisUrlStr.includes("upstash.io");
         return {
           store: await redisStore({
             url: redisUrlStr,
             socket: {
-              tls: redisUrlStr.startsWith('rediss://') || isUpstash ? true : false,
+              tls:
+                redisUrlStr.startsWith("rediss://") || isUpstash ? true : false,
               rejectUnauthorized: false,
             },
             ttl: 600, // Default 10 minutes

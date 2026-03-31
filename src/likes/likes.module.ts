@@ -5,9 +5,7 @@ import { LikesRepository } from "./likes.repository";
 import { PrismaModule } from "../prisma/prisma.module";
 
 @Module({
-  imports: [
-    PrismaModule,
-  ],
+  imports: [PrismaModule],
   controllers: [LikesController],
   providers: [LikesService, LikesRepository],
 })

@@ -4,14 +4,14 @@ import {
   ExecutionContext,
   CallHandler,
   Logger,
-} from '@nestjs/common';
-import { Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
-import { Request, Response } from 'express';
+} from "@nestjs/common";
+import { Observable } from "rxjs";
+import { tap } from "rxjs/operators";
+import { Request, Response } from "express";
 
 @Injectable()
 export class LoggingInterceptor implements NestInterceptor {
-  private readonly logger = new Logger('HTTP');
+  private readonly logger = new Logger("HTTP");
 
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
     const ctx = context.switchToHttp();
@@ -19,14 +19,14 @@ export class LoggingInterceptor implements NestInterceptor {
     const response = ctx.getResponse<Response>();
 
     const { method, originalUrl } = request;
-    const userAgent = request.get('user-agent') || '';
+    const userAgent = request.get("user-agent") || "";
     const now = Date.now();
 
     return next.handle().pipe(
       tap({
         next: () => {
           const { statusCode } = response;
-          const contentLength = response.get('content-length') || 0;
+          const contentLength = response.get("content-length") || 0;
           this.logger.log(
             `${method} ${originalUrl} ${statusCode} ${contentLength} - ${userAgent} ${Date.now() - now}ms`,
           );

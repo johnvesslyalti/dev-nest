@@ -1,4 +1,9 @@
-import { Injectable, OnModuleInit, OnModuleDestroy, Inject } from "@nestjs/common";
+import {
+  Injectable,
+  OnModuleInit,
+  OnModuleDestroy,
+  Inject,
+} from "@nestjs/common";
 import { PrismaClient } from "@internal/postgres-client";
 import { ConfigService } from "@nestjs/config";
 import { Pool } from "pg";

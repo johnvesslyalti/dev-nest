@@ -1,8 +1,8 @@
-import { Injectable, Inject } from '@nestjs/common';
-import { CACHE_MANAGER } from '@nestjs/cache-manager';
-import { Cache } from 'cache-manager';
-import { FeedRepository } from './feed.repository';
-import { PrismaService } from '../prisma/prisma.service';
+import { Injectable, Inject } from "@nestjs/common";
+import { CACHE_MANAGER } from "@nestjs/cache-manager";
+import { Cache } from "cache-manager";
+import { FeedRepository } from "./feed.repository";
+import { PrismaService } from "../prisma/prisma.service";
 
 @Injectable()
 export class FeedService {
@@ -24,7 +24,7 @@ export class FeedService {
     }
 
     const feed = await this.feedRepository.findByUserId(userId, take, cursor);
-    
+
     if (isFirstPage) {
       await this.cacheManager.set(cacheKey, feed, 60000); // 60s TTL
     }
@@ -39,7 +39,9 @@ export class FeedService {
     });
 
     await Promise.all(
-      followers.map((f) => this.cacheManager.del(`feed:${f.followerId}:first_page`))
+      followers.map((f) =>
+        this.cacheManager.del(`feed:${f.followerId}:first_page`),
+      ),
     );
   }
 }

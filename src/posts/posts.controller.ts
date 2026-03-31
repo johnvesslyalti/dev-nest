@@ -23,14 +23,8 @@ export class PostsController {
 
   @Post()
   @UseGuards(JwtAuthGuard)
-  async create(
-    @Req() req: any,
-    @Body() body: CreatePostDto,
-  ) {
-    const post = await this.postsService.create(
-      req.user.id,
-      body.content,
-    );
+  async create(@Req() req: any, @Body() body: CreatePostDto) {
+    const post = await this.postsService.create(req.user.id, body.content);
     return { message: "Post created", post };
   }
 

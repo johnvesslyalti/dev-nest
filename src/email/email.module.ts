@@ -1,12 +1,11 @@
-import { Module } from '@nestjs/common';
-import { BullModule } from '@nestjs/bullmq';
-import { EmailService } from './email.service';
-
+import { Module } from "@nestjs/common";
+import { BullModule } from "@nestjs/bullmq";
+import { EmailService } from "./email.service";
 
 @Module({
   imports: [
     BullModule.registerQueue({
-      name: 'email',
+      name: "email",
     }),
   ],
   providers: [EmailService],

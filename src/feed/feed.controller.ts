@@ -1,8 +1,16 @@
-import { Body, Controller, Get, Post, Req, Query, UseGuards } from '@nestjs/common';
-import { FeedService } from './feed.service';
-import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import {
+  Body,
+  Controller,
+  Get,
+  Post,
+  Req,
+  Query,
+  UseGuards,
+} from "@nestjs/common";
+import { FeedService } from "./feed.service";
+import { JwtAuthGuard } from "../auth/guards/jwt-auth.guard";
 
-@Controller('feed')
+@Controller("feed")
 export class FeedController {
   constructor(private readonly feedService: FeedService) {}
 
@@ -10,8 +18,8 @@ export class FeedController {
   @Get()
   async getFeed(
     @Req() req,
-    @Query('cursor') cursor?: string,
-    @Query('limit') limit?: string,
+    @Query("cursor") cursor?: string,
+    @Query("limit") limit?: string,
   ) {
     const take = limit ? parseInt(limit, 10) : 20;
     return this.feedService.getFeed(req.user.id, take, cursor);
@@ -19,7 +27,7 @@ export class FeedController {
 
   // Test endpoint to add items to feed manually
   @UseGuards(JwtAuthGuard)
-  @Post('test')
+  @Post("test")
   async addToFeed(@Req() req, @Body() body: any) {
     return this.feedService.addToFeed(req.user.id, body);
   }

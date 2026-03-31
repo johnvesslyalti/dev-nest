@@ -28,7 +28,10 @@ export class ProfileRepository {
     });
   }
 
-  async checkIsFollowing(profileId: string, currentUserId: string): Promise<boolean> {
+  async checkIsFollowing(
+    profileId: string,
+    currentUserId: string,
+  ): Promise<boolean> {
     const followCheck = await this.prisma.user.findFirst({
       where: {
         id: profileId,
@@ -60,12 +63,12 @@ export class ProfileRepository {
         bio: true,
         createdAt: true,
         _count: {
-            select: {
-              followers: true,
-              following: true,
-              posts: true,
-            },
+          select: {
+            followers: true,
+            following: true,
+            posts: true,
           },
+        },
       },
       // Note: Original searchUsers service method selected fewer fields.
       // Keeping consistent with original logic but added count for consistency if needed later or just stick to original.
@@ -75,7 +78,7 @@ export class ProfileRepository {
   }
 
   async searchUsersMinimal(query: string) {
-      return this.prisma.user.findMany({
+    return this.prisma.user.findMany({
       where: {
         OR: [
           { username: { contains: query, mode: "insensitive" } },

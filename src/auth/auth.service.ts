@@ -127,7 +127,7 @@ export class AuthService {
       try {
         const decoded = this.jwtService.decode(accessToken) as any;
         if (decoded && decoded.exp && decoded.jti) {
-          const ttl = (decoded.exp * 1000) - Date.now();
+          const ttl = decoded.exp * 1000 - Date.now();
           if (ttl > 0) {
             await this.cacheManager.set(`denylist:${decoded.jti}`, true, ttl);
           }
@@ -170,22 +170,26 @@ export class AuthService {
       }
 
       const user = savedToken.user;
-      if (!user || user.deletedAt) throw new UnauthorizedException("User not found or disabled");
+      if (!user || user.deletedAt)
+        throw new UnauthorizedException("User not found or disabled");
 
       const tokens = await this.generateTokens(user.id, ip, userAgent);
-      
+
       // Update chain via transaction
       await this.prisma.$transaction(async (tx) => {
         await tx.refreshToken.update({
           where: { id: savedToken.id },
-          data: { 
+          data: {
             revokedAt: new Date(),
-            replacedByToken: tokens.refreshToken 
+            replacedByToken: tokens.refreshToken,
           },
         });
       });
 
-      return { accessToken: tokens.accessToken, refreshToken: tokens.refreshToken };
+      return {
+        accessToken: tokens.accessToken,
+        refreshToken: tokens.refreshToken,
+      };
     } catch (e) {
       if (e instanceof UnauthorizedException) throw e;
       throw new UnauthorizedException("Expired or invalid refresh token");
@@ -194,7 +198,8 @@ export class AuthService {
 
   async me(userId: string) {
     const user = await this.prisma.user.findUnique({ where: { id: userId } });
-    if (!user || user.deletedAt) throw new UnauthorizedException("User not found");
+    if (!user || user.deletedAt)
+      throw new UnauthorizedException("User not found");
     return {
       data: {
         id: user.id,
@@ -207,7 +212,7 @@ export class AuthService {
   }
 
   private async enforceDeviceLimit(userId: string) {
-    const MAX_SESSIONS = this.configService.get<number>('MAX_SESSIONS') || 5;
+    const MAX_SESSIONS = this.configService.get<number>("MAX_SESSIONS") || 5;
 
     const activeSessions = await this.prisma.refreshToken.findMany({
       where: {
@@ -265,7 +270,7 @@ export class AuthService {
         ipAddress: hashedIp,
         userAgent,
         expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 7 days
-      }
+      },
     });
 
     return { accessToken, refreshToken };
@@ -276,7 +281,7 @@ export class AuthService {
       where: { id: userId },
       data: { deletedAt: new Date() },
     });
-    
+
     // Revoke all tokens
     await this.prisma.refreshToken.updateMany({
       where: { userId },
@@ -285,7 +290,12 @@ export class AuthService {
   }
 
   async googleLogin(
-    googleUser: { googleId: string; email: string; name: string; avatarUrl?: string },
+    googleUser: {
+      googleId: string;
+      email: string;
+      name: string;
+      avatarUrl?: string;
+    },
     ip: string,
     userAgent: string,
   ) {
@@ -307,11 +317,11 @@ export class AuthService {
 
     // 3. Create a brand-new Google-only user
     if (!user) {
-      const base = (name ?? email.split('@')[0])
+      const base = (name ?? email.split("@")[0])
         .toLowerCase()
-        .replace(/[^a-z0-9]/g, '_')
+        .replace(/[^a-z0-9]/g, "_")
         .slice(0, 20);
-      const suffix = crypto.randomBytes(3).toString('hex'); // 6 chars
+      const suffix = crypto.randomBytes(3).toString("hex"); // 6 chars
       const username = `${base}_${suffix}`;
 
       user = await this.prisma.user.create({
@@ -355,4 +365,3 @@ export class AuthService {
     };
   }
 }
-

@@ -81,7 +81,10 @@ export class AuthController {
 
   @Post("delete")
   @UseGuards(AuthGuard("jwt"))
-  async deleteAccount(@Req() req: any, @Res({ passthrough: true }) res: Response) {
+  async deleteAccount(
+    @Req() req: any,
+    @Res({ passthrough: true }) res: Response,
+  ) {
     await this.authService.softDelete(req.user.id);
     res.clearCookie("refreshToken");
     return { message: "Account deleted successfully" };

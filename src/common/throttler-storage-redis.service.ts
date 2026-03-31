@@ -1,18 +1,24 @@
-import { Injectable, OnModuleDestroy } from '@nestjs/common';
-import { ThrottlerStorage } from '@nestjs/throttler';
-import { ThrottlerStorageRecord } from '@nestjs/throttler/dist/throttler-storage-record.interface';
-import Redis from 'ioredis';
-import { ConfigService } from '@nestjs/config';
+import { Injectable, OnModuleDestroy } from "@nestjs/common";
+import { ThrottlerStorage } from "@nestjs/throttler";
+import { ThrottlerStorageRecord } from "@nestjs/throttler/dist/throttler-storage-record.interface";
+import Redis from "ioredis";
+import { ConfigService } from "@nestjs/config";
 
 @Injectable()
-export class ThrottlerStorageRedisService implements ThrottlerStorage, OnModuleDestroy {
+export class ThrottlerStorageRedisService
+  implements ThrottlerStorage, OnModuleDestroy
+{
   private redis: Redis;
 
   constructor(private configService: ConfigService) {
-    const redisUrlStr = this.configService.get<string>('REDIS_URL') || 'redis://localhost:6379';
-    const isUpstash = redisUrlStr.includes('upstash.io');
-    const isTls = redisUrlStr.startsWith('rediss://') || isUpstash;
-    this.redis = new Redis(redisUrlStr, isTls ? { tls: { rejectUnauthorized: false } } : {});
+    const redisUrlStr =
+      this.configService.get<string>("REDIS_URL") || "redis://localhost:6379";
+    const isUpstash = redisUrlStr.includes("upstash.io");
+    const isTls = redisUrlStr.startsWith("rediss://") || isUpstash;
+    this.redis = new Redis(
+      redisUrlStr,
+      isTls ? { tls: { rejectUnauthorized: false } } : {},
+    );
   }
 
   async increment(
@@ -38,7 +44,13 @@ export class ThrottlerStorageRedisService implements ThrottlerStorage, OnModuleD
       return {current, ttlRemaining}
     `;
 
-    const result = (await this.redis.eval(script, 1, key, ttlSeconds, limit)) as [number, number];
+    const result = (await this.redis.eval(
+      script,
+      1,
+      key,
+      ttlSeconds,
+      limit,
+    )) as [number, number];
     const totalHits = result[0];
     const timeToExpire = Math.max(0, result[1]);
 

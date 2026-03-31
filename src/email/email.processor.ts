@@ -1,14 +1,14 @@
-import { Processor, WorkerHost, OnWorkerEvent } from '@nestjs/bullmq';
-import { Job } from 'bullmq';
-import { Logger } from '@nestjs/common';
+import { Processor, WorkerHost, OnWorkerEvent } from "@nestjs/bullmq";
+import { Job } from "bullmq";
+import { Logger } from "@nestjs/common";
 
-@Processor('email')
+@Processor("email")
 export class EmailProcessor extends WorkerHost {
   private readonly logger = new Logger(EmailProcessor.name);
 
   async process(job: Job<any, any, string>): Promise<any> {
     switch (job.name) {
-      case 'welcome-email':
+      case "welcome-email":
         console.log(`Sending welcome email to ${job.data.email}`);
         // TODO: Implement actual email sending logic here
         return {};
@@ -20,9 +20,8 @@ export class EmailProcessor extends WorkerHost {
     }
   }
 
-  @OnWorkerEvent('failed')
+  @OnWorkerEvent("failed")
   onFailed(job: Job<any>, error: Error) {
     this.logger.error(`Job ${job.id} of type ${job.name} failed`, error.stack);
   }
 }
-

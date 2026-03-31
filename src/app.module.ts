@@ -2,7 +2,7 @@ import { MiddlewareConsumer, Module, NestModule } from "@nestjs/common";
 import { ThrottlerModule } from "@nestjs/throttler";
 import { ConfigModule, ConfigService } from "@nestjs/config";
 import { ThrottlerStorageRedisService } from "./common/throttler-storage-redis.service";
-import { BullModule } from "@nestjs/bullmq"
+import { BullModule } from "@nestjs/bullmq";
 import { RedisCacheModule } from "./common/cache/cache.module";
 import { AuthModule } from "./auth/auth.module";
 import { PrismaModule } from "./prisma/prisma.module";
@@ -24,8 +24,9 @@ import { AppController } from "./app.controller";
     BullModule.forRootAsync({
       imports: [ConfigModule],
       useFactory: async (configService: ConfigService) => {
-        const redisUrlStr = configService.get<string>('REDIS_URL') || 'redis://localhost:6379';
-        const isUpstash = redisUrlStr.includes('upstash.io');
+        const redisUrlStr =
+          configService.get<string>("REDIS_URL") || "redis://localhost:6379";
+        const isUpstash = redisUrlStr.includes("upstash.io");
         const redisUrl = new URL(redisUrlStr);
         return {
           connection: {
@@ -33,8 +34,14 @@ import { AppController } from "./app.controller";
             port: parseInt(redisUrl.port, 10) || 6379,
             username: redisUrl.username || undefined,
             password: redisUrl.password || undefined,
-            db: redisUrl.pathname && redisUrl.pathname !== '/' ? parseInt(redisUrl.pathname.slice(1), 10) : undefined,
-            tls: redisUrlStr.startsWith('rediss://') || isUpstash ? { rejectUnauthorized: false } : undefined,
+            db:
+              redisUrl.pathname && redisUrl.pathname !== "/"
+                ? parseInt(redisUrl.pathname.slice(1), 10)
+                : undefined,
+            tls:
+              redisUrlStr.startsWith("rediss://") || isUpstash
+                ? { rejectUnauthorized: false }
+                : undefined,
           },
         };
       },
@@ -64,6 +71,6 @@ import { AppController } from "./app.controller";
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer.apply(LoggingMiddleware).forRoutes('*');
+    consumer.apply(LoggingMiddleware).forRoutes("*");
   }
 }

@@ -1,21 +1,21 @@
-import { Injectable } from '@nestjs/common';
-import { Queue } from 'bullmq';
-import { InjectQueue } from '@nestjs/bullmq';
+import { Injectable } from "@nestjs/common";
+import { Queue } from "bullmq";
+import { InjectQueue } from "@nestjs/bullmq";
 
 @Injectable()
 export class EmailService {
-  constructor(@InjectQueue('email') private emailQueue: Queue) {}
+  constructor(@InjectQueue("email") private emailQueue: Queue) {}
 
   async sendWelcomeEmail(userId: string, email: string) {
     await this.emailQueue.add(
-      'welcome-email',
+      "welcome-email",
       {
         userId,
         email,
       },
       {
         attempts: 3,
-        backoff: { type: 'exponential', delay: 1000 },
+        backoff: { type: "exponential", delay: 1000 },
       },
     );
   }

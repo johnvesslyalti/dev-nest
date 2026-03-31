@@ -24,9 +24,9 @@ export class CommentsRepository {
 
   async findByPost(postId: string, skip: number, take: number) {
     return this.prisma.comment.findMany({
-      where: { 
+      where: {
         postId,
-        user: { deletedAt: null }
+        user: { deletedAt: null },
       },
       orderBy: { createdAt: "desc" },
       skip,
