@@ -16,8 +16,8 @@ export class PostsService {
       imageUrl,
     });
 
-    // Fan-out to followers removed (switched to Pull model)
-    // The feed is now generated on-the-fly by querying posts from followed users.
+    // Background Fan-out (Push model)
+    await this.feedService.dispatchFanout(post);
 
     return post;
   }
