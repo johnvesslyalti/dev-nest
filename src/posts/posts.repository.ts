@@ -7,6 +7,8 @@ const publicFeedSelect = {
   id: true,
   content: true,
   imageUrl: true,
+  aiSummary: true,
+  aiTags: true,
   createdAt: true,
   author: {
     select: {
@@ -45,6 +47,8 @@ export class PostsRepository {
         id: true,
         content: true,
         imageUrl: true,
+        aiSummary: true,
+        aiTags: true,
         createdAt: true,
         author: {
           select: {
@@ -67,6 +71,8 @@ export class PostsRepository {
         id: true,
         content: true,
         imageUrl: true,
+        aiSummary: true,
+        aiTags: true,
         createdAt: true,
         author: {
           select: {

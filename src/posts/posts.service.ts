@@ -1,4 +1,6 @@
 import { Injectable } from "@nestjs/common";
+import { InjectQueue } from "@nestjs/bullmq";
+import { Queue } from "bullmq";
 import { PostsRepository } from "./posts.repository";
 import { FeedService } from "../feed/feed.service";
 
@@ -7,6 +9,7 @@ export class PostsService {
   constructor(
     private postsRepository: PostsRepository,
     private feedService: FeedService,
+    @InjectQueue("post-enhancement") private postEnhancementQueue: Queue,
   ) {}
 
   async create(authorId: string, content: string, imageUrl?: string) {
@@ -14,6 +17,11 @@ export class PostsService {
       authorId,
       content,
       imageUrl,
+    });
+
+    // Background Post Enhancement (Summarization, Tagging)
+    await this.postEnhancementQueue.add("enhance", {
+      postId: post.id,
     });
 
     // Background Fan-out (Push model)

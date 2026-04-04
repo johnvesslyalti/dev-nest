@@ -84,6 +84,9 @@ model Post {
   content String @db.Text
   imageUrl String?
 
+  aiSummary String? @db.Text
+  aiTags    String[]
+
   authorId String
   author   User   @relation(fields: [authorId], references: [id], onDelete: Cascade)
 

@@ -66,7 +66,13 @@ export class FeedRepository {
       where: {
         id: { in: idsToFetch },
       },
-      include: {
+      select: {
+        id: true,
+        content: true,
+        imageUrl: true,
+        aiSummary: true,
+        aiTags: true,
+        createdAt: true,
         author: {
           select: {
             id: true,
@@ -143,7 +149,13 @@ export class FeedRepository {
         }),
       },
       orderBy: [{ createdAt: "desc" }, { id: "desc" }],
-      include: {
+      select: {
+        id: true,
+        content: true,
+        imageUrl: true,
+        aiSummary: true,
+        aiTags: true,
+        createdAt: true,
         author: {
           select: {
             id: true,
