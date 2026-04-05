@@ -19,7 +19,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     });
   }
 
-  async validate(payload: any) {
+  async validate(payload: { id: string; jti?: string; exp?: number; iat?: number }) {
     if (payload.jti) {
       const isDenied = await this.cacheManager.get(`denylist:${payload.jti}`);
       if (isDenied) {

@@ -92,7 +92,7 @@ export class AuthController {
 
   @Get("me")
   @UseInterceptors(UserCacheInterceptor)
-  @CacheTTL(30) // 30 seconds
+  @CacheTTL(30000) // 30 seconds (milliseconds in v5+)
   @UseGuards(AuthGuard("jwt"))
   async me(@Req() req: any) {
     return this.authService.me(req.user.id);
