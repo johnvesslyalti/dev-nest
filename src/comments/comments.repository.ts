@@ -22,15 +22,16 @@ export class CommentsRepository {
     });
   }
 
-  async findByPost(postId: string, skip: number, take: number) {
+  async findByPost(postId: string, cursor: string | undefined, take: number) {
     return this.prisma.comment.findMany({
       where: {
         postId,
         user: { deletedAt: null },
       },
       orderBy: { createdAt: "desc" },
-      skip,
       take,
+      skip: cursor ? 1 : 0,
+      cursor: cursor ? { id: cursor } : undefined,
       select: {
         id: true,
         content: true,

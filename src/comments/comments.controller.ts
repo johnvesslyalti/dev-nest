@@ -7,12 +7,10 @@ import {
   Query,
   UseGuards,
   Req,
-  UseInterceptors,
 } from "@nestjs/common";
 import { CommentsService } from "./comments.service";
 import { JwtAuthGuard } from "../auth/guards/jwt-auth.guard";
 import { ThrottlerGuard } from "@nestjs/throttler";
-import { CacheInterceptor, CacheTTL } from "@nestjs/cache-manager";
 
 import { CreateCommentDto } from "./dto/create-comment.dto";
 
@@ -36,14 +34,12 @@ export class CommentsController {
     return { message: "Comment added", comment };
   }
 
-  @UseInterceptors(CacheInterceptor)
-  @CacheTTL(30000) // 30 seconds
   @Get()
   async findByPost(
     @Param("postId") postId: string,
-    @Query("page") page: number = 1,
+    @Query("cursor") cursor?: string,
     @Query("limit") limit: number = 20,
   ) {
-    return this.commentsService.findByPost(postId, Number(page), Number(limit));
+    return this.commentsService.findByPost(postId, cursor, Number(limit));
   }
 }
