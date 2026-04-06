@@ -25,10 +25,14 @@ export class FeedController {
     return this.feedService.getFeed(req.user.id, take, cursor);
   }
 
-  // Test endpoint to add items to feed manually
+  // Test endpoint to dispatch fan-out manually
   @UseGuards(JwtAuthGuard)
   @Post("test")
-  async addToFeed(@Req() req, @Body() body: any) {
-    return this.feedService.addToFeed(req.user.id, body);
+  async testFanout(@Req() req, @Body() body: any) {
+    return this.feedService.dispatchFanout({
+      id: body.postId,
+      authorId: req.user.id,
+      createdAt: new Date(),
+    });
   }
 }
