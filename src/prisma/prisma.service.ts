@@ -20,6 +20,8 @@ export class PrismaService
       connectionString,
       // Target around 4 connections per instance if we have many CPU workers
       max: 4,
+      connectionTimeoutMillis: 5000,
+      idleTimeoutMillis: 30000,
     });
     const adapter = new PrismaPg(pool);
     super({ adapter } as any);
