@@ -56,10 +56,11 @@ describe('Comments (e2e)', () => {
         .get(`/api/v1/posts/${seed.postByB.id}/comments`)
         .expect(200);
 
-      expect(Array.isArray(res.body)).toBe(true);
-      expect(res.body.length).toBe(1);
-      expect(res.body[0]).toHaveProperty('content', 'Comment 1');
-      expect(res.body[0]).toHaveProperty('user');
+      expect(res.body).toHaveProperty('data');
+      expect(Array.isArray(res.body.data)).toBe(true);
+      expect(res.body.data.length).toBe(1);
+      expect(res.body.data[0]).toHaveProperty('content', 'Comment 1');
+      expect(res.body.data[0]).toHaveProperty('user');
     });
 
     it('should paginate comments', async () => {
@@ -75,8 +76,10 @@ describe('Comments (e2e)', () => {
         .get(`/api/v1/posts/${seed.postByB.id}/comments?page=1&limit=2`)
         .expect(200);
 
-      expect(Array.isArray(res.body)).toBe(true);
-      expect(res.body.length).toBe(2);
+      expect(res.body).toHaveProperty('data');
+      expect(Array.isArray(res.body.data)).toBe(true);
+      expect(res.body.data.length).toBe(2);
+      expect(res.body).toHaveProperty('nextCursor');
     });
   });
 
