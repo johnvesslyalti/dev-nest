@@ -218,6 +218,19 @@ To run the load tests locally (ensure `k6` is installed):
 k6 run k6-scenario-test.js
 ```
 
+## 🔄 CI/CD
+
+This repository now includes GitHub Actions workflows for both validation and release automation:
+
+- `CI` runs on pull requests and branch pushes. It provisions PostgreSQL and Redis, installs dependencies, validates Prisma, lints the codebase, builds the app, applies committed migrations, and runs the Jest E2E suite.
+- The CI pipeline uses a dedicated `test:e2e:ci` command so GitHub Actions exits cleanly even if local Jest leaves a residual open-handle warning during teardown.
+- `CD` runs on pushes to `main` and publishes a production Docker image to GitHub Container Registry at `ghcr.io/<owner>/dev-nest`.
+
+### Container Publishing Notes
+
+- The `CD` workflow uses the built-in `GITHUB_TOKEN`, so no extra registry secret is required for publishing to GHCR.
+- If you want to deploy the pushed image to a server or cloud platform afterward, we can add a second deploy job once the target environment is chosen.
+
 ---
 
 ## 🧪 Development Principles

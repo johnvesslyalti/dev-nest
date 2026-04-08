@@ -11,6 +11,7 @@ import { PrismaModule } from "../prisma/prisma.module";
     PrismaModule,
     BullModule.registerQueue({
       name: "feed-fanout",
+      forceDisconnectOnShutdown: true,
     }),
   ],
   controllers: [FeedController],

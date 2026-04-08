@@ -1,4 +1,4 @@
-import { Injectable, Inject } from "@nestjs/common";
+import { Injectable, Inject, OnModuleDestroy } from "@nestjs/common";
 import { CACHE_MANAGER } from "@nestjs/cache-manager";
 import { Cache } from "cache-manager";
 import { InjectQueue } from "@nestjs/bullmq";
@@ -7,13 +7,25 @@ import { FeedRepository } from "./feed.repository";
 import { PrismaService } from "../prisma/prisma.service";
 
 @Injectable()
-export class FeedService {
+export class FeedService implements OnModuleDestroy {
   constructor(
     private readonly feedRepository: FeedRepository,
     @Inject(CACHE_MANAGER) private cacheManager: Cache,
     private prisma: PrismaService,
     @InjectQueue("feed-fanout") private feedFanoutQueue: Queue,
   ) {}
+
+  async onModuleDestroy() {
+    await this.feedFanoutQueue.close();
+    const queueAny = this.feedFanoutQueue as any;
+
+    if (
+      queueAny.connection?.status !== "closed" &&
+      typeof this.feedFanoutQueue.disconnect === "function"
+    ) {
+      this.feedFanoutQueue.disconnect();
+    }
+  }
 
   async getFeed(userId: string, take: number = 20, cursor?: string) {
     // We now read from pre-computed feed (delegated to repository)

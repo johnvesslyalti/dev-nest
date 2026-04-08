@@ -6,6 +6,7 @@ import { EmailService } from "./email.service";
   imports: [
     BullModule.registerQueue({
       name: "email",
+      forceDisconnectOnShutdown: true,
     }),
   ],
   providers: [EmailService],
