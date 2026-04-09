@@ -5,13 +5,16 @@ set -e
 npm ci
 
 # Lint code
-npm run lint
+npm run lint:check
 
 # Build the project
 npm run build
 
-# Migration safety check (dry run)
-npx prisma migrate dev --schema=./prisma/postgres/schema.prisma --skip-generate --dry-run
+# Validate Prisma schema
+npm run prisma:validate
+
+# Apply committed migrations
+npm run migrate:deploy
 
 # Run end-to-end tests
-npm run test:e2e
+npm run test:e2e:ci

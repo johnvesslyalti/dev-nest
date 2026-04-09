@@ -14,6 +14,8 @@ export class PrismaService
   extends PrismaClient
   implements OnModuleInit, OnModuleDestroy
 {
+  private readonly pool: Pool;
+
   constructor(@Inject(ConfigService) config: ConfigService) {
     const connectionString = config.get<string>("POSTGRES_URL");
     const pool = new Pool({
@@ -23,8 +25,10 @@ export class PrismaService
       connectionTimeoutMillis: 5000,
       idleTimeoutMillis: 30000,
     });
+    const servicePool = pool;
     const adapter = new PrismaPg(pool);
     super({ adapter } as any);
+    this.pool = servicePool;
   }
 
   async onModuleInit() {
@@ -33,5 +37,6 @@ export class PrismaService
 
   async onModuleDestroy() {
     await this.$disconnect();
+    await this.pool.end();
   }
 }
