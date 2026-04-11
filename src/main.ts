@@ -21,7 +21,7 @@ async function bootstrap() {
   app.useGlobalFilters(new GlobalExceptionFilter());
 
   const configService = app.get(ConfigService);
-  const port = configService.get("PORT") || 3001;
+  const port = configService.get("PORT") || 3000;
 
   const config = new DocumentBuilder()
     .setTitle("DevNest API")

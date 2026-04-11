@@ -76,7 +76,7 @@ export class AuthController {
     const refreshToken = req.cookies["refreshToken"];
     const result = await this.authService.refresh(refreshToken, ip, userAgent);
     this.setCookie(res, result.refreshToken);
-    return result;
+    return { accessToken: result.accessToken };
   }
 
   @Post("delete")

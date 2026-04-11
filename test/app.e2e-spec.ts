@@ -134,7 +134,8 @@ describe('AppController (e2e)', () => {
           .expect(201);
 
         expect(response.body).toHaveProperty('accessToken');
-        expect(response.body).toHaveProperty('refreshToken');
+        expect(response.body).not.toHaveProperty('refreshToken');
+        expect(response.headers['set-cookie']).toBeDefined();
       });
 
       it('should fail without cookie', async () => {

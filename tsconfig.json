@@ -22,6 +22,6 @@
       "@internal/postgres-client": ["./node_modules/@internal/postgres-client"]
     }
   },
-  "include": ["src", "test"],
+  "include": ["src"],
   "exclude": ["node_modules", "dist"]
 }
