@@ -10,7 +10,7 @@
     "sourceMap": true,
     "outDir": "./dist",
     "rootDir": "./src",
-    "tsBuildInfoFile": "./.tsbuildinfo",
+    "tsBuildInfoFile": "./dist/.tsbuildinfo",
     "incremental": true,
     "skipLibCheck": true,
     "strictNullChecks": false,
