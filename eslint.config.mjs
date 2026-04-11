@@ -8,7 +8,7 @@ export default tseslint.config(
     ignores: ['dist/**', 'node_modules/**', 'k6-**', 'scripts/**'],
     languageOptions: {
       parserOptions: {
-        project: 'tsconfig.json',
+        project: 'tsconfig.eslint.json',
         tsconfigRootDir: import.meta.dirname,
         sourceType: 'module',
       },
