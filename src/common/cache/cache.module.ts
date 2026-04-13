@@ -29,7 +29,10 @@ const logger = new Logger("RedisCacheModule");
 
         // Prevent node-redis socket errors from crashing the Nest process.
         store.client.on("error", (error) => {
-          logger.error(`Redis cache client error: ${error.message}`, error.stack);
+          logger.error(
+            `Redis cache client error: ${error.message}`,
+            error.stack,
+          );
         });
 
         return {

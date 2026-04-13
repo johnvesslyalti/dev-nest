@@ -26,7 +26,9 @@ export class FeedFanoutProcessor extends WorkerHost {
     }
   }
 
-  async process(job: Job<{ postId: string; authorId: string; createdAt: number }>): Promise<any> {
+  async process(
+    job: Job<{ postId: string; authorId: string; createdAt: number }>,
+  ): Promise<any> {
     const { postId, authorId, createdAt } = job.data;
 
     // 1. Fetch all followers of the author
@@ -43,11 +45,11 @@ export class FeedFanoutProcessor extends WorkerHost {
     // Key: feed:user:{followerId}
     // Score: createdAt (timestamp)
     // Value: postId
-    
+
     // We use pipeline for efficiency
     if (this.redis) {
       const pipeline = this.redis.pipeline();
-      
+
       followers.forEach((f) => {
         const feedKey = `feed:user:${f.followerId}`;
         // ZADD key score member

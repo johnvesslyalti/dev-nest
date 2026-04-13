@@ -7,7 +7,7 @@ import { CommentsRepository } from "./comments.repository";
 export class CommentsService {
   constructor(
     private commentsRepository: CommentsRepository,
-    @Inject(CACHE_MANAGER) private cacheManager: Cache
+    @Inject(CACHE_MANAGER) private cacheManager: Cache,
   ) {}
 
   async create(userId: string, postId: string, content: string) {
@@ -18,16 +18,26 @@ export class CommentsService {
     });
 
     // Invalidate cache by updating the version key
-    await this.cacheManager.set(`comments_version:${postId}`, Date.now(), 86400000); // 24 hours
+    await this.cacheManager.set(
+      `comments_version:${postId}`,
+      Date.now(),
+      86400000,
+    ); // 24 hours
 
     return comment;
   }
 
   async findByPost(postId: string, cursor?: string, limit = 20) {
-    let version = await this.cacheManager.get<number>(`comments_version:${postId}`);
+    let version = await this.cacheManager.get<number>(
+      `comments_version:${postId}`,
+    );
     if (!version) {
       version = Date.now();
-      await this.cacheManager.set(`comments_version:${postId}`, version, 86400000);
+      await this.cacheManager.set(
+        `comments_version:${postId}`,
+        version,
+        86400000,
+      );
     }
 
     const cacheKey = `comments:${postId}:v${version}:${cursor || "start"}:${limit}`;
@@ -37,8 +47,12 @@ export class CommentsService {
       return cached;
     }
 
-    const comments = await this.commentsRepository.findByPost(postId, cursor, limit);
-    
+    const comments = await this.commentsRepository.findByPost(
+      postId,
+      cursor,
+      limit,
+    );
+
     const hasMore = comments.length === limit;
     const nextCursor = hasMore ? comments[comments.length - 1].id : null;
     const result = { data: comments, nextCursor };

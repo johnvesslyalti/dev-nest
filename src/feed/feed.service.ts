@@ -40,7 +40,7 @@ export class FeedService implements OnModuleDestroy {
       createdAt: new Date(post.createdAt).getTime(),
     });
 
-    // Also invalidate the author's own cached first page? 
+    // Also invalidate the author's own cached first page?
     // Actually, FeedRepository will now handle pre-computation.
     // For the author, they might want to see their own post immediately.
     await this.cacheManager.del(`feed:${post.authorId}:first_page`);
