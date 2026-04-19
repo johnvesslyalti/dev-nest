@@ -1,5 +1,5 @@
 # Stage 1: Build
-FROM node:22-alpine AS builder
+FROM node:22-slim AS builder
 
 WORKDIR /app
 
@@ -13,7 +13,7 @@ RUN npx prisma generate --schema=prisma/postgres/schema.prisma
 RUN npm run build
 
 # Stage 2: Production
-FROM node:22-alpine AS production
+FROM node:22-slim AS production
 
 WORKDIR /app
 
