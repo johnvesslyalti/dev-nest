@@ -20,6 +20,8 @@
     "test:manual": "node scripts/test_all_apis.js",
     "test:auth": "npx tsx scripts/verify-auth.ts",
     "test:ci": "npm run lint:check && npm run build && npm run prisma:validate",
+    "test:ci:docker": "docker compose -f docker-compose.ci.yml up --build --abort-on-container-exit",
+    "ci": "npm run test:ci:docker",
     "test:cd": "docker build . -t devnest-test",
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "test:e2e:ci": "jest --config ./test/jest-e2e.json --forceExit",
