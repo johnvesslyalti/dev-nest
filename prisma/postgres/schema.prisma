@@ -23,8 +23,6 @@ model User {
   bio       String?  @db.Text
   skills    String[]
   avatarUrl String?
-
-  deletedAt DateTime?
   
   lastLoginAt         DateTime?
   lastLoginIp         String?

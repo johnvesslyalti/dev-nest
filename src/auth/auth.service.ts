@@ -78,8 +78,6 @@ export class AuthService {
     const user = await this.prisma.user.findUnique({ where: { email } });
     if (!user) throw new UnauthorizedException("Invalid credentials");
 
-    if (user.deletedAt) throw new UnauthorizedException("Account disabled");
-
     // Google-only accounts have no password — direct them to use OAuth
     if (!user.password) {
       throw new UnauthorizedException(
@@ -170,8 +168,8 @@ export class AuthService {
       }
 
       const user = savedToken.user;
-      if (!user || user.deletedAt)
-        throw new UnauthorizedException("User not found or disabled");
+      if (!user)
+        throw new UnauthorizedException("User not found");
 
       const tokens = await this.generateTokens(user.id, ip, userAgent);
 
@@ -198,7 +196,7 @@ export class AuthService {
 
   async me(userId: string) {
     const user = await this.prisma.user.findUnique({ where: { id: userId } });
-    if (!user || user.deletedAt)
+    if (!user)
       throw new UnauthorizedException("User not found");
     return {
       data: {
@@ -276,16 +274,16 @@ export class AuthService {
     return { accessToken, refreshToken };
   }
 
-  async softDelete(userId: string) {
-    await this.prisma.user.update({
+  async deleteAccount(userId: string) {
+    // Because of onDelete: Cascade in the Prisma schema,
+    // deleting the user will automatically delete their:
+    // - Posts
+    // - Comments
+    // - Likes
+    // - Notifications
+    // - Refresh Tokens
+    await this.prisma.user.delete({
       where: { id: userId },
-      data: { deletedAt: new Date() },
-    });
-
-    // Revoke all tokens
-    await this.prisma.refreshToken.updateMany({
-      where: { userId },
-      data: { revokedAt: new Date() },
     });
   }
 
