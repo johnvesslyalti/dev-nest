@@ -1,10 +1,8 @@
 name: CD (Reusable)
 
 on:
-  workflow_call:
-    # This allows the workflow to be called by another workflow
-  workflow_dispatch:
-    # This still allows you to run it manually if needed
+  workflow_call: {}
+  workflow_dispatch: {}
 
 jobs:
   publish-image:

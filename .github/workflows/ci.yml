@@ -88,4 +88,3 @@ jobs:
     needs: test
     if: github.ref == 'refs/heads/main'
     uses: ./.github/workflows/cd.yml
-    secrets: inherit # Pass secrets to the reusable workflow
