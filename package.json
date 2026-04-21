@@ -19,7 +19,7 @@
     "migrate:deploy": "npx prisma migrate deploy --schema=./prisma/postgres/schema.prisma",
     "test:manual": "node scripts/test_all_apis.js",
     "test:auth": "npx tsx scripts/verify-auth.ts",
-    "test:ci": "npm run lint:check && npm run build && npm run prisma:validate",
+    "test:ci": "npm run lint:check && npm run build && npm run prisma:validate && echo '✅ CI checks passed!'",
     "test:ci:docker": "docker compose -f docker-compose.ci.yml up --build --abort-on-container-exit",
     "ci": "npm run test:ci:docker",
     "test:cd": "docker build . -t devnest-test",
@@ -68,7 +68,8 @@
     "piscina": "^5.1.4",
     "redis": "^5.10.0",
     "swagger-ui-express": "^5.0.1",
-    "zod": "^4.1.13"
+    "zod": "^4.1.13",
+    "prisma": "^7.6.0"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
@@ -86,7 +87,6 @@
     "jest-mock-extended": "^4.0.0",
     "nodemon": "^3.1.11",
     "prettier": "^3.8.1",
-    "prisma": "^7.6.0",
     "supertest": "^7.2.2",
     "ts-jest": "^29.4.6",
     "ts-node": "^10.9.2",

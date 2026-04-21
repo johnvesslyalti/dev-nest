@@ -85,7 +85,7 @@ export class AuthController {
     @Req() req: any,
     @Res({ passthrough: true }) res: Response,
   ) {
-    await this.authService.softDelete(req.user.id);
+    await this.authService.deleteAccount(req.user.id);
     res.clearCookie("refreshToken");
     return { message: "Account deleted successfully" };
   }

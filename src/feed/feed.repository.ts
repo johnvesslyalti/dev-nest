@@ -124,6 +124,7 @@ export class FeedRepository {
       take: take + 1,
       where: {
         author: {
+          deletedAt: null,
           followers: {
             some: {
               followerId: userId,

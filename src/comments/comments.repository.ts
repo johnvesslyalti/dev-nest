@@ -26,7 +26,6 @@ export class CommentsRepository {
     return this.prisma.comment.findMany({
       where: {
         postId,
-        user: { deletedAt: null },
       },
       orderBy: { createdAt: "desc" },
       take,

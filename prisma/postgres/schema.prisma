@@ -15,6 +15,7 @@ enum NotificationType {
 
 model User {
   id        String   @id @default(cuid())
+  deletedAt DateTime?
   name      String?
   username  String   @unique
   email     String   @unique
@@ -23,8 +24,6 @@ model User {
   bio       String?  @db.Text
   skills    String[]
   avatarUrl String?
-
-  deletedAt DateTime?
   
   lastLoginAt         DateTime?
   lastLoginIp         String?

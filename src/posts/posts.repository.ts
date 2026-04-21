@@ -61,8 +61,8 @@ export class PostsRepository {
   }
 
   async findOne(id: string) {
-    return this.prisma.post.findUnique({
-      where: { id },
+    return this.prisma.post.findFirst({
+      where: { id, author: { deletedAt: null } },
       select: {
         id: true,
         content: true,
