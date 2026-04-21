@@ -9,6 +9,9 @@ on:
 concurrency:
   group: ci-${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
+permissions:
+  contents: read
+  packages: write
 
 jobs:
   test:
@@ -84,7 +87,9 @@ jobs:
 
   # AUTOMATIC CD: Call the CD workflow if tests pass and branch is main
   deploy:
-    name: Trigger Deployment
     needs: test
     if: github.ref == 'refs/heads/main'
+    permissions:
+      contents: read
+      packages: write
     uses: ./.github/workflows/cd.yml
