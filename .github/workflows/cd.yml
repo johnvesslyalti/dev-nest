@@ -1,18 +1,14 @@
-name: CD
+name: CD (Reusable)
 
 on:
-  workflow_run:
-    workflows: ["CI"]
-    types:
-      - completed
-    branches:
-      - main
+  workflow_call:
+    # This allows the workflow to be called by another workflow
   workflow_dispatch:
+    # This still allows you to run it manually if needed
 
 jobs:
   publish-image:
     name: Build and Publish Image
-    if: ${{ github.event_name == 'workflow_dispatch' || (github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'success') }}
     runs-on: ubuntu-latest
     permissions:
       contents: read

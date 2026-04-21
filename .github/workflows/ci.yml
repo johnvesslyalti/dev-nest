@@ -1,4 +1,4 @@
-name: CI
+name: CI Pipeline
 
 on:
   push:
@@ -81,3 +81,11 @@ jobs:
 
       - name: Run end-to-end tests
         run: npm run test:e2e:ci
+
+  # AUTOMATIC CD: Call the CD workflow if tests pass and branch is main
+  deploy:
+    name: Trigger Deployment
+    needs: test
+    if: github.ref == 'refs/heads/main'
+    uses: ./.github/workflows/cd.yml
+    secrets: inherit # Pass secrets to the reusable workflow
